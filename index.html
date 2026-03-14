@@ -333,6 +333,19 @@
                     </thead>
                     <tbody id="adsetsTable"></tbody>
                 </table>
+                
+                <!-- CONCLUSIONES & RECOMENDACIONES -->
+                <div style="margin-top: 50px; padding-top: 40px; border-top: 2px solid #e5e7eb;">
+                    <div class="section-title">🎯 Conclusiones & Recomendaciones por Audiencia</div>
+                    
+                    <div id="conclusionesAudiencias" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;"></div>
+                </div>
+                
+                <!-- GRÁFICO EMBUDO POR AUDIENCIA -->
+                <div style="margin-top: 40px; padding-top: 30px; border-top: 2px solid #e5e7eb;">
+                    <div class="section-title">📊 Embudo de Retención por Audiencia</div>
+                    <div id="embudoAudiencias" style="height: 400px;"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -593,6 +606,88 @@
                     <td>${action}</td>
                 </tr>`;
             }).join('');
+
+            // === CONCLUSIONES POR AUDIENCIA ===
+            const conclusionesHTML = {};
+            videoData.forEach(ad => {
+                const adsetData = adsetMapping[ad.adset_id];
+                const adsetName = typeof adsetData === 'string' ? adsetData : adsetData?.name || ad.adset_name;
+                
+                if (!conclusionesHTML[adsetName]) {
+                    conclusionesHTML[adsetName] = {
+                        totalSpend: 0,
+                        totalLeads: 0,
+                        totalPlays: 0,
+                        avgHook: 0,
+                        avgRet25: 0,
+                        ads: []
+                    };
+                }
+                
+                const hook = (ad.retention_25 * 1.2);
+                const ret25 = ((ad.plays_25/ad.plays)*100);
+                
+                conclusionesHTML[adsetName].totalSpend += ad.spend;
+                conclusionesHTML[adsetName].totalLeads += ad.leads;
+                conclusionesHTML[adsetName].totalPlays += ad.plays;
+                conclusionesHTML[adsetName].avgHook = (conclusionesHTML[adsetName].avgHook + hook) / 2;
+                conclusionesHTML[adsetName].avgRet25 = (conclusionesHTML[adsetName].avgRet25 + ret25) / 2;
+                conclusionesHTML[adsetName].ads.push({name: ad.ad_name, leads: ad.leads, cpl: ad.leads > 0 ? ad.spend / ad.leads : 0});
+            });
+            
+            document.getElementById('conclusionesAudiencias').innerHTML = Object.entries(conclusionesHTML).map(([name, data]) => {
+                const cpl = data.totalLeads > 0 ? (data.totalSpend / data.totalLeads).toFixed(2) : '∞';
+                const status = data.totalLeads > 5 ? '🟢 ALTO RENDIMIENTO' : data.totalLeads > 0 ? '🟡 POTENCIAL' : '🔴 SIN CONVERSIÓN';
+                const recomendacion = data.totalLeads > 5 ? 'Escala inversión en este público' : data.totalLeads > 0 ? 'Optimiza creativo y monitorea' : 'Pausa o realiza test diferentes';
+                
+                const topAd = data.ads.reduce((prev, current) => (prev.leads > current.leads) ? prev : current);
+                const insight = topAd.leads > 0 ? `Mejor creativo: "${topAd.name}" (${topAd.leads} leads)` : 'Ningún creativo genera conversiones aún';
+                
+                return `
+                    <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px;">
+                        <div style="font-weight: 700; font-size: 1.1em; margin-bottom: 12px; color: #1f2937;">${name}</div>
+                        <div style="font-size: 0.9em; line-height: 1.8;">
+                            <strong>Inversión:</strong> €${data.totalSpend.toFixed(2)} | <strong>Leads:</strong> ${data.totalLeads} | <strong>CPL:</strong> €${cpl}<br>
+                            <strong>Hook %:</strong> ${data.avgHook.toFixed(1)}% | <strong>Retención 25%:</strong> ${data.avgRet25.toFixed(1)}%<br><br>
+                            <strong>Status:</strong> ${status}<br>
+                            <strong>Recomendación:</strong> ${recomendacion}<br>
+                            <strong>Insight:</strong> ${insight}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            // === EMBUDO POR AUDIENCIA ===
+            const embudoData = {};
+            const embudoLabels = ['Impresiones', 'Plays', '25%', '50%', '75%', '100%', 'Leads'];
+            
+            videoData.forEach(ad => {
+                const adsetData = adsetMapping[ad.adset_id];
+                const adsetName = typeof adsetData === 'string' ? adsetData : adsetData?.name || ad.adset_name;
+                
+                if (!embudoData[adsetName]) {
+                    embudoData[adsetName] = [0, 0, 0, 0, 0, 0, 0];
+                }
+                
+                embudoData[adsetName][0] += ad.impressions;
+                embudoData[adsetName][1] += ad.plays;
+                embudoData[adsetName][2] += ad.plays_25;
+                embudoData[adsetName][3] += ad.plays_50;
+                embudoData[adsetName][4] += ad.plays_75;
+                embudoData[adsetName][5] += ad.plays_100;
+                embudoData[adsetName][6] += ad.leads;
+            });
+            
+            const embudoTraces = Object.entries(embudoData).map(([name, values]) => ({
+                type: 'funnel',
+                name: name,
+                y: embudoLabels,
+                x: values
+            }));
+            
+            Plotly.newPlot('embudoAudiencias', embudoTraces,
+                {title: '<b>Embudo de Conversión por Audiencia</b>', height: 400, margin: {t: 50}},
+                {responsive: true, displayModeBar: false});
 
             // === PROYECCIONES ===
             Plotly.newPlot('projectionChart',
