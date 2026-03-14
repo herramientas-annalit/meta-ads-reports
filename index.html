@@ -348,10 +348,12 @@
                     <div id="conclusionesAudiencias" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;"></div>
                 </div>
                 
-                <!-- GRÁFICO EMBUDO POR AUDIENCIA -->
+                <!-- GRÁFICO EMBUDO POR AUDIENCIA - SEPARADOS -->
                 <div style="margin-top: 40px; padding-top: 30px; border-top: 2px solid #e5e7eb;">
-                    <div class="section-title">📊 Embudo de Retención por Audiencia</div>
-                    <div id="embudoAudiencias" style="height: 400px;"></div>
+                    <div class="section-title">📊 Embudo de Conversión por Audiencia</div>
+                    <p style="color: #666; margin-bottom: 30px; font-size: 0.9em;">Cada gráfico muestra cómo la audiencia avanza desde impresiones iniciales hasta leads generados. Elige a cuál audiencia apuntar en tu próxima inversión.</p>
+                    
+                    <div id="embudosContainer" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px;"></div>
                 </div>
             </div>
         </div>
@@ -761,75 +763,88 @@
                 `;
             }).join('');
             
-            // === EMBUDO POR AUDIENCIA - Retención % ===
-            const embudoRetData = {};
+            // === EMBUDOS SEPARADOS POR AUDIENCIA ===
+            const embudoData = {};
             
             videoData.forEach(ad => {
                 const adsetData = adsetMapping[ad.adset_id];
                 const adsetName = typeof adsetData === 'string' ? adsetData : adsetData?.name || ad.adset_name;
                 
-                if (!embudoRetData[adsetName]) {
-                    embudoRetData[adsetName] = {
+                if (!embudoData[adsetName]) {
+                    embudoData[adsetName] = {
                         plays: 0,
                         plays_25: 0,
                         plays_50: 0,
                         plays_75: 0,
                         plays_100: 0,
-                        leads: 0
+                        leads: 0,
+                        intereses: typeof adsetData === 'string' ? 'General' : (adsetData?.intereses?.join(', ') || 'General')
                     };
                 }
                 
-                embudoRetData[adsetName].plays += ad.plays;
-                embudoRetData[adsetName].plays_25 += ad.plays_25;
-                embudoRetData[adsetName].plays_50 += ad.plays_50;
-                embudoRetData[adsetName].plays_75 += ad.plays_75;
-                embudoRetData[adsetName].plays_100 += ad.plays_100;
-                embudoRetData[adsetName].leads += ad.leads;
+                embudoData[adsetName].plays += ad.plays;
+                embudoData[adsetName].plays_25 += ad.plays_25;
+                embudoData[adsetName].plays_50 += ad.plays_50;
+                embudoData[adsetName].plays_75 += ad.plays_75;
+                embudoData[adsetName].plays_100 += ad.plays_100;
+                embudoData[adsetName].leads += ad.leads;
             });
             
-            const embudoTraces = Object.entries(embudoRetData).map(([name, data]) => {
+            const embudosHTML = Object.entries(embudoData).map(([name, data], index) => {
                 const baseValue = data.plays > 0 ? data.plays : 1;
-                return {
-                    type: 'bar',
-                    name: name,
-                    x: ['Play Inicial', '25% Visto', '50% Visto', '75% Visto', '100% Visto', 'Leads'],
-                    y: [
-                        data.plays,
-                        data.plays_25,
-                        data.plays_50,
-                        data.plays_75,
-                        data.plays_100,
-                        data.leads * 100
-                    ],
-                    text: [
-                        `${data.plays}`,
-                        `${data.plays_25} (${(data.plays_25/baseValue*100).toFixed(1)}%)`,
-                        `${data.plays_50} (${(data.plays_50/baseValue*100).toFixed(1)}%)`,
-                        `${data.plays_75} (${(data.plays_75/baseValue*100).toFixed(1)}%)`,
-                        `${data.plays_100} (${(data.plays_100/baseValue*100).toFixed(1)}%)`,
-                        data.leads
-                    ],
-                    textposition: 'outside',
-                    hovertext: [
-                        `${data.plays} plays iniciales`,
-                        `${data.plays_25} vieron 25% (${(data.plays_25/baseValue*100).toFixed(1)}% retención)`,
-                        `${data.plays_50} vieron 50% (${(data.plays_50/baseValue*100).toFixed(1)}% retención)`,
-                        `${data.plays_75} vieron 75% (${(data.plays_75/baseValue*100).toFixed(1)}% retención)`,
-                        `${data.plays_100} completaron video (${(data.plays_100/baseValue*100).toFixed(1)}% retención)`,
-                        `${data.leads} leads generados`
-                    ],
-                    hoverinfo: 'text'
-                };
-            });
+                const divId = `embudo_${index}`;
+                
+                const ret25 = ((data.plays_25 / baseValue) * 100).toFixed(1);
+                const ret50 = ((data.plays_50 / baseValue) * 100).toFixed(1);
+                const ret75 = ((data.plays_75 / baseValue) * 100).toFixed(1);
+                const ret100 = ((data.plays_100 / baseValue) * 100).toFixed(1);
+                const leadRate = ((data.leads / data.plays) * 100).toFixed(2);
+                
+                const status = data.leads > 5 ? '🟢 EXCELENTE' : data.leads > 0 ? '🟡 BUENO' : '🔴 SIN LEADS';
+                
+                // Crear gráfico funnel
+                setTimeout(() => {
+                    Plotly.newPlot(divId,
+                        [{
+                            type: 'funnel',
+                            y: ['Plays Iniciales', 'Vieron 25%', 'Vieron 50%', 'Vieron 75%', 'Completaron Video', 'Leads Generados'],
+                            x: [data.plays, data.plays_25, data.plays_50, data.plays_75, data.plays_100, data.leads],
+                            text: [
+                                `${data.plays} personas`,
+                                `${data.plays_25} (${ret25}%)`,
+                                `${data.plays_50} (${ret50}%)`,
+                                `${data.plays_75} (${ret75}%)`,
+                                `${data.plays_100} (${ret100}%)`,
+                                `${data.leads} conversiones`
+                            ],
+                            textposition: 'inside',
+                            marker: {color: ['#2563EB', '#3B82F6', '#60A5FA', '#93C5FD', '#DBEAFE', data.leads > 0 ? '#10B981' : '#EF4444']},
+                            hovertemplate: '<b>%{y}</b><br>%{text}<extra></extra>'
+                        }],
+                        {title: `<b>${name}</b>`, margin: {t: 50, b: 20, l: 20, r: 20}, height: 350},
+                        {responsive: true, displayModeBar: false}
+                    );
+                }, 100 * index);
+                
+                return `
+                    <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; text-align: center;">
+                        <div id="${divId}" style="height: 350px; margin-bottom: 15px;"></div>
+                        <div style="background: white; border-radius: 8px; padding: 12px; text-align: left; font-size: 0.85em; line-height: 1.6;">
+                            <div style="margin-bottom: 8px;">
+                                <strong>Intereses:</strong> ${data.intereses}<br>
+                                <strong>Leads Totales:</strong> ${data.leads}<br>
+                                <strong>Lead Rate:</strong> ${leadRate}% (${data.leads}/${data.plays})<br>
+                                <strong>Status:</strong> ${status}
+                            </div>
+                            <div style="padding-top: 8px; border-top: 1px solid #e5e7eb; color: #666; font-size: 0.8em;">
+                                ${data.leads > 5 ? '✅ Escala inversión en este público' : data.leads > 0 ? '⚠️ Continúa testando, monitoreando' : '❌ Pausa o realiza cambios en creativo'}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
             
-            Plotly.newPlot('embudoAudiencias', embudoTraces,
-                {title: '<b>Embudo de Retención: Plays → Vistas Progresivas → Leads</b>', 
-                 barmode: 'group',
-                 yaxis: {title: 'Cantidad'}, 
-                 xaxis: {title: 'Etapa de Conversión'},
-                 height: 450, 
-                 margin: {t: 60, b: 80}},
-                {responsive: true, displayModeBar: false});
+            document.getElementById('embudosContainer').innerHTML = embudosHTML;
 
             // === PROYECCIONES ===
             Plotly.newPlot('projectionChart',
