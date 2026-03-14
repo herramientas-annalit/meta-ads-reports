@@ -903,13 +903,25 @@
                 const leadRate = ((data.leads / data.plays) * 100).toFixed(2);
                 const avgRetention = ((parseFloat(ret25) + parseFloat(ret50) + parseFloat(ret75) + parseFloat(ret100)) / 4).toFixed(1);
                 
+                // Obtener impresiones de la audiencia
+                let impressions = 0;
+                videoData.forEach(ad => {
+                    const adsetData = adsetMapping[ad.adset_id];
+                    const adsetName = typeof adsetData === 'string' ? adsetData : adsetData?.name || ad.adset_name;
+                    if (adsetName === name) {
+                        impressions += ad.impressions;
+                    }
+                });
+                
                 return {
                     name,
+                    impressions: impressions,
                     plays: data.plays,
                     leads: data.leads,
                     leadRate: parseFloat(leadRate),
                     avgRetention: parseFloat(avgRetention),
-                    ret100: parseFloat(ret100)
+                    ret100: parseFloat(ret100),
+                    playRate: ((data.plays / impressions) * 100).toFixed(2)
                 };
             }).sort((a, b) => b.leadRate - a.leadRate);
             
@@ -934,7 +946,8 @@
                                     <div style="font-size: 1.2em; font-weight: 800; margin-bottom: 18px; color: ${isWinner ? '#10B981' : '#1f2937'};">${aud.name}</div>
                                     
                                     <div style="background: ${isWinner ? '#f0fdf4' : '#f9fafb'}; padding: 15px; border-radius: 8px; margin-bottom: 16px; font-size: 0.95em; line-height: 1.9;">
-                                        <div style="margin-bottom: 8px;">📊 <strong>Plays Iniciales:</strong> <span style="font-weight: 700; color: #2563EB;">${aud.plays}</span></div>
+                                        <div style="margin-bottom: 8px;">👁️ <strong>Impresiones:</strong> <span style="font-weight: 700; color: #6366F1;">${aud.impressions.toLocaleString()}</span> <span style="font-size: 0.85em; color: #666;">(alcance inicial)</span></div>
+                                        <div style="margin-bottom: 8px;">▶️ <strong>Plays:</strong> <span style="font-weight: 700; color: #2563EB;">${aud.plays}</span> <span style="font-size: 0.85em; color: #666;">(${aud.playRate}% de impresiones)</span></div>
                                         <div style="margin-bottom: 8px;">🎯 <strong>Leads Generados:</strong> <span style="font-weight: 700; color: ${aud.leads > 5 ? '#10B981' : aud.leads > 0 ? '#F59E0B' : '#EF4444'};">${aud.leads} conversiones</span></div>
                                         <div style="margin-bottom: 8px;">💹 <strong>Lead Rate:</strong> <span style="font-weight: 700; color: ${aud.leadRate > 2 ? '#10B981' : aud.leadRate > 1 ? '#F59E0B' : '#EF4444'};">${aud.leadRate}%</span> <span style="font-size: 0.85em; color: #666;">(${aud.leads}/${aud.plays})</span></div>
                                         <div style="margin-bottom: 8px;">📈 <strong>Retención Promedio:</strong> <span style="font-weight: 700;">${aud.avgRetention}%</span> <span style="font-size: 0.85em; color: #666;">(mantiene ${aud.avgRetention}% de audiencia)</span></div>
