@@ -1,19 +1,20 @@
 # 📋 Historial Completo de Versiones
 
 ## ✅ VERSIÓN ACTUAL (ACTIVA)
-### `3aad516` 📖 DOCUMENTATION: Estructura de ramas
-**Status:** ✅ FUNCIONAL
+### `b9443ec` ✅ RESTAURADA: Versión ecfdc74 con Proyecciones
+**Status:** ✅ FUNCIONAL (LA BUENA)
 **Rama:** master
-**Cambio:** Agregó documentación BRANCHES.md para control de versiones
+**Cambio:** Restauró a ecfdc74 manteniendo historio (git checkout, no reset)
 **Tiene:**
-- ✅ 4 Tabs: General | Creativos | Ad Sets | Proyecciones
+- ✅ 4 Tabs: General | Creativos | Ad Sets | **PROYECCIONES**
 - ✅ Análisis por Creativo con filtros (Ad 1/2/3)
 - ✅ Embudos de Retención por Audiencia
 - ✅ Conclusiones por Audiencia
 - ✅ CPL Diario con etiquetas
 - ✅ Curva de Retención
+- ✅ **Proyecciones: 4 Escenarios** (Actual, Optimizado, Escalado, Agresivo)
+- ✅ Gráfico Proyecciones: Presupuesto vs Ingresos/mes
 - ✅ Datos validados 100%
-- ❌ NO tiene: Comparativa Creativos tarjetas
 
 ---
 
