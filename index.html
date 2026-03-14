@@ -5,6 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Ejecutivo - Meta Ads</title>
     <script src="https://cdn.plot.ly/plotly-2.26.0.min.js"></script>
+    <script>
+        // Detección automática de dispositivo
+        function detectarDispositivo() {
+            const width = window.innerWidth;
+            let dispositivo = 'escritorio';
+            
+            if (width < 480) {
+                dispositivo = 'movil';
+            } else if (width >= 480 && width < 1024) {
+                dispositivo = 'tablet';
+            }
+            
+            document.body.className = `vista-${dispositivo}`;
+        }
+        
+        // Detectar al cargar
+        window.addEventListener('DOMContentLoaded', detectarDispositivo);
+        
+        // Detectar si cambia tamaño (responsive)
+        window.addEventListener('resize', detectarDispositivo);
+        
+        // Detectar inmediatamente
+        detectarDispositivo();
+    </script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -177,9 +201,47 @@
             margin-top: 25px;
         }
         
+        /* DETECCIÓN AUTOMÁTICA POR DISPOSITIVO */
+        body.vista-escritorio { font-size: 16px; }
+        body.vista-tablet { font-size: 15px; }
+        body.vista-movil { font-size: 14px; }
+        
         @media (max-width: 1200px) {
             .chart-grid { grid-template-columns: 1fr; }
             .weekly-stats { grid-template-columns: 1fr; }
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.6em; }
+            .header p { font-size: 0.85em; }
+            .tabs { padding: 0 5px; }
+            .tab-btn { padding: 12px 15px; font-size: 0.9em; }
+            .tab-content { padding: 20px 10px; }
+            .section { padding: 20px 10px; }
+            .section-title { font-size: 1.2em; margin-bottom: 15px; }
+            .kpi-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .kpi-value { font-size: 1.8em; }
+            .kpi-label { font-size: 0.75em; }
+            #chart1, #chart2, #chart3, #chart4, #curvaRetencion, #embudoAudiencias, #projectionChart { height: 350px !important; }
+            table { font-size: 0.85em; }
+            table th, table td { padding: 10px 8px; }
+        }
+        
+        @media (max-width: 480px) {
+            .header h1 { font-size: 1.4em; }
+            .header p { font-size: 0.75em; }
+            .tabs { padding: 0 5px; overflow-x: auto; }
+            .tab-btn { padding: 10px 12px; font-size: 0.8em; }
+            .tab-content { padding: 15px 10px; }
+            .section { padding: 15px 10px; overflow-x: auto; }
+            .section-title { font-size: 1.1em; margin-bottom: 12px; }
+            .kpi-grid { grid-template-columns: 1fr; gap: 10px; }
+            .kpi-value { font-size: 1.6em; }
+            .kpi-label { font-size: 0.7em; }
+            #chart1, #chart2, #chart3, #chart4, #curvaRetencion, #embudoAudiencias, #projectionChart { height: 280px !important; width: 100% !important; min-width: 100%; }
+            table { font-size: 0.75em; display: block; overflow-x: auto; white-space: nowrap; }
+            table th, table td { padding: 8px 6px; }
+            button { font-size: 0.8em !important; padding: 8px 10px !important; }
         }
     </style>
 </head>
