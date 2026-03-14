@@ -310,13 +310,14 @@
             <table style="font-size: 0.8em;">
                 <thead>
                     <tr>
-                        <th>Ad Set ID</th>
+                        <th>Audiencia</th>
                         <th>Creativo</th>
                         <th>Presupuesto</th>
                         <th>Plays</th>
                         <th>Leads</th>
                         <th>CPL</th>
                         <th>Ret 25%</th>
+                        <th>CPM</th>
                         <th>Acción</th>
                     </tr>
                 </thead>
@@ -391,8 +392,9 @@
 
         Promise.all([
             fetch('data.json').then(r => r.json()),
-            fetch('video-analysis.json').then(r => r.json())
-        ]).then(([dayData, videoData]) => {
+            fetch('video-analysis.json').then(r => r.json()),
+            fetch('adset-mapping.json').then(r => r.json())
+        ]).then(([dayData, videoData, adsetMapping]) => {
             const daily = dayData.daily;
 
             // === GENERAL TAB ===
@@ -484,14 +486,16 @@
                 const ret25 = ((ad.plays_25/ad.plays)*100).toFixed(1);
                 const cpl = ad.leads > 0 ? (ad.spend/ad.leads).toFixed(2) : '-';
                 const action = ad.leads > 3 ? '✅ Escalar' : ad.leads > 0 ? '⚠️ Monitor' : ad.spend > 10 ? '❌ Pausar' : '🟡 Test';
+                const audience = adsetMapping[ad.ad_id] || `Ad Set ${ad.ad_id.substring(14)}`;
                 return `<tr>
-                    <td style="font-size: 0.75em;">...${ad.ad_id.substring(14)}</td>
+                    <td style="font-weight: 700; color: #2563EB;">${audience}</td>
                     <td>${ad.ad_name}</td>
                     <td>$${ad.spend.toFixed(2)}</td>
                     <td>${ad.plays}</td>
                     <td class="${ad.leads > 0 ? 'metric-good' : 'metric-bad'}">${ad.leads}</td>
                     <td>${cpl}</td>
                     <td>${ret25}%</td>
+                    <td>$${ad.cpm.toFixed(2)}</td>
                     <td>${action}</td>
                 </tr>`;
             }).join('');
