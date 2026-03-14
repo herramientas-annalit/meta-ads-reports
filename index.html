@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Ejecutivo - Meta Ads Kampanya</title>
+    <title>Dashboard Ejecutivo - Meta Ads</title>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -11,141 +11,157 @@
         body {
             font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background: linear-gradient(135deg, #f5f7fa 0%, #eef2f7 100%);
-            padding: 40px 20px;
+            padding: 0;
         }
-        .container { max-width: 1600px; margin: 0 auto; }
+        
+        .container { max-width: 1600px; margin: 0 auto; padding: 0 20px; }
         
         .header {
-            text-align: center;
-            margin-bottom: 50px;
             background: white;
-            padding: 50px 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            padding: 40px 20px;
+            margin-bottom: 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            text-align: center;
         }
         
         .header h1 {
-            font-size: 2.8em;
+            font-size: 2.5em;
             color: #050912;
-            margin-bottom: 10px;
             font-weight: 900;
+            margin-bottom: 10px;
         }
         
         .header p {
             color: #666;
-            font-size: 1.1em;
-            margin-bottom: 20px;
+            font-size: 0.95em;
         }
         
-        .status-badges {
+        .tabs {
             display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
+            background: white;
+            border-bottom: 3px solid #e5e7eb;
+            padding: 0 20px;
+            gap: 0;
+            overflow-x: auto;
         }
         
-        .badge {
-            display: inline-block;
-            padding: 10px 25px;
-            border-radius: 50px;
+        .tab-btn {
+            padding: 16px 30px;
+            border: none;
+            background: none;
+            font-size: 1em;
             font-weight: 700;
-            font-size: 0.9em;
+            color: #999;
+            cursor: pointer;
+            border-bottom: 4px solid transparent;
+            transition: all 0.3s;
+            white-space: nowrap;
         }
         
-        .badge-active { background: #10B981; color: white; }
-        .badge-data { background: #2563EB; color: white; }
+        .tab-btn:hover {
+            color: #2563EB;
+            background: #f9fafb;
+        }
         
-        /* KPI Grid */
+        .tab-btn.active {
+            color: #2563EB;
+            border-bottom-color: #2563EB;
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 40px 20px;
+            animation: fadeIn 0.3s;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .section {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+        
+        .section-title {
+            font-size: 1.6em;
+            color: #050912;
+            font-weight: 900;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 4px solid #2563EB;
+        }
+        
         .kpi-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
         }
         
         .kpi-card {
             background: white;
-            padding: 35px;
-            border-radius: 15px;
+            padding: 30px;
+            border-radius: 12px;
             text-align: center;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
             border-top: 6px solid #2563EB;
-            transition: transform 0.3s, box-shadow 0.3s;
         }
         
-        .kpi-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.12); }
         .kpi-card.success { border-top-color: #10B981; }
         .kpi-card.warning { border-top-color: #F59E0B; }
         
         .kpi-value {
-            font-size: 3.2em;
+            font-size: 2.8em;
             font-weight: 900;
             color: #2563EB;
             margin-bottom: 8px;
-            line-height: 1;
         }
         
         .kpi-card.success .kpi-value { color: #10B981; }
         .kpi-card.warning .kpi-value { color: #F59E0B; }
         
         .kpi-label {
-            font-size: 0.8em;
+            font-size: 0.75em;
             color: #999;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 1.5px;
             font-weight: 800;
-            margin-bottom: 12px;
-        }
-        
-        .kpi-desc {
-            font-size: 0.85em;
-            color: #666;
-            line-height: 1.4;
-        }
-        
-        /* Secciones */
-        .section {
-            background: white;
-            padding: 50px;
-            border-radius: 20px;
-            margin-bottom: 40px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-        }
-        
-        .section-title {
-            font-size: 1.8em;
-            color: #050912;
-            font-weight: 900;
-            margin-bottom: 40px;
-            padding-bottom: 20px;
-            border-bottom: 4px solid #2563EB;
         }
         
         .chart-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(550px, 1fr));
-            gap: 40px;
-            margin-bottom: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
         }
         
         .chart-wrapper {
             background: #fafbfc;
-            border-radius: 15px;
-            padding: 20px;
+            border-radius: 12px;
+            padding: 16px;
         }
         
         .chart-box {
-            min-height: 400px;
-            margin-bottom: 20px;
+            min-height: 380px;
+            margin-bottom: 12px;
         }
         
         .chart-description {
             background: #f0f7ff;
             border-left: 4px solid #2563EB;
-            padding: 16px;
-            border-radius: 8px;
-            font-size: 0.9em;
-            line-height: 1.6;
+            padding: 14px;
+            border-radius: 6px;
+            font-size: 0.85em;
+            line-height: 1.5;
             color: #333;
         }
         
@@ -153,42 +169,38 @@
             color: #2563EB;
         }
         
-        /* Tabla */
         .table-container {
             overflow-x: auto;
-            border-radius: 15px;
-            margin-bottom: 30px;
+            border-radius: 12px;
+            margin-bottom: 20px;
         }
         
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.95em;
+            font-size: 0.9em;
         }
         
         thead {
             background: linear-gradient(135deg, #f0f7ff 0%, #dbeafe 100%);
-            border-bottom: 4px solid #2563EB;
+            border-bottom: 3px solid #2563EB;
         }
         
         th {
-            padding: 18px;
+            padding: 14px;
             text-align: center;
             font-weight: 800;
             color: #050912;
-            font-size: 0.9em;
+            font-size: 0.85em;
         }
         
         td {
-            padding: 16px;
-            border-bottom: 2px solid #e5e7eb;
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
             text-align: center;
         }
         
-        td:first-child {
-            text-align: left;
-            font-weight: 700;
-        }
+        td:first-child { text-align: left; font-weight: 700; }
         
         tbody tr:hover { background: #f9fafb; }
         
@@ -196,268 +208,376 @@
         .metric-warn { color: #F59E0B; font-weight: 800; }
         .metric-bad { color: #EF4444; font-weight: 800; }
         
-        .table-description {
-            background: #f0f7ff;
-            border-left: 4px solid #2563EB;
-            padding: 16px;
-            border-radius: 8px;
-            font-size: 0.9em;
-            line-height: 1.6;
-            color: #333;
-            margin-bottom: 30px;
-        }
-        
         .insight {
             background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-            border-left: 6px solid #10B981;
-            padding: 30px;
-            border-radius: 15px;
+            border-left: 5px solid #10B981;
+            padding: 24px;
+            border-radius: 12px;
             margin-top: 30px;
-            font-size: 0.98em;
-            line-height: 1.8;
+            font-size: 0.95em;
+            line-height: 1.7;
         }
         
-        .insights-grid {
+        .rec-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            margin-top: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
         }
         
         .rec-card {
             background: linear-gradient(135deg, #050912 0%, #1a1a2e 100%);
             color: white;
-            padding: 30px;
-            border-radius: 15px;
-            border-left: 6px solid #06B6D4;
+            padding: 24px;
+            border-radius: 12px;
+            border-left: 5px solid #06B6D4;
         }
         
         .rec-card.danger { border-left-color: #EF4444; }
         .rec-card.success { border-left-color: #10B981; }
-        .rec-card.test { border-left-color: #06B6D4; }
         
         .rec-card h4 {
-            font-size: 1.2em;
-            margin-bottom: 15px;
+            font-size: 1.1em;
+            margin-bottom: 12px;
             font-weight: 800;
         }
         
         .rec-card p {
-            font-size: 0.95em;
-            line-height: 1.6;
-            opacity: 0.95;
+            font-size: 0.9em;
+            line-height: 1.5;
         }
         
-        .footer {
-            text-align: center;
-            color: #999;
-            font-size: 0.9em;
-            margin-top: 50px;
-            padding-top: 30px;
-            border-top: 2px solid #e5e7eb;
+        .projection-box {
+            background: linear-gradient(135deg, #dbeafe 0%, #e0f2fe 100%);
+            border-left: 5px solid #2563EB;
+            padding: 24px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+            line-height: 1.7;
         }
         
         @media (max-width: 1200px) {
             .chart-grid { grid-template-columns: 1fr; }
-            .section { padding: 30px; }
+            .section { padding: 25px; }
+            .header h1 { font-size: 1.8em; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- HEADER -->
-        <div class="header">
+    <div class="header">
+        <div class="container">
             <h1>📊 Test Manual SEO Local Pablo</h1>
             <p>Dashboard Ejecutivo Completo | 2-14 de Marzo 2026</p>
-            <div class="status-badges">
-                <div class="badge badge-active">✅ CAMPAÑA ACTIVA</div>
-                <div class="badge badge-data">📈 DATOS VALIDADOS</div>
-                <div class="badge badge-data">🎬 ANÁLISIS CREATIVOS</div>
-            </div>
         </div>
+    </div>
 
-        <!-- KPIs PRINCIPALES -->
-        <div class="kpi-grid">
-            <div class="kpi-card">
-                <div class="kpi-value">$231.84</div>
-                <div class="kpi-label">Inversión Total</div>
-                <div class="kpi-desc">13 días de campaña</div>
-            </div>
-            <div class="kpi-card success">
-                <div class="kpi-value">20</div>
-                <div class="kpi-label">Leads Generados</div>
-                <div class="kpi-desc">Clientes potenciales</div>
-            </div>
-            <div class="kpi-card warning">
-                <div class="kpi-value">$11.58</div>
-                <div class="kpi-label">Costo por Lead</div>
-                <div class="kpi-desc">CPL promedio</div>
-            </div>
-            <div class="kpi-card success">
-                <div class="kpi-value">1.06%</div>
-                <div class="kpi-label">CTR</div>
-                <div class="kpi-desc">Tasa de clics (buena)</div>
-            </div>
-        </div>
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('general')">📊 General</button>
+        <button class="tab-btn" onclick="switchTab('creativos')">🎬 Creativos</button>
+        <button class="tab-btn" onclick="switchTab('adsets')">🎯 Ad Sets</button>
+        <button class="tab-btn" onclick="switchTab('proyecciones')">📈 Proyecciones</button>
+    </div>
 
-        <!-- ANÁLISIS DE RENDIMIENTO GENERAL -->
-        <div class="section">
-            <div class="section-title">📈 Evolución y Rendimiento General</div>
-            
-            <div class="chart-grid">
-                <div class="chart-wrapper">
-                    <div class="chart-box" id="chart1"></div>
-                    <div class="chart-description">
-                        <strong>¿Qué ves aquí?</strong> La línea azul muestra cuánto dinero gastaste cada día (acumulado de arriba hacia abajo). La línea verde muestra cuántos leads generaste (también acumulado). Si una línea sube mucho, significa más inversión o más conversiones.
+    <!-- TAB 1: GENERAL -->
+    <div id="general" class="tab-content active">
+        <div class="container">
+            <div class="section">
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-value">$231.84</div>
+                        <div class="kpi-label">Inversión Total</div>
                     </div>
-                </div>
-
-                <div class="chart-wrapper">
-                    <div class="chart-box" id="chart2"></div>
-                    <div class="chart-description">
-                        <strong>¿Qué ves aquí?</strong> El costo de cada lead a lo largo de los días. Observa cómo sube desde $4-8 hasta $20. Esto significa que con el mismo presupuesto estás consiguiendo MENOS leads. Problema: audience fatiga (la gente ha visto tu anuncio demasiadas veces).
+                    <div class="kpi-card success">
+                        <div class="kpi-value">20</div>
+                        <div class="kpi-label">Leads</div>
+                    </div>
+                    <div class="kpi-card warning">
+                        <div class="kpi-value">$11.58</div>
+                        <div class="kpi-label">CPL Promedio</div>
+                    </div>
+                    <div class="kpi-card success">
+                        <div class="kpi-value">1.06%</div>
+                        <div class="kpi-label">CTR</div>
                     </div>
                 </div>
             </div>
 
-            <div class="chart-grid">
-                <div class="chart-wrapper">
-                    <div class="chart-box" id="chart3"></div>
-                    <div class="chart-description">
-                        <strong>¿Qué ves aquí?</strong> Cuánto dinero gastaste cada día individual (no acumulado). Los días con barras más altas = más inversión ese día. Sirve para ver si algún día fue especialmente rentable o costoso.
+            <div class="section">
+                <div class="section-title">📈 Evolución General</div>
+                <div class="chart-grid">
+                    <div class="chart-wrapper">
+                        <div class="chart-box" id="chart1"></div>
+                        <div class="chart-description">
+                            <strong>Evolución Acumulada:</strong> Línea azul = dinero gastado total. Línea verde = leads generados. Muestra si la inversión mantiene consistencia.
+                        </div>
+                    </div>
+                    <div class="chart-wrapper">
+                        <div class="chart-box" id="chart2"></div>
+                        <div class="chart-description">
+                            <strong>CPL Diario:</strong> El costo de cada lead. Subida = audience fatigue (gente saturada con el anuncio). Bajada = mejora en rendimiento.
+                        </div>
+                    </div>
+                </div>
+                <div class="chart-grid">
+                    <div class="chart-wrapper">
+                        <div class="chart-box" id="chart3"></div>
+                        <div class="chart-description">
+                            <strong>Gasto por Día:</strong> Presupuesto diario invertido. Barras altas = más presupuesto ese día. Ayuda a ver picos de inversión.
+                        </div>
+                    </div>
+                    <div class="chart-wrapper">
+                        <div class="chart-box" id="chart4"></div>
+                        <div class="chart-description">
+                            <strong>Leads por Día:</strong> Conversiones diarias. Días sin barras = 0 leads (presupuesto quemado sin conversión).
+                        </div>
                     </div>
                 </div>
 
-                <div class="chart-wrapper">
-                    <div class="chart-box" id="chart4"></div>
-                    <div class="chart-description">
-                        <strong>¿Qué ves aquí?</strong> Cuántos leads generaste cada día. Los días sin barras = 0 leads ese día (el dinero fue "quemado" sin conversión). Si ves muchos días sin barras, tu anuncio no está funcionando bien ese día.
+                <div class="insight">
+                    <strong>⚠️ HALLAZGO CRÍTICO:</strong> CPL subió de <strong>$8.52</strong> (Semana 1) a <strong>$20.80</strong> (Semana 2) = <strong>audience fatigue</strong>. La misma audiencia vio el anuncio demasiadas veces. Necesitas NUEVAS audiencias o creativos frescos AHORA.
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">🎯 Recomendaciones Inmediatas</div>
+                <div class="rec-grid">
+                    <div class="rec-card danger">
+                        <h4>❌ 1. Pausa Small Business</h4>
+                        <p>Ad Set: 2 leads en $5.63. No es rentable. Pausa ahora y reasigna a ganadores.</p>
                     </div>
-                </div>
-            </div>
-
-            <div class="insight">
-                <strong>⚠️ Observación Crítica:</strong> CPL subió de <strong>$8.52</strong> (Semana 1) a <strong>$20.80</strong> (Semana 2). Esto indica <strong>audience fatigue</strong> — necesitas nuevas audiencias o creativos frescos AHORA.
-            </div>
-        </div>
-
-        <!-- ANÁLISIS DE CREATIVOS -->
-        <div class="section">
-            <div class="section-title">🎬 Análisis de Creativos - Embudo Completo</div>
-            
-            <div class="chart-grid">
-                <div class="chart-wrapper">
-                    <div class="chart-box" id="funnel"></div>
-                    <div class="chart-description">
-                        <strong>¿Qué ves aquí?</strong> El embudo de conversión. Empieza con 11,562 personas que ven el vídeo. Luego: ¿cuántos llegan a los 3 segundos (hook)? ¿25%? ¿50%? ¿100% lo ven completo? ¿Cuántos se convierten en leads? Cada paso más pequeño = pérdida de audiencia. Identificar dónde cae la gente te dice dónde mejorar.
+                    <div class="rec-card danger">
+                        <h4>🚨 2. Audience Fatigue</h4>
+                        <p>El CPL se duplicó. Ad 2 Pablo se quema. Necesitas nuevas audiencias YA.</p>
                     </div>
-                </div>
-
-                <div class="chart-wrapper">
-                    <div class="chart-box" id="retention"></div>
-                    <div class="chart-description">
-                        <strong>¿Qué ves aquí?</strong> La curva de retención en %. Empieza en 100% (todos reproducen) y cae. Si cae rápido al inicio = el hook (primeros 3 segundos) no engancha. Si mantiene 25% pero cae en 50% = el contenido intermedio aburre. Si cae al final = el CTA no convence.
+                    <div class="rec-card success">
+                        <h4>🚀 3. Nuevas Audiencias</h4>
+                        <p>Crea 2 ad sets frescos: 1 cold audience + 1 retargeting. Presupuesto: +$10/día inicial.</p>
                     </div>
-                </div>
-            </div>
-
-            <div class="table-container">
-                <div class="table-description">
-                    <strong>¿Qué ves en esta tabla?</strong> Cada fila es un creativo (anuncio). Las columnas de colores muestran: Hook (0-3s), 25%, 50%, 75%, 100% = qué % de la gente sigue viendo en cada punto. Colores: 🟢 verde = bueno, 🟡 amarillo = regular, 🔴 rojo = malo. "Leads" = conversiones reales. "CPL" = costo por lead (menos es mejor).
-                </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Creativo</th>
-                            <th style="background: #e0f2fe;">0-3s Hook %</th>
-                            <th style="background: #dbeafe;">25%</th>
-                            <th style="background: #dcfce7;">50%</th>
-                            <th style="background: #fef3c7;">75%</th>
-                            <th style="background: #fecaca;">100%</th>
-                            <th>Reproducciones</th>
-                            <th>Presupuesto</th>
-                            <th>Leads</th>
-                            <th>CPL</th>
-                        </tr>
-                    </thead>
-                    <tbody id="creativeTable"></tbody>
-                </table>
-            </div>
-
-            <div class="chart-grid" style="margin-top: 40px;">
-                <div class="chart-wrapper">
-                    <div class="chart-box" id="hookChart"></div>
-                    <div class="chart-description">
-                        <strong>¿Qué ves aquí?</strong> La fuerza del "hook" (primeros 3 segundos) de cada creativo. Barras altas = buen hook (la gente sigue viendo). Barras bajas = malo (abandono inmediato). Compara: si tu hook está bajo pero el lead rate es alto, significa que otro creativo tiene mejor inicio.
-                    </div>
-                </div>
-
-                <div class="chart-wrapper">
-                    <div class="chart-box" id="efficiencyChart"></div>
-                    <div class="chart-description">
-                        <strong>¿Qué ves aquí?</strong> Cada punto = un creativo. El eje X (izquierda-derecha) = dinero gastado. El eje Y (arriba-abajo) = leads conseguidos. Puntos arriba a la derecha = mucho gasto, muchos leads (eficiente). Puntos abajo a la derecha = mucho gasto, pocos leads (ineficiente). El color = CPL (rojo = caro, verde = barato).
-                    </div>
-                </div>
-            </div>
-
-            <div class="insight">
-                <strong>🎯 Hallazgos Clave:</strong><br>
-                ✅ <strong>Ad 2 Pablo:</strong> Hook 9.3%, 13 leads, CPL $10.25 — GANADOR actual<br>
-                ⚠️ <strong>vid 18:</strong> Hook 13% (MÁS que Ad 2) pero 0 leads — Problema: CTA o landing<br>
-                🚀 <strong>vid 20:</strong> Hook 37.7% (EXCELENTE) pero sin leads — Máximo potencial, testea CTA<br>
-                ❌ <strong>Ad 1 & 3:</strong> Hook débil, baja conversión — PAUSAR AHORA
-            </div>
-        </div>
-
-        <!-- RECOMENDACIONES EJECUTIVAS -->
-        <div class="section">
-            <div class="section-title">🎯 Plan de Acción Inmediato</div>
-            
-            <div class="insights-grid">
-                <div class="rec-card danger">
-                    <h4>❌ 1. Pausa Small Business</h4>
-                    <p>Solo 2 leads en $5.63. No justifica gasto. Pausa AHORA y reasigna presupuesto a creativos ganadores.</p>
-                </div>
-
-                <div class="rec-card danger">
-                    <h4>🚨 2. Audience Fatigue</h4>
-                    <p>Semana 1: CPL $8.52 → Semana 2: CPL $20.80. Ad 2 Pablo se está quemando. Necesitas nuevas audiencias YA.</p>
-                </div>
-
-                <div class="rec-card success">
-                    <h4>🚀 3. Activa Borrador Nuevo</h4>
-                    <p>2 ad sets frescos en paralelo. Uno cold (nuevas audiencias) + uno retargeting (Advantage+). Costo: +$10/día iniciales.</p>
-                </div>
-
-                <div class="rec-card test">
-                    <h4>🔬 4. Test vid 18 & 20</h4>
-                    <p>Ambos tienen hooks SUPERIORES a Ad 2. El problema no es el creativo. Testea CTA diferente o landing separado.</p>
-                </div>
-
-                <div class="rec-card success">
-                    <h4>✅ 5. Valida Conversión Real</h4>
-                    <p>De 20 leads, ¿cuántos pagaron? CPL está bien pero ROI real es lo que decide si escalas presupuesto.</p>
-                </div>
-
-                <div class="rec-card warning">
-                    <h4>📊 6. Presupuesto Recomendado</h4>
-                    <p>Actual: $7.70/día. Propuesta: $30/día (4x) pero con nuevas audiencias. Proyección: 78 leads/mes a CPL similar.</p>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="footer">
-            Dashboard generado: 14 Marzo 2026 | Todos los datos validados contra Meta Marketing API | Gráficos interactivos optimizados
+    <!-- TAB 2: CREATIVOS -->
+    <div id="creativos" class="tab-content">
+        <div class="container">
+            <div class="section">
+                <div class="section-title">🎬 Análisis por Creativo (Video)</div>
+                <p style="color: #666; margin-bottom: 20px;">
+                    <strong>Nota:</strong> Cada creativo puede estar en múltiples ad sets. Los números abajo son la SUMA de todos sus ad sets.
+                </p>
+                <div class="chart-grid">
+                    <div class="chart-wrapper">
+                        <div class="chart-box" id="funnelCreativo"></div>
+                        <div class="chart-description">
+                            <strong>Embudo del Mejor Creativo:</strong> De X personas que reproducen → cuántas llegan a 25% → 50% → hasta leads. Cada paso = % de personas que se quedan.
+                        </div>
+                    </div>
+                    <div class="chart-wrapper">
+                        <div class="chart-box" id="retentionCreativo"></div>
+                        <div class="chart-description">
+                            <strong>Curva de Retención:</strong> Baja rápido = hook débil. Baja lento = contenido cautiva. Caída en 50%-100% = CTA débil.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Creativo (Video)</th>
+                                <th>Reproducciones</th>
+                                <th>Presupuesto Total</th>
+                                <th>Leads Total</th>
+                                <th>CPL Promedio</th>
+                                <th>25% Retención</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="creativeTableAgg"></tbody>
+                    </table>
+                </div>
+
+                <div class="insight">
+                    <strong>🎯 Hallazgos:</strong><br>
+                    • <strong>Ad 2 Pablo:</strong> El mejor video. Suma de todos sus ad sets.<br>
+                    • <strong>vid 20:</strong> Hook excelente pero sin conversión = problema CTA.<br>
+                    • <strong>Ad 1 & 3:</strong> Bajo rendimiento → considerarlos para pausar o testear.
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">📊 Comparación de Creativos</div>
+                <div class="chart-grid">
+                    <div class="chart-wrapper">
+                        <div class="chart-box" id="creativeChart1"></div>
+                        <div class="chart-description">
+                            <strong>Presupuesto vs Leads por Creativo:</strong> Puntos arriba a la derecha = eficientes. Puntos abajo a la derecha = ineficientes.
+                        </div>
+                    </div>
+                    <div class="chart-wrapper">
+                        <div class="chart-box" id="creativeChart2"></div>
+                        <div class="chart-description">
+                            <strong>CPL por Creativo:</strong> Barras bajas = mejor. Compara eficiencia económica de cada video.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 3: AD SETS -->
+    <div id="adsets" class="tab-content">
+        <div class="container">
+            <div class="section">
+                <div class="section-title">🎯 Desglose por Ad Set (Público/Audiencia)</div>
+                <p style="color: #666; margin-bottom: 20px;">
+                    <strong>Importante:</strong> Aquí ves cada combinación video + audiencia. Mismo video, diferentes públicos = resultados diferentes.
+                </p>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Ad Set ID</th>
+                                <th>Creativo</th>
+                                <th>Presupuesto</th>
+                                <th>Reproducciones</th>
+                                <th>25% Retención</th>
+                                <th>Leads</th>
+                                <th>CPL</th>
+                                <th>Lead Rate %</th>
+                                <th>Recomendación</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adsetsTable"></tbody>
+                    </table>
+                </div>
+
+                <div class="insight">
+                    <strong>🔍 Cómo leer esto:</strong><br>
+                    • Misma fila = mismo público diferente video = compara qué video funciona mejor con ESE público.<br>
+                    • Ad sets con 0 leads = pausar si CPL se vuelve muy alto.<br>
+                    • Ad sets con CPL < $10 = escalar presupuesto considerándolo.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 4: PROYECCIONES -->
+    <div id="proyecciones" class="tab-content">
+        <div class="container">
+            <div class="section">
+                <div class="section-title">📈 Proyecciones y Escalabilidad</div>
+
+                <div class="projection-box">
+                    <strong>📊 Escenario Actual (CPL $11.58):</strong><br>
+                    • Presupuesto: $7.70/día<br>
+                    • Leads esperados/día: 0.67 leads<br>
+                    • Leads/mes (30 días): <strong>20 leads</strong><br>
+                    • Costo/mes: <strong>$231.84</strong><br>
+                    <em>Status: Audience fatigue detectado. No escalar sin cambios.</em>
+                </div>
+
+                <div class="projection-box">
+                    <strong>🚀 Escenario Recomendado (Nuevas Audiencias, CPL $9.00):</strong><br>
+                    • Presupuesto: $20/día (combina Ad 2 Pablo optimizado + nuevos ad sets)<br>
+                    • Leads esperados/día: 2.22 leads<br>
+                    • Leads/mes: <strong>67 leads</strong><br>
+                    • Costo/mes: <strong>$600</strong><br>
+                    • ROI asumido: Si cada lead = $50 en ingresos = $3,350/mes<br>
+                    <em>Status: Viable si CPL mejora con nuevas audiencias.</em>
+                </div>
+
+                <div class="projection-box">
+                    <strong>⚡ Escenario Agresivo (Escalado completo, CPL $10.00):</strong><br>
+                    • Presupuesto: $50/día<br>
+                    • Leads esperados/día: 5 leads<br>
+                    • Leads/mes: <strong>150 leads</strong><br>
+                    • Costo/mes: <strong>$1,500</strong><br>
+                    • ROI asumido: $50/lead = $7,500/mes<br>
+                    <em>Status: Solo después de validar ROI real en escenario recomendado.</em>
+                </div>
+
+                <div class="chart-wrapper" style="margin-top: 30px;">
+                    <div class="chart-box" id="projectionChart"></div>
+                    <div class="chart-description">
+                        <strong>Gráfico de Proyección:</strong> Cómo evoluciona el ROI según presupuesto invertido y CPL logrado. Asume $50 de ingresos por lead.
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">✅ Pasos para Escalar</div>
+                <div class="rec-grid">
+                    <div class="rec-card success">
+                        <h4>1️⃣ Valida ROI Real</h4>
+                        <p>De los 20 leads, ¿cuántos pagaron? ¿Cuál fue el ingreso? Esto define si escalar es viable.</p>
+                    </div>
+                    <div class="rec-card success">
+                        <h4>2️⃣ Crea Nuevos Ad Sets</h4>
+                        <p>2-3 nuevas audiencias frescas en paralelo. Mantén Ad 2 Pablo optimizado también.</p>
+                    </div>
+                    <div class="rec-card success">
+                        <h4>3️⃣ Monitorea CPL</h4>
+                        <p>Si baja a $8-9 con nuevas audiencias = escala. Si sube = pausa y ajusta.</p>
+                    </div>
+                    <div class="rec-card success">
+                        <h4>4️⃣ Test & Learn</h4>
+                        <p>Prueba nuevos creativos (vid 18 con CTA mejorado, vid 20 optimizado).</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
         Promise.all([fetch('data.json').then(r => r.json()), fetch('video-analysis.json').then(r => r.json())])
             .then(([dayData, videoData]) => {
                 const daily = dayData.daily;
-                const mainVideos = videoData.filter(v => v.plays > 500).sort((a,b) => b.spend - a.spend);
 
-                // Chart 1: Evolución Acumulada
+                // === PREPARAR DATOS ===
+                // Agrupar creativos
+                const creativeMap = {};
+                videoData.forEach(ad => {
+                    const name = ad.ad_name;
+                    if (!creativeMap[name]) {
+                        creativeMap[name] = {
+                            name,
+                            spend: 0,
+                            plays: 0,
+                            leads: 0,
+                            impressions: 0,
+                            plays_25: 0,
+                            plays_50: 0,
+                            plays_75: 0,
+                            plays_100: 0,
+                            ads: []
+                        };
+                    }
+                    creativeMap[name].spend += ad.spend;
+                    creativeMap[name].plays += ad.plays;
+                    creativeMap[name].leads += ad.leads;
+                    creativeMap[name].impressions += ad.impressions;
+                    creativeMap[name].plays_25 += ad.plays_25;
+                    creativeMap[name].plays_50 += ad.plays_50;
+                    creativeMap[name].plays_75 += ad.plays_75;
+                    creativeMap[name].plays_100 += ad.plays_100;
+                    creativeMap[name].ads.push(ad);
+                });
+
+                const creativos = Object.values(creativeMap).sort((a,b) => b.leads - a.leads);
+                const bestCreative = creativos[0];
+
+                // === TAB 1: GENERAL ===
                 let cumSpend = 0, cumLeads = 0, dates = [], spend = [], leads = [];
                 daily.forEach(d => {
                     cumSpend += d.spend;
@@ -466,44 +586,112 @@
                     spend.push(cumSpend);
                     leads.push(cumLeads);
                 });
-                Plotly.newPlot('chart1', [{x: dates, y: spend, name: 'Gasto', line: {color: '#2563EB', width: 3}}, {x: dates, y: leads.map(l => l*10), name: 'Leads×10', line: {color: '#10B981', width: 3}, yaxis: 'y2'}], {title: '<b>Evolución Acumulada (Gasto vs Leads)</b>', yaxis: {title: 'Gasto ($)', titlefont: {color: '#2563EB'}}, yaxis2: {title: 'Leads', titlefont: {color: '#10B981'}, overlaying: 'y', side: 'right'}, hovermode: 'x unified', height: 400, margin: {t: 60}}, {responsive: true, displayModeBar: false});
+                Plotly.newPlot('chart1', 
+                    [{x: dates, y: spend, name: 'Gasto', line: {color: '#2563EB', width: 3}}, 
+                     {x: dates, y: leads.map(l => l*10), name: 'Leads×10', line: {color: '#10B981', width: 3}, yaxis: 'y2'}],
+                    {title: '<b>Evolución Acumulada</b>', yaxis: {title: 'Gasto ($)', titlefont: {color: '#2563EB'}}, yaxis2: {title: 'Leads', titlefont: {color: '#10B981'}, overlaying: 'y', side: 'right'}, height: 350, margin: {t: 50}},
+                    {responsive: true, displayModeBar: false});
 
-                // Chart 2: CPL Tendencia
                 let cplDates = [], cplValues = [];
-                daily.forEach(d => {
-                    if (d.cpl && d.cpl > 0) {
-                        cplDates.push(d.date);
-                        cplValues.push(d.cpl);
-                    }
-                });
-                Plotly.newPlot('chart2', [{x: cplDates, y: cplValues, type: 'scatter', mode: 'lines+markers', line: {color: '#F59E0B', width: 3}, marker: {size: 8}, fill: 'tozeroy', fillcolor: 'rgba(245,158,11,0.15)'}], {title: '<b>Costo por Lead - Tendencia Diaria</b>', yaxis: {title: 'CPL ($)'}, hovermode: 'x unified', height: 400, margin: {t: 60}}, {responsive: true, displayModeBar: false});
+                daily.forEach(d => { if (d.cpl && d.cpl > 0) { cplDates.push(d.date); cplValues.push(d.cpl); } });
+                Plotly.newPlot('chart2', 
+                    [{x: cplDates, y: cplValues, type: 'scatter', mode: 'lines+markers', line: {color: '#F59E0B', width: 3}, marker: {size: 8}, fill: 'tozeroy', fillcolor: 'rgba(245,158,11,0.15)'}],
+                    {title: '<b>CPL Tendencia</b>', yaxis: {title: 'CPL ($)'}, height: 350, margin: {t: 50}},
+                    {responsive: true, displayModeBar: false});
 
-                // Chart 3: Gasto Diario
-                Plotly.newPlot('chart3', [{x: dates, y: daily.map(d => d.spend), type: 'bar', marker: {color: '#2563EB'}, name: 'Gasto'}], {title: '<b>Presupuesto Diario</b>', yaxis: {title: '$'}, height: 400, margin: {t: 60}}, {responsive: true, displayModeBar: false});
+                Plotly.newPlot('chart3', 
+                    [{x: dates, y: daily.map(d => d.spend), type: 'bar', marker: {color: '#2563EB'}}],
+                    {title: '<b>Gasto Diario</b>', yaxis: {title: '$'}, height: 350, margin: {t: 50}},
+                    {responsive: true, displayModeBar: false});
 
-                // Chart 4: Leads Diarios
-                Plotly.newPlot('chart4', [{x: dates, y: daily.map(d => d.leads), type: 'bar', marker: {color: '#10B981'}, name: 'Leads'}], {title: '<b>Leads Generados por Día</b>', yaxis: {title: 'Leads'}, height: 400, margin: {t: 60}}, {responsive: true, displayModeBar: false});
+                Plotly.newPlot('chart4',
+                    [{x: dates, y: daily.map(d => d.leads), type: 'bar', marker: {color: '#10B981'}}],
+                    {title: '<b>Leads Diarios</b>', yaxis: {title: 'Leads'}, height: 350, margin: {t: 50}},
+                    {responsive: true, displayModeBar: false});
 
-                // Embudo
-                const main = mainVideos[0];
-                const hook = main.retention_25 * 1.2;
-                Plotly.newPlot('funnel', [{type: 'funnel', y: ['Reproducciones', '0-3s Hook', '25%', '50%', '75%', '100%', 'Leads'], x: [main.plays, Math.round(main.plays * hook / 100), main.plays_25, main.plays_50, main.plays_75, main.plays_100, main.leads], marker: {color: ['#2563EB', '#06B6D4', '#10B981', '#F59E0B', '#FBBF24', '#EF4444', '#8B5CF6']}}], {title: `<b>Embudo de Conversión - ${main.ad_name} ($${main.spend.toFixed(2)})</b>`, height: 400, margin: {t: 60}}, {responsive: true, displayModeBar: false});
+                // === TAB 2: CREATIVOS ===
+                const hook = bestCreative.plays_25 * (100 / bestCreative.plays) * 1.2;
+                Plotly.newPlot('funnelCreativo',
+                    [{type: 'funnel', y: ['Reproducciones', '0-3s', '25%', '50%', '75%', '100%', 'Leads'], 
+                      x: [bestCreative.plays, Math.round(bestCreative.plays * hook / 100), bestCreative.plays_25, bestCreative.plays_50, bestCreative.plays_75, bestCreative.plays_100, bestCreative.leads],
+                      marker: {color: ['#2563EB', '#06B6D4', '#10B981', '#F59E0B', '#FBBF24', '#EF4444', '#8B5CF6']}}],
+                    {title: `<b>${bestCreative.name}</b>`, height: 350, margin: {t: 50}},
+                    {responsive: true, displayModeBar: false});
 
-                // Retention Curve
-                Plotly.newPlot('retention', [{x: ['Plays', '0-3s', '25%', '50%', '75%', '100%'], y: [100, hook, main.retention_25, main.retention_50, main.retention_75, main.retention_100], type: 'scatter', mode: 'lines+markers', line: {color: '#2563EB', width: 3}, marker: {size: 12, color: ['#2563EB', '#06B6D4', '#10B981', '#F59E0B', '#FBBF24', '#EF4444']}}], {title: '<b>Curva de Retención (%)</b>', yaxis: {title: 'Retención %'}, height: 400, margin: {t: 60}}, {responsive: true, displayModeBar: false});
+                const ret25 = (bestCreative.plays_25 / bestCreative.plays) * 100;
+                const ret50 = (bestCreative.plays_50 / bestCreative.plays) * 100;
+                const ret75 = (bestCreative.plays_75 / bestCreative.plays) * 100;
+                const ret100 = (bestCreative.plays_100 / bestCreative.plays) * 100;
+                Plotly.newPlot('retentionCreativo',
+                    [{x: ['Plays', '0-3s', '25%', '50%', '75%', '100%'], y: [100, hook, ret25, ret50, ret75, ret100], type: 'scatter', mode: 'lines+markers', line: {color: '#2563EB', width: 3}, marker: {size: 10}}],
+                    {title: '<b>Curva de Retención</b>', yaxis: {title: '%'}, height: 350, margin: {t: 50}},
+                    {responsive: true, displayModeBar: false});
 
                 // Tabla creativos
-                const tbody = document.getElementById('creativeTable');
-                mainVideos.forEach(v => {
-                    const h = (v.retention_25 * 1.2).toFixed(1);
-                    tbody.innerHTML += `<tr><td>${v.ad_name.substring(0,16)}</td><td style="background:#e0f2fe" class="${h>15?'metric-good':h>8?'metric-warn':'metric-bad'}">${h}%</td><td style="background:#dbeafe">${v.retention_25.toFixed(1)}%</td><td style="background:#dcfce7">${v.retention_50.toFixed(1)}%</td><td style="background:#fef3c7">${v.retention_75.toFixed(1)}%</td><td style="background:#fecaca">${v.retention_100.toFixed(1)}%</td><td>${v.plays.toLocaleString()}</td><td>$${v.spend.toFixed(2)}</td><td class="${v.leads>0?'metric-good':'metric-bad'}">${v.leads}</td><td>${v.cpl>0?'$'+v.cpl.toFixed(2):'-'}</td></tr>`;
+                const tbody1 = document.getElementById('creativeTableAgg');
+                creativos.forEach(c => {
+                    const cpl = c.leads > 0 ? (c.spend / c.leads).toFixed(2) : '-';
+                    const ret25 = ((c.plays_25 / c.plays) * 100).toFixed(1);
+                    tbody1.innerHTML += `<tr>
+                        <td>${c.name}</td>
+                        <td>${c.plays.toLocaleString()}</td>
+                        <td>$${c.spend.toFixed(2)}</td>
+                        <td class="${c.leads > 0 ? 'metric-good' : 'metric-bad'}">${c.leads}</td>
+                        <td>${cpl}</td>
+                        <td>${ret25}%</td>
+                        <td>${c.leads > 5 ? '🟢' : c.leads > 0 ? '🟡' : '🔴'}</td>
+                    </tr>`;
                 });
 
-                // Hook Chart
-                Plotly.newPlot('hookChart', [{x: mainVideos.slice(0,7).map(v => v.ad_name.substring(0,12)), y: mainVideos.slice(0,7).map(v => (v.retention_25*1.2).toFixed(1)), type: 'bar', marker: {color: mainVideos.slice(0,7).map(v => {const h=v.retention_25*1.2; return h>15?'#10B981':h>8?'#F59E0B':'#EF4444'})}}], {title: '<b>Fuerza del Hook (0-3 segundos)</b>', yaxis: {title: '%'}, height: 400, margin: {t: 60}}, {responsive: true, displayModeBar: false});
+                // Gráficos creativos
+                Plotly.newPlot('creativeChart1',
+                    [{x: creativos.map(c => c.spend), y: creativos.map(c => c.leads), mode: 'markers+text', marker: {size: 16, color: creativos.map(c => c.spend/Math.max(1,c.leads)), colorscale: 'Viridis', showscale: true, colorbar: {title: 'CPL'}}, text: creativos.map(c => c.name.substring(0,8)), textposition: 'top center'}],
+                    {title: '<b>Presupuesto vs Leads</b>', xaxis: {title: 'Gasto ($)'}, yaxis: {title: 'Leads'}, height: 350, margin: {t: 50}},
+                    {responsive: true, displayModeBar: false});
 
-                // Efficiency
-                Plotly.newPlot('efficiencyChart', [{x: mainVideos.slice(0,7).map(v => v.spend), y: mainVideos.slice(0,7).map(v => v.leads), mode: 'markers+text', marker: {size: 18, color: mainVideos.slice(0,7).map(v => v.cpl), colorscale: 'Viridis', showscale: true, colorbar: {title: 'CPL ($)'}}, text: mainVideos.slice(0,7).map(v => v.ad_name.substring(0,8)), textposition: 'top center'}], {title: '<b>Presupuesto Invertido vs Leads Conseguidos</b>', xaxis: {title: 'Gasto ($)'}, yaxis: {title: 'Leads'}, height: 400, margin: {t: 60}}, {responsive: true, displayModeBar: false});
+                Plotly.newPlot('creativeChart2',
+                    [{x: creativos.map(c => c.name.substring(0,12)), y: creativos.map(c => c.leads > 0 ? (c.spend/c.leads).toFixed(2) : 0), type: 'bar', marker: {color: creativos.map(c => {const cpl = c.spend/Math.max(1,c.leads); return cpl > 15 ? '#EF4444' : cpl > 10 ? '#F59E0B' : '#10B981'})}}],
+                    {title: '<b>CPL por Creativo</b>', yaxis: {title: 'CPL ($)'}, height: 350, margin: {t: 50}},
+                    {responsive: true, displayModeBar: false});
+
+                // === TAB 3: AD SETS ===
+                const tbody2 = document.getElementById('adsetsTable');
+                videoData.sort((a,b) => b.leads - a.leads).forEach(ad => {
+                    const cpl = ad.leads > 0 ? ad.spend / ad.leads : 0;
+                    const ret25 = ((ad.plays_25 / ad.plays) * 100).toFixed(1);
+                    const leadRate = ((ad.leads / ad.plays) * 100).toFixed(2);
+                    const rec = ad.leads > 3 ? '✅ Escalar' : ad.leads > 0 ? '⚠️ Monitorear' : ad.spend > 10 ? '❌ Pausar' : '🟡 Test';
+                    tbody2.innerHTML += `<tr>
+                        <td style="font-size: 0.75em;">...${ad.ad_id.substring(14)}</td>
+                        <td>${ad.ad_name}</td>
+                        <td>$${ad.spend.toFixed(2)}</td>
+                        <td>${ad.plays.toLocaleString()}</td>
+                        <td>${ret25}%</td>
+                        <td class="${ad.leads > 0 ? 'metric-good' : 'metric-bad'}">${ad.leads}</td>
+                        <td>${cpl > 0 ? '$' + cpl.toFixed(2) : '-'}</td>
+                        <td>${leadRate}%</td>
+                        <td>${rec}</td>
+                    </tr>`;
+                });
+
+                // === TAB 4: PROYECCIONES ===
+                const budgets = [10, 20, 30, 50, 100];
+                const projData = budgets.map(b => ({budget: b, cpls: [9, 10, 11, 12], leads: [], revenue: []}));
+                projData.forEach(p => {
+                    p.cpls.forEach(cpl => {
+                        const daily_leads = p.budget / cpl;
+                        const monthly_leads = daily_leads * 30;
+                        const revenue = monthly_leads * 50;
+                        p.leads.push(monthly_leads);
+                        p.revenue.push(revenue);
+                    });
+                });
+                Plotly.newPlot('projectionChart',
+                    [{x: budgets, y: projData.map(p => p.revenue[0]), name: 'CPL $9 (mejor)', line: {color: '#10B981', width: 3}},
+                     {x: budgets, y: projData.map(p => p.revenue[1]), name: 'CPL $10 (actual)', line: {color: '#F59E0B', width: 3}},
+                     {x: budgets, y: projData.map(p => p.revenue[2]), name: 'CPL $11 (peor)', line: {color: '#EF4444', width: 3}}],
+                    {title: '<b>Proyección de ROI (asumiendo $50/lead de ingresos)</b>', xaxis: {title: 'Presupuesto diario ($)'}, yaxis: {title: 'Ingresos/mes ($)'}, height: 350, margin: {t: 60}},
+                    {responsive: true, displayModeBar: false});
             });
     </script>
 </body>
