@@ -384,13 +384,13 @@
             document.getElementById('weeklyStats').innerHTML = `
                 <div class="weekly-card good">
                     <div class="weekly-title">📅 Semana 1 (2-8 Mar)</div>
-                    <div class="weekly-value">$${w1Spend.toFixed(2)}</div>
-                    <div class="weekly-compare">Leads: ${w1Leads} | CPL: $${w1CPL.toFixed(2)}</div>
+                    <div class="weekly-value">€${w1Spend.toFixed(2)}</div>
+                    <div class="weekly-compare">Leads: ${w1Leads} | CPL: €${w1CPL.toFixed(2)}</div>
                 </div>
                 <div class="weekly-card ${cplChange > 50 ? 'bad' : 'warning'}">
                     <div class="weekly-title">📅 Semana 2 (9-14 Mar)</div>
-                    <div class="weekly-value">$${w2Spend.toFixed(2)}</div>
-                    <div class="weekly-compare">Leads: ${w2Leads} | CPL: $${w2CPL.toFixed(2)}</div>
+                    <div class="weekly-value">€${w2Spend.toFixed(2)}</div>
+                    <div class="weekly-compare">Leads: ${w2Leads} | CPL: €${w2CPL.toFixed(2)}</div>
                 </div>
                 <div class="weekly-card ${cplChange > 100 ? 'bad' : cplChange > 50 ? 'warning' : 'good'}">
                     <div class="weekly-title">⚖️ Comparativa</div>
@@ -425,22 +425,22 @@
                 if (d.cpl && d.cpl > 0) {
                     cplDates.push(d.date);
                     cplValues.push(d.cpl);
-                    cplText.push(`${d.date}<br>CPL: $${d.cpl.toFixed(2)}<br>${d.leads} lead${d.leads !== 1 ? 's' : ''}`);
+                    cplText.push(`${d.date}<br>CPL: €${d.cpl.toFixed(2)}<br>${d.leads} lead${d.leads !== 1 ? 's' : ''}`);
                 }
             });
 
             Plotly.newPlot('chart2',
                 [{x: cplDates, y: cplValues, type: 'scatter', mode: 'lines+markers', line: {color: '#F59E0B', width: 3}, marker: {size: 8}, 
                   hovertext: cplText, hoverinfo: 'text', fill: 'tozeroy', fillcolor: 'rgba(245,158,11,0.15)'}],
-                {title: '<b>Costo por Lead (CPL) - Diario</b>', yaxis: {title: 'CPL ($)'}, height: 350, margin: {t: 50}, hovermode: 'closest'},
+                {title: '<b>Costo por Lead (CPL) - Diario</b>', yaxis: {title: 'CPL (€)'}, height: 350, margin: {t: 50}, hovermode: 'closest'},
                 {responsive: true, displayModeBar: false});
 
             // Gráfico 3: CPL Semanal
             Plotly.newPlot('chart3',
                 [{x: ['Semana 1<br>(2-8 Mar)', 'Semana 2<br>(9-14 Mar)'], y: [w1CPL, w2CPL], type: 'bar', 
                   marker: {color: [w1CPL < 12 ? '#10B981' : '#F59E0B', w2CPL > 20 ? '#EF4444' : '#F59E0B']},
-                  text: [`$${w1CPL.toFixed(2)}`, `$${w2CPL.toFixed(2)}`], textposition: 'outside'}],
-                {title: '<b>CPL Semanal (Comparativa)</b>', yaxis: {title: 'CPL ($)'}, height: 350, margin: {t: 50}},
+                  text: [`€${w1CPL.toFixed(2)}`, `€${w2CPL.toFixed(2)}`], textposition: 'outside'}],
+                {title: '<b>CPL Semanal (Comparativa)</b>', yaxis: {title: 'CPL (€)'}, height: 350, margin: {t: 50}},
                 {responsive: true, displayModeBar: false});
 
             // Gráfico 4: Distribución Presupuesto
@@ -458,10 +458,10 @@
                 return `<tr>
                     <td>${c.name}</td>
                     <td>${c.plays.toLocaleString()}</td>
-                    <td>$${c.spend.toFixed(2)}</td>
+                    <td>€${c.spend.toFixed(2)}</td>
                     <td>${pct}%</td>
                     <td class="${c.leads > 0 ? 'metric-good' : 'metric-bad'}">${c.leads}</td>
-                    <td>${c.leads > 0 ? '$' + (c.spend/c.leads).toFixed(2) : 'N/A'}</td>
+                    <td>${c.leads > 0 ? '€' + (c.spend/c.leads).toFixed(2) : 'N/A'}</td>
                     <td>${((c.plays_25/c.plays)*100).toFixed(1)}%</td>
                     <td>${c.ads.length}</td>
                     <td>${status}</td>
@@ -476,11 +476,11 @@
                 return `<tr>
                     <td style="color: #2563EB;">${audience}</td>
                     <td>${ad.ad_name}</td>
-                    <td>$${ad.spend.toFixed(2)}</td>
+                    <td>€${ad.spend.toFixed(2)}</td>
                     <td class="${ad.leads > 0 ? 'metric-good' : 'metric-bad'}">${ad.leads}</td>
                     <td>${cpl}</td>
                     <td>${ret25}%</td>
-                    <td>$${ad.cpm.toFixed(2)}</td>
+                    <td>€${ad.cpm.toFixed(2)}</td>
                 </tr>`;
             }).join('');
 
@@ -488,7 +488,7 @@
             Plotly.newPlot('projectionChart',
                 [{x: [20, 50], y: [3350, 7500], mode: 'lines+markers', name: 'CPL €9 (Optimizado)', line: {color: '#10B981', width: 4}, marker: {size: 12}},
                  {x: [20, 50], y: [2600, 6500], mode: 'lines+markers', name: 'CPL €11.59 (Actual)', line: {color: '#F59E0B', width: 4, dash: 'dash'}, marker: {size: 12}}],
-                {title: '<b>Ingresos Proyectados/mes (x €50/lead)</b>', xaxis: {title: 'Presupuesto diario ($)'}, yaxis: {title: 'Ingresos/mes ($)'}, height: 350, margin: {t: 60}, hovermode: 'x unified'},
+                {title: '<b>Ingresos Proyectados/mes (x €50/lead)</b>', xaxis: {title: 'Presupuesto diario (€)'}, yaxis: {title: 'Ingresos/mes (€)'}, height: 350, margin: {t: 60}, hovermode: 'x unified'},
                 {responsive: true, displayModeBar: false});
         });
     </script>
