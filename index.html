@@ -292,11 +292,25 @@
                 <tbody id="creativeTable"></tbody>
             </table>
 
+            <div style="margin-top: 30px; border-top: 2px solid #e5e7eb; padding-top: 30px;">
+                <div class="section-title">📊 Eficiencia de Creativos</div>
+                <div class="chart-grid">
+                    <div>
+                        <div class="chart-box" id="creativeEffective"></div>
+                        <div class="description"><strong>✅ Creativos EFECTIVOS (con leads):</strong> Arriba-derecha = excelente (mucho gasto, muchos leads). Abajo-izquierda = eficiente (poco gasto, algunos leads). Color = CPL (rojo=caro, verde=barato).</div>
+                    </div>
+                    <div>
+                        <div class="chart-box" id="creativeZeroLeads"></div>
+                        <div class="description"><strong>🔬 Creativos EN TEST (sin leads):</strong> Muestra cuál es más ineficiente. Si CPM es muy alto, considera pausar. Si CPM es bajo, testea con CTA diferente.</div>
+                    </div>
+                </div>
+            </div>
+
             <div class="insight" style="margin-top: 20px;">
                 <strong>🎯 Hallazgos:</strong><br>
-                • <strong>Ad 2 Pablo:</strong> Mejor video. 18 leads totales en todos sus ad sets.<br>
-                • <strong>vid 20:</strong> Hook excelente (37.7%) pero 0 leads = problema CTA.<br>
-                • <strong>Ad 1 & 3:</strong> Bajo rendimiento = considerar pausar.
+                • <strong>Ad 2 Pablo:</strong> Mejor video. 18 leads totales. Bajo CPL ($10.25) = ganar.<br>
+                • <strong>vid 20:</strong> Hook excelente pero 0 leads = problema es CTA, no creativo.<br>
+                • <strong>Ad 1 & 3:</strong> CPM muy bajo pero cero conversión = creativo débil.
             </div>
         </div>
     </div>
@@ -480,6 +494,46 @@
                 <td>${c.leads > 0 ? '$' + (c.spend/c.leads).toFixed(2) : '-'}</td>
                 <td>${((c.plays_25/c.plays)*100).toFixed(1)}%</td>
             </tr>`).join('');
+
+            // === GRÁFICOS CREATIVOS - DIVIDIDOS ===
+            const withLeads = creativos.filter(c => c.leads > 0);
+            const noLeads = creativos.filter(c => c.leads === 0);
+
+            // Gráfico 1: Creativos efectivos
+            Plotly.newPlot('creativeEffective',
+                [{x: withLeads.map(c => c.spend), y: withLeads.map(c => c.leads), 
+                  mode: 'markers+text', 
+                  marker: {
+                    size: 18, 
+                    color: withLeads.map(c => (c.spend / Math.max(1, c.leads)).toFixed(1)), 
+                    colorscale: [[0, '#10B981'], [0.5, '#F59E0B'], [1, '#EF4444']], 
+                    showscale: true, 
+                    colorbar: {title: 'CPL ($)'}
+                  }, 
+                  text: withLeads.map(c => `${c.name.substring(0, 8)}<br>${c.leads} L`), 
+                  textposition: 'top center',
+                  hovertext: withLeads.map(c => `${c.name}<br>Gasto: $${c.spend.toFixed(2)}<br>Leads: ${c.leads}<br>CPL: $${(c.spend/c.leads).toFixed(2)}`),
+                  hoverinfo: 'text'}],
+                {title: '<b>✅ Creativos EFECTIVOS (Con Leads)</b>', xaxis: {title: 'Presupuesto invertido ($)'}, yaxis: {title: 'Leads conseguidos'}, height: 350, margin: {t: 60}},
+                {responsive: true, displayModeBar: false});
+
+            // Gráfico 2: Creativos sin leads
+            Plotly.newPlot('creativeZeroLeads',
+                [{x: noLeads.map(c => c.spend), y: noLeads.map(c => c.cpm), 
+                  mode: 'markers+text', 
+                  marker: {
+                    size: 14, 
+                    color: noLeads.map(c => c.cpm), 
+                    colorscale: [[0, '#10B981'], [0.5, '#F59E0B'], [1, '#EF4444']], 
+                    showscale: true,
+                    colorbar: {title: 'CPM ($)'}
+                  }, 
+                  text: noLeads.map(c => c.name.substring(0, 6)), 
+                  textposition: 'top center',
+                  hovertext: noLeads.map(c => `${c.name}<br>Gasto: $${c.spend.toFixed(2)}<br>CPM: $${c.cpm.toFixed(2)}<br>Reproducciones: ${c.plays}`),
+                  hoverinfo: 'text'}],
+                {title: '<b>🔬 Creativos EN TEST (Sin Leads)</b>', xaxis: {title: 'Presupuesto invertido ($)'}, yaxis: {title: 'CPM ($)'}, height: 350, margin: {t: 60}},
+                {responsive: true, displayModeBar: false});
 
             // === AD SETS TAB ===
             document.getElementById('adsetsTable').innerHTML = videoData.sort((a,b) => b.leads - a.leads).map(ad => {
