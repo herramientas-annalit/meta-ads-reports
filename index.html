@@ -563,9 +563,9 @@
                 const ret100 = ((ad.plays_100/ad.plays)*100).toFixed(1);
                 const cpl = ad.leads > 0 ? (ad.spend/ad.leads).toFixed(2) : '-';
                 
-                // Obtener datos de audiencia
-                const adsetData = adsetMapping[ad.ad_id];
-                const audienceName = typeof adsetData === 'string' ? adsetData : adsetData?.name || `Ad Set ${ad.ad_id.substring(14)}`;
+                // Obtener datos de audiencia usando adset_id
+                const adsetData = adsetMapping[ad.adset_id];
+                const audienceName = typeof adsetData === 'string' ? adsetData : adsetData?.name || ad.adset_name || 'Unknown';
                 const edad = typeof adsetData === 'string' ? 'N/A' : `${adsetData?.edad_min || 18}-${adsetData?.edad_max || 65}`;
                 const sexo = typeof adsetData === 'string' ? 'Todos' : adsetData?.sexo || 'Todos';
                 const ubicacion = typeof adsetData === 'string' ? 'N/A' : adsetData?.ubicacion || 'España';
