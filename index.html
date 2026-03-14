@@ -188,7 +188,7 @@
         <h1>📊 Test Manual SEO Local Pablo</h1>
         <p>Dashboard Ejecutivo | 2-14 de Marzo 2026 | Datos Validados ✅</p>
         <div class="context">
-            <strong>Campaña:</strong> Test/Prueba - SEO Local | <strong>Presupuesto Total:</strong> $231.84 (13 días) | <strong>Promedio/día:</strong> $17.83 ≈ €20
+            <strong>Campaña:</strong> Test/Prueba - SEO Local | <strong>Presupuesto Total:</strong> €231.84 (13 días) | <strong>Promedio/día:</strong> €17.83 ≈ €20
         </div>
     </div>
 
@@ -203,7 +203,7 @@
         <div class="section">
             <div class="kpi-grid">
                 <div class="kpi-card">
-                    <div class="kpi-value">$231.84</div>
+                    <div class="kpi-value">€231.84</div>
                     <div class="kpi-label">Inversión Total</div>
                 </div>
                 <div class="kpi-card success">
@@ -211,7 +211,7 @@
                     <div class="kpi-label">Leads</div>
                 </div>
                 <div class="kpi-card warning">
-                    <div class="kpi-value">$11.59</div>
+                    <div class="kpi-value">€11.59</div>
                     <div class="kpi-label">CPL Promedio</div>
                 </div>
                 <div class="kpi-card success">
@@ -233,7 +233,7 @@
             <div class="chart-grid">
                 <div>
                     <div class="chart-box" id="chart1"></div>
-                    <div class="description"><strong>Gasto vs Leads Acumulado:</strong> Eje izquierdo (azul) = dinero total gastado cada día. Eje derecho (verde) = cantidad REAL de leads conseguidos. Ejemplo: día 3 = $37.56 acumulados, 7 leads totales. Período: 2-14 Marzo.</div>
+                    <div class="description"><strong>Gasto vs Leads Acumulado:</strong> Eje izquierdo (azul) = dinero total gastado cada día en €. Eje derecho (verde) = cantidad REAL de leads conseguidos. Ejemplo: día 3 = €37.56 acumulados, 7 leads totales. Período: 2-14 Marzo.</div>
                 </div>
                 <div>
                     <div class="chart-box" id="chart2"></div>
@@ -411,10 +411,10 @@
 
             // Gráfico 1: Acumulado
             Plotly.newPlot('chart1',
-                [{x: dates, y: spend, name: 'Gasto ($)', line: {color: '#2563EB', width: 4}, yaxis: 'y', hovertemplate: '%{x}: $%{y:.2f}'},
+                [{x: dates, y: spend, name: 'Gasto (€)', line: {color: '#2563EB', width: 4}, yaxis: 'y', hovertemplate: '%{x}: €%{y:.2f}'},
                  {x: dates, y: leads, name: 'Leads', line: {color: '#10B981', width: 4}, yaxis: 'y2', hovertemplate: '%{x}: %{y} leads'}],
-                {title: '<b>Acumulado: Gasto ($) vs Leads (cantidad)</b>', 
-                 yaxis: {title: 'Gasto Acumulado ($)', titlefont: {color: '#2563EB'}, tickfont: {color: '#2563EB'}}, 
+                {title: '<b>Acumulado: Gasto (€) vs Leads (cantidad)</b>', 
+                 yaxis: {title: 'Gasto Acumulado (€)', titlefont: {color: '#2563EB'}, tickfont: {color: '#2563EB'}}, 
                  yaxis2: {title: 'Leads Acumulados (cantidad)', titlefont: {color: '#10B981'}, tickfont: {color: '#10B981'}, overlaying: 'y', side: 'right'}, 
                  height: 350, margin: {t: 60, r: 80}, hovermode: 'x unified'},
                 {responsive: true, displayModeBar: false});
