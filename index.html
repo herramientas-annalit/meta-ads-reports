@@ -802,26 +802,31 @@
                 
                 const status = data.leads > 5 ? '🟢 EXCELENTE' : data.leads > 0 ? '🟡 BUENO' : '🔴 SIN LEADS';
                 
-                // Crear gráfico funnel
+                // Crear gráfico funnel con PORCENTAJES
                 setTimeout(() => {
                     Plotly.newPlot(divId,
                         [{
                             type: 'funnel',
                             y: ['Plays Iniciales', 'Vieron 25%', 'Vieron 50%', 'Vieron 75%', 'Completaron Video', 'Leads Generados'],
-                            x: [data.plays, data.plays_25, data.plays_50, data.plays_75, data.plays_100, data.leads],
+                            x: [100, parseFloat(ret25), parseFloat(ret50), parseFloat(ret75), parseFloat(ret100), parseFloat(leadRate)],
                             text: [
-                                `${data.plays} personas`,
-                                `${data.plays_25} (${ret25}%)`,
-                                `${data.plays_50} (${ret50}%)`,
-                                `${data.plays_75} (${ret75}%)`,
-                                `${data.plays_100} (${ret100}%)`,
-                                `${data.leads} conversiones`
+                                `100% (${data.plays} plays)`,
+                                `${ret25}% (${data.plays_25} personas)`,
+                                `${ret50}% (${data.plays_50} personas)`,
+                                `${ret75}% (${data.plays_75} personas)`,
+                                `${ret100}% (${data.plays_100} personas)`,
+                                `${leadRate}% (${data.leads} leads)`
                             ],
                             textposition: 'inside',
                             marker: {color: ['#2563EB', '#3B82F6', '#60A5FA', '#93C5FD', '#DBEAFE', data.leads > 0 ? '#10B981' : '#EF4444']},
                             hovertemplate: '<b>%{y}</b><br>%{text}<extra></extra>'
                         }],
-                        {title: `<b>${name}</b>`, margin: {t: 50, b: 20, l: 20, r: 20}, height: 350},
+                        {
+                            title: `<b>${name}</b>`, 
+                            xaxis: {title: 'Retención (%)', range: [0, 105]},
+                            margin: {t: 50, b: 50, l: 20, r: 20}, 
+                            height: 350
+                        },
                         {responsive: true, displayModeBar: false}
                     );
                 }, 100 * index);
