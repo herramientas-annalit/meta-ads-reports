@@ -334,6 +334,20 @@
                     <tbody id="adsetsTable"></tbody>
                 </table>
                 
+                <!-- SELECTOR DE CREATIVO -->
+                <div style="margin-top: 40px; padding-top: 30px; border-top: 2px solid #e5e7eb;">
+                    <div class="section-title">🎬 Análisis Detallado por Creativo</div>
+                    <p style="color: #666; margin-bottom: 20px; font-size: 0.9em;">Selecciona un creativo para ver su rendimiento en detalle: plays, retención, conversiones y comparación con otros.</p>
+                    
+                    <div style="margin-bottom: 30px; display: flex; gap: 15px; flex-wrap: wrap;">
+                        <button onclick="filtrarCreativo('Ad 1 Pablo')" style="padding: 12px 24px; border: 2px solid #2563EB; background: white; color: #2563EB; border-radius: 8px; font-weight: 700; cursor: pointer; transition: all 0.3s;" id="btn_ad1">Ad 1 Pablo</button>
+                        <button onclick="filtrarCreativo('Ad 2 Pablo')" style="padding: 12px 24px; border: 2px solid #10B981; background: white; color: #10B981; border-radius: 8px; font-weight: 700; cursor: pointer; transition: all 0.3s;" id="btn_ad2">Ad 2 Pablo</button>
+                        <button onclick="filtrarCreativo('Ad 3 Pablo')" style="padding: 12px 24px; border: 2px solid #F59E0B; background: white; color: #F59E0B; border-radius: 8px; font-weight: 700; cursor: pointer; transition: all 0.3s;" id="btn_ad3">Ad 3 Pablo</button>
+                    </div>
+                    
+                    <div id="creativoDetalleContainer" style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 12px; padding: 25px;"></div>
+                </div>
+                
                 <!-- GRÁFICO RETENCIÓN POR CREATIVO -->
                 <div style="margin-top: 40px; padding-top: 30px; border-top: 2px solid #e5e7eb;">
                     <div class="section-title">📊 Curva de Retención por Creativo</div>
@@ -353,7 +367,7 @@
                     <div class="section-title">📊 Embudo de Conversión por Audiencia</div>
                     <p style="color: #666; margin-bottom: 30px; font-size: 0.9em;">Cada gráfico muestra cómo la audiencia avanza desde impresiones iniciales hasta leads generados. Elige a cuál audiencia apuntar en tu próxima inversión.</p>
                     
-                    <div id="embudosContainer" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px;"></div>
+                    <div id="embudosContainer" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 40px; margin-bottom: 30px;"></div>
                 </div>
             </div>
         </div>
@@ -938,6 +952,81 @@
                  {x: [20, 50], y: [2600, 6500], mode: 'lines+markers', name: 'CPL €11.59 (Actual)', line: {color: '#F59E0B', width: 4, dash: 'dash'}, marker: {size: 12}}],
                 {title: '<b>Ingresos Proyectados/mes (x €50/lead)</b>', xaxis: {title: 'Presupuesto diario (€)'}, yaxis: {title: 'Ingresos/mes (€)'}, height: 350, margin: {t: 60}, hovermode: 'x unified'},
                 {responsive: true, displayModeBar: false});
+            
+            // === FUNCIÓN: FILTRO DE CREATIVOS ===
+            window.filtrarCreativo = function(adName) {
+                const creativoData = {};
+                
+                videoData.forEach(ad => {
+                    const adsetData = adsetMapping[ad.adset_id];
+                    const adsetName = typeof adsetData === 'string' ? adsetData : adsetData?.name || ad.adset_name;
+                    
+                    if (!creativoData[adName]) {
+                        creativoData[adName] = {};
+                    }
+                    
+                    if (ad.ad_name === adName) {
+                        if (!creativoData[adName][adsetName]) {
+                            creativoData[adName][adsetName] = {
+                                plays: 0,
+                                plays_25: 0,
+                                plays_50: 0,
+                                plays_75: 0,
+                                plays_100: 0,
+                                leads: 0,
+                                spend: 0
+                            };
+                        }
+                        
+                        creativoData[adName][adsetName].plays += ad.plays;
+                        creativoData[adName][adsetName].plays_25 += ad.plays_25;
+                        creativoData[adName][adsetName].plays_50 += ad.plays_50;
+                        creativoData[adName][adsetName].plays_75 += ad.plays_75;
+                        creativoData[adName][adsetName].plays_100 += ad.plays_100;
+                        creativoData[adName][adsetName].leads += ad.leads;
+                        creativoData[adName][adsetName].spend += ad.spend;
+                    }
+                });
+                
+                const detalleHTML = Object.entries(creativoData[adName] || {}).map(([audName, data]) => {
+                    const ret25 = ((data.plays_25 / data.plays) * 100).toFixed(1);
+                    const ret50 = ((data.plays_50 / data.plays) * 100).toFixed(1);
+                    const ret75 = ((data.plays_75 / data.plays) * 100).toFixed(1);
+                    const ret100 = ((data.plays_100 / data.plays) * 100).toFixed(1);
+                    const cpl = data.leads > 0 ? (data.spend / data.leads).toFixed(2) : '∞';
+                    
+                    return `
+                        <div style="background: white; border: 1px solid #e5e7eb; border-radius: 10px; padding: 18px; margin-bottom: 15px;">
+                            <div style="font-weight: 700; font-size: 1.1em; margin-bottom: 12px; color: #1f2937;">${audName}</div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; font-size: 0.9em; line-height: 1.6;">
+                                <div>
+                                    <div>📊 <strong>Plays:</strong> ${data.plays}</div>
+                                    <div>📹 <strong>25% Retención:</strong> ${ret25}%</div>
+                                    <div>📈 <strong>50% Retención:</strong> ${ret50}%</div>
+                                </div>
+                                <div>
+                                    <div>🎯 <strong>Leads:</strong> ${data.leads}</div>
+                                    <div>💶 <strong>CPL:</strong> €${cpl}</div>
+                                    <div>💰 <strong>Gasto:</strong> €${data.spend.toFixed(2)}</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                
+                document.getElementById('creativoDetalleContainer').innerHTML = detalleHTML || '<p style="color: #999;">Sin datos para este creativo</p>';
+                
+                // Actualizar botones
+                document.getElementById('btn_ad1').style.background = adName === 'Ad 1 Pablo' ? '#2563EB' : 'white';
+                document.getElementById('btn_ad1').style.color = adName === 'Ad 1 Pablo' ? 'white' : '#2563EB';
+                document.getElementById('btn_ad2').style.background = adName === 'Ad 2 Pablo' ? '#10B981' : 'white';
+                document.getElementById('btn_ad2').style.color = adName === 'Ad 2 Pablo' ? 'white' : '#10B981';
+                document.getElementById('btn_ad3').style.background = adName === 'Ad 3 Pablo' ? '#F59E0B' : 'white';
+                document.getElementById('btn_ad3').style.color = adName === 'Ad 3 Pablo' ? 'white' : '#F59E0B';
+            };
+            
+            // Cargar por defecto el primer creativo
+            window.filtrarCreativo('Ad 2 Pablo');
         });
     </script>
 </body>
