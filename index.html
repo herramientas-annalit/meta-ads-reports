@@ -550,9 +550,34 @@
             const w1CPM = (w1Spend / (daily.slice(0,7).reduce((s,d) => s + d.impressions, 0) / 1000)).toFixed(2);
             const cpmChange = ((w2CPM - w1CPM) / w1CPM * 100);
             
+            const totalCampaignSpend = daily.reduce((s, d) => s + d.spend, 0);
+            const totalCampaignLeads = daily.reduce((l, d) => l + d.leads, 0);
+            const totalCampaignCPL = totalCampaignLeads > 0 ? totalCampaignSpend / totalCampaignLeads : 0;
+            
             document.getElementById('weeklyStats').innerHTML = `
+                <!-- RESUMEN GENERAL DE CAMPAÑA -->
+                <div class="weekly-card" style="background: linear-gradient(135deg, #f0fdf4 0%, #f9fafb 100%); border-left: 5px solid #10B981; margin-bottom: 40px;">
+                    <div class="weekly-title" style="font-size: 1.3em; margin-bottom: 30px; color: #10B981;">📊 RESUMEN GENERAL: Campaña Completa (2-14 Marzo)</div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 30px; margin-bottom: 25px;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 2.8em; font-weight: 900; color: #2563EB; margin-bottom: 10px;">€${totalCampaignSpend.toFixed(2)}</div>
+                            <div style="font-size: 0.75em; color: #999; text-transform: uppercase; font-weight: 800;">Inversión Total</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 2.8em; font-weight: 900; color: #10B981; margin-bottom: 10px;">${totalCampaignLeads}</div>
+                            <div style="font-size: 0.75em; color: #999; text-transform: uppercase; font-weight: 800;">Leads Totales</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 2.8em; font-weight: 900; color: #06B6D4; margin-bottom: 10px;">€${totalCampaignCPL.toFixed(2)}</div>
+                            <div style="font-size: 0.75em; color: #999; text-transform: uppercase; font-weight: 800;">CPL Promedio</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- DESGLOSE SEMANAL -->
                 <div class="weekly-card ${cplChange > 100 ? 'bad' : cplChange > 50 ? 'warning' : 'good'}">
-                    <div class="weekly-title" style="font-size: 1.3em; margin-bottom: 30px;">📅 Rendimiento Semana 2 (9-14 Marzo)</div>
+                    <div class="weekly-title" style="font-size: 1.3em; margin-bottom: 30px;">📅 Rendimiento Semana 2 (9-14 mar)</div>
                     
                     <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 30px; margin-bottom: 40px;">
                         <div style="text-align: center;">
