@@ -518,20 +518,60 @@
                  height: 350, margin: {t: 60, r: 80}, hovermode: 'x unified'},
                 {responsive: true, displayModeBar: false});
 
-            // Gráfico 2: CPL Diario (con etiquetas)
-            let cplDates = [], cplValues = [], cplText = [];
+            // Gráfico 2: CPL Diario (con etiquetas descriptivas)
+            let cplDates = [], cplValues = [], cplText = [], cplStatus = [];
             daily.forEach(d => {
                 if (d.cpl && d.cpl > 0) {
                     cplDates.push(d.date);
                     cplValues.push(d.cpl);
-                    cplText.push(`${d.date}<br>CPL: €${d.cpl.toFixed(2)}<br>${d.leads} lead${d.leads !== 1 ? 's' : ''}`);
+                    
+                    // Etiqueta descriptiva mejorada
+                    const dateObj = new Date(d.date);
+                    const dayName = dateObj.toLocaleDateString('es-ES', {weekday: 'short'});
+                    const status = d.cpl < 10 ? '✅ Bueno' : d.cpl < 15 ? '🟡 Aceptable' : '🔴 Alto';
+                    const insight = d.leads > 2 ? '(Múltiples conversiones)' : d.leads === 1 ? '(1 lead)' : '(0 leads)';
+                    
+                    cplText.push(
+                        `<b>${d.date} (${dayName.toUpperCase()})</b><br>` +
+                        `CPL: €${d.cpl.toFixed(2)}<br>` +
+                        `Leads: ${d.leads} ${insight}<br>` +
+                        `Gasto: €${d.spend.toFixed(2)}<br>` +
+                        `Status: ${status}`
+                    );
+                    cplStatus.push(d.cpl < 10 ? '#10B981' : d.cpl < 15 ? '#F59E0B' : '#EF4444');
                 }
             });
 
             Plotly.newPlot('chart2',
-                [{x: cplDates, y: cplValues, type: 'scatter', mode: 'lines+markers', line: {color: '#F59E0B', width: 3}, marker: {size: 8}, 
-                  hovertext: cplText, hoverinfo: 'text', fill: 'tozeroy', fillcolor: 'rgba(245,158,11,0.15)'}],
-                {title: '<b>Costo por Lead (CPL) - Diario</b>', yaxis: {title: 'CPL (€)'}, height: 350, margin: {t: 50}, hovermode: 'closest'},
+                [{
+                    x: cplDates, 
+                    y: cplValues, 
+                    type: 'scatter', 
+                    mode: 'lines+markers', 
+                    line: {color: '#F59E0B', width: 3}, 
+                    marker: {size: 10, color: cplStatus, line: {color: '#fff', width: 2}}, 
+                    hovertext: cplText, 
+                    hoverinfo: 'text', 
+                    fill: 'tozeroy', 
+                    fillcolor: 'rgba(245,158,11,0.15)'
+                }],
+                {
+                    title: '<b>Costo por Lead (CPL) - Diario</b>', 
+                    yaxis: {title: 'CPL (€)', zeroline: true}, 
+                    xaxis: {title: 'Fecha (DD-mes)'},
+                    height: 400, 
+                    margin: {t: 60, b: 80}, 
+                    hovermode: 'closest',
+                    shapes: [{
+                        type: 'line',
+                        x0: cplDates[0],
+                        x1: cplDates[cplDates.length - 1],
+                        y0: 12,
+                        y1: 12,
+                        line: {color: '#999', width: 1, dash: 'dash'},
+                        opacity: 0.5
+                    }]
+                },
                 {responsive: true, displayModeBar: false});
 
             // Gráfico 3: CPL Semanal
@@ -657,36 +697,74 @@
                 `;
             }).join('');
             
-            // === EMBUDO POR AUDIENCIA ===
-            const embudoData = {};
-            const embudoLabels = ['Impresiones', 'Plays', '25%', '50%', '75%', '100%', 'Leads'];
+            // === EMBUDO POR AUDIENCIA - Retención % ===
+            const embudoRetData = {};
             
             videoData.forEach(ad => {
                 const adsetData = adsetMapping[ad.adset_id];
                 const adsetName = typeof adsetData === 'string' ? adsetData : adsetData?.name || ad.adset_name;
                 
-                if (!embudoData[adsetName]) {
-                    embudoData[adsetName] = [0, 0, 0, 0, 0, 0, 0];
+                if (!embudoRetData[adsetName]) {
+                    embudoRetData[adsetName] = {
+                        plays: 0,
+                        plays_25: 0,
+                        plays_50: 0,
+                        plays_75: 0,
+                        plays_100: 0,
+                        leads: 0
+                    };
                 }
                 
-                embudoData[adsetName][0] += ad.impressions;
-                embudoData[adsetName][1] += ad.plays;
-                embudoData[adsetName][2] += ad.plays_25;
-                embudoData[adsetName][3] += ad.plays_50;
-                embudoData[adsetName][4] += ad.plays_75;
-                embudoData[adsetName][5] += ad.plays_100;
-                embudoData[adsetName][6] += ad.leads;
+                embudoRetData[adsetName].plays += ad.plays;
+                embudoRetData[adsetName].plays_25 += ad.plays_25;
+                embudoRetData[adsetName].plays_50 += ad.plays_50;
+                embudoRetData[adsetName].plays_75 += ad.plays_75;
+                embudoRetData[adsetName].plays_100 += ad.plays_100;
+                embudoRetData[adsetName].leads += ad.leads;
             });
             
-            const embudoTraces = Object.entries(embudoData).map(([name, values]) => ({
-                type: 'funnel',
-                name: name,
-                y: embudoLabels,
-                x: values
-            }));
+            const embudoTraces = Object.entries(embudoRetData).map(([name, data]) => {
+                const baseValue = data.plays > 0 ? data.plays : 1;
+                return {
+                    type: 'bar',
+                    name: name,
+                    x: ['Play Inicial', '25% Visto', '50% Visto', '75% Visto', '100% Visto', 'Leads'],
+                    y: [
+                        data.plays,
+                        data.plays_25,
+                        data.plays_50,
+                        data.plays_75,
+                        data.plays_100,
+                        data.leads * 100
+                    ],
+                    text: [
+                        `${data.plays}`,
+                        `${data.plays_25} (${(data.plays_25/baseValue*100).toFixed(1)}%)`,
+                        `${data.plays_50} (${(data.plays_50/baseValue*100).toFixed(1)}%)`,
+                        `${data.plays_75} (${(data.plays_75/baseValue*100).toFixed(1)}%)`,
+                        `${data.plays_100} (${(data.plays_100/baseValue*100).toFixed(1)}%)`,
+                        data.leads
+                    ],
+                    textposition: 'outside',
+                    hovertext: [
+                        `${data.plays} plays iniciales`,
+                        `${data.plays_25} vieron 25% (${(data.plays_25/baseValue*100).toFixed(1)}% retención)`,
+                        `${data.plays_50} vieron 50% (${(data.plays_50/baseValue*100).toFixed(1)}% retención)`,
+                        `${data.plays_75} vieron 75% (${(data.plays_75/baseValue*100).toFixed(1)}% retención)`,
+                        `${data.plays_100} completaron video (${(data.plays_100/baseValue*100).toFixed(1)}% retención)`,
+                        `${data.leads} leads generados`
+                    ],
+                    hoverinfo: 'text'
+                };
+            });
             
             Plotly.newPlot('embudoAudiencias', embudoTraces,
-                {title: '<b>Embudo de Conversión por Audiencia</b>', height: 400, margin: {t: 50}},
+                {title: '<b>Embudo de Retención: Plays → Vistas Progresivas → Leads</b>', 
+                 barmode: 'group',
+                 yaxis: {title: 'Cantidad'}, 
+                 xaxis: {title: 'Etapa de Conversión'},
+                 height: 450, 
+                 margin: {t: 60, b: 80}},
                 {responsive: true, displayModeBar: false});
 
             // === PROYECCIONES ===
