@@ -308,15 +308,19 @@
 
             <div style="margin-top: 40px; border-top: 2px solid #e5e7eb; padding-top: 30px;">
                 <div class="section-title">🎯 Análisis por Audiencia (Ad Set)</div>
-                <p style="color: #666; margin-bottom: 20px;">Tabla completa: qué audiencia estamos probando, con qué creativo, y cómo rinde cada una.</p>
-                <table style="font-size: 0.85em;">
+                <p style="color: #666; margin-bottom: 20px;">Tabla completa: qué audiencia estamos probando (con targeting específico), con qué creativo, y cómo rinde cada una.</p>
+                <table style="font-size: 0.80em; overflow-x: auto;">
                     <thead>
                         <tr>
-                            <th style="text-align: left; background: #dbeafe;">Audiencia</th>
-                            <th>Creativo</th>
-                            <th>Reproducciones</th>
-                            <th>Presupuesto</th>
-                            <th>0-3s %</th>
+                            <th style="text-align: left; background: #dbeafe; min-width: 180px;">Audiencia</th>
+                            <th style="min-width: 80px;">Edad</th>
+                            <th style="min-width: 60px;">Sexo</th>
+                            <th style="min-width: 70px;">Ubicación</th>
+                            <th style="min-width: 100px;">Intereses</th>
+                            <th style="min-width: 100px;">Creativo</th>
+                            <th>Repr.</th>
+                            <th>Presup.</th>
+                            <th>0-3s%</th>
                             <th>25%</th>
                             <th>50%</th>
                             <th>75%</th>
@@ -558,12 +562,24 @@
                 const ret75 = ((ad.plays_75/ad.plays)*100).toFixed(1);
                 const ret100 = ((ad.plays_100/ad.plays)*100).toFixed(1);
                 const cpl = ad.leads > 0 ? (ad.spend/ad.leads).toFixed(2) : '-';
-                const audience = adsetMapping[ad.ad_id] || `Ad Set ${ad.ad_id.substring(14)}`;
+                
+                // Obtener datos de audiencia
+                const adsetData = adsetMapping[ad.ad_id];
+                const audienceName = typeof adsetData === 'string' ? adsetData : adsetData?.name || `Ad Set ${ad.ad_id.substring(14)}`;
+                const edad = typeof adsetData === 'string' ? 'N/A' : `${adsetData?.edad_min || 18}-${adsetData?.edad_max || 65}`;
+                const sexo = typeof adsetData === 'string' ? 'Todos' : adsetData?.sexo || 'Todos';
+                const ubicacion = typeof adsetData === 'string' ? 'N/A' : adsetData?.ubicacion || 'España';
+                const intereses = typeof adsetData === 'string' ? '' : (adsetData?.intereses?.join(', ') || 'General');
+                
                 const action = ad.leads > 3 ? '✅ Escalar' : ad.leads > 0 ? '⚠️ Monitor' : ad.spend > 10 ? '❌ Pausar' : '🟡 Test';
                 
                 return `<tr>
-                    <td style="color: #2563EB; font-weight: 700; text-align: left;">${audience}</td>
-                    <td>${ad.ad_name}</td>
+                    <td style="color: #2563EB; font-weight: 700; text-align: left;">${audienceName}</td>
+                    <td>${edad}</td>
+                    <td>${sexo}</td>
+                    <td>${ubicacion}</td>
+                    <td style="font-size: 0.8em;">${intereses}</td>
+                    <td style="font-size: 0.85em; max-width: 100px; word-wrap: break-word;">${ad.ad_name}</td>
                     <td>${ad.plays.toLocaleString()}</td>
                     <td>€${ad.spend.toFixed(2)}</td>
                     <td style="color: ${hook > 10 ? '#10B981' : hook > 5 ? '#F59E0B' : '#EF4444'}; font-weight: 700;">${hook}%</td>
