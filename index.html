@@ -802,47 +802,75 @@
                 
                 const status = data.leads > 5 ? '🟢 EXCELENTE' : data.leads > 0 ? '🟡 BUENO' : '🔴 SIN LEADS';
                 
-                // Crear gráfico funnel con PORCENTAJES
+                // Crear gráfico BARRAS HORIZONTALES con % retención
                 setTimeout(() => {
+                    const colors = [
+                        '#2563EB',  // 100% - azul fuerte
+                        '#3B82F6',  // 25% - azul
+                        '#60A5FA',  // 50% - azul claro
+                        '#93C5FD',  // 75% - azul muy claro
+                        '#DBEAFE',  // 100% - azul pálido
+                        data.leads > 0 ? '#10B981' : '#EF4444'  // Leads - verde o rojo
+                    ];
+                    
                     Plotly.newPlot(divId,
                         [{
-                            type: 'funnel',
+                            type: 'bar',
+                            orientation: 'h',
                             y: ['Plays Iniciales', 'Vieron 25%', 'Vieron 50%', 'Vieron 75%', 'Completaron Video', 'Leads Generados'],
                             x: [100, parseFloat(ret25), parseFloat(ret50), parseFloat(ret75), parseFloat(ret100), parseFloat(leadRate)],
                             text: [
-                                `100% (${data.plays} plays)`,
-                                `${ret25}% (${data.plays_25} personas)`,
-                                `${ret50}% (${data.plays_50} personas)`,
-                                `${ret75}% (${data.plays_75} personas)`,
-                                `${ret100}% (${data.plays_100} personas)`,
-                                `${leadRate}% (${data.leads} leads)`
+                                `100%`,
+                                `${ret25}%`,
+                                `${ret50}%`,
+                                `${ret75}%`,
+                                `${ret100}%`,
+                                `${leadRate}%`
                             ],
-                            textposition: 'inside',
-                            marker: {color: ['#2563EB', '#3B82F6', '#60A5FA', '#93C5FD', '#DBEAFE', data.leads > 0 ? '#10B981' : '#EF4444']},
-                            hovertemplate: '<b>%{y}</b><br>%{text}<extra></extra>'
+                            textposition: 'outside',
+                            marker: {color: colors},
+                            hovertext: [
+                                `${data.plays} plays iniciales (100%)`,
+                                `${data.plays_25} vieron 25% (${ret25}% retención)`,
+                                `${data.plays_50} vieron 50% (${ret50}% retención)`,
+                                `${data.plays_75} vieron 75% (${ret75}% retención)`,
+                                `${data.plays_100} completaron video (${ret100}% retención)`,
+                                `${data.leads} leads generados (${leadRate}% conversión)`
+                            ],
+                            hoverinfo: 'text'
                         }],
                         {
                             title: `<b>${name}</b>`, 
-                            xaxis: {title: 'Retención (%)', range: [0, 105]},
-                            margin: {t: 50, b: 50, l: 20, r: 20}, 
-                            height: 350
+                            xaxis: {title: 'Retención (%)', range: [0, 110]},
+                            margin: {t: 50, b: 30, l: 180, r: 50}, 
+                            height: 320,
+                            font: {size: 12}
                         },
                         {responsive: true, displayModeBar: false}
                     );
                 }, 100 * index);
                 
+                const avgRetention = ((parseFloat(ret25) + parseFloat(ret50) + parseFloat(ret75) + parseFloat(ret100)) / 4).toFixed(1);
+                
                 return `
-                    <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; text-align: center;">
-                        <div id="${divId}" style="height: 350px; margin-bottom: 15px;"></div>
-                        <div style="background: white; border-radius: 8px; padding: 12px; text-align: left; font-size: 0.85em; line-height: 1.6;">
-                            <div style="margin-bottom: 8px;">
-                                <strong>Intereses:</strong> ${data.intereses}<br>
-                                <strong>Leads Totales:</strong> ${data.leads}<br>
-                                <strong>Lead Rate:</strong> ${leadRate}% (${data.leads}/${data.plays})<br>
-                                <strong>Status:</strong> ${status}
-                            </div>
-                            <div style="padding-top: 8px; border-top: 1px solid #e5e7eb; color: #666; font-size: 0.8em;">
-                                ${data.leads > 5 ? '✅ Escala inversión en este público' : data.leads > 0 ? '⚠️ Continúa testando, monitoreando' : '❌ Pausa o realiza cambios en creativo'}
+                    <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px;">
+                        <div id="${divId}" style="height: 320px; margin-bottom: 20px;"></div>
+                        
+                        <div style="background: white; border-radius: 8px; padding: 15px; border-left: 4px solid ${data.leads > 5 ? '#10B981' : data.leads > 0 ? '#F59E0B' : '#EF4444'}; margin-bottom: 15px;">
+                            <div style="font-size: 0.9em; line-height: 1.8;">
+                                <div style="margin-bottom: 10px;">
+                                    <strong>📊 Intereses:</strong> ${data.intereses}<br>
+                                    <strong>👥 Plays Iniciales:</strong> ${data.plays}<br>
+                                    <strong>📹 Retención Promedio:</strong> ${avgRetention}%<br>
+                                    <strong>🎯 Leads Generados:</strong> ${data.leads} (${leadRate}% de conversión)<br>
+                                    <strong>Status:</strong> ${status}
+                                </div>
+                                <div style="padding-top: 10px; border-top: 1px solid #e5e7eb; color: #555; font-size: 0.85em;">
+                                    <strong>💡 Insight:</strong> 
+                                    ${data.leads > 5 ? '✅ <strong>Excelente rendimiento.</strong> Esta audiencia convierte bien. Escala presupuesto aquí.' : 
+                                      data.leads > 0 ? '🟡 <strong>Potencial detectado.</strong> Buen inicio, continúa testando y optimizando.' : 
+                                      '❌ <strong>Sin conversiones.</strong> Cambia creativo o pausa esta audiencia.'}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -850,6 +878,59 @@
             }).join('');
             
             document.getElementById('embudosContainer').innerHTML = embudosHTML;
+            
+            // === COMPARATIVA DE AUDIENCIAS ===
+            const audComparativa = Object.entries(embudoData).map(([name, data]) => {
+                const baseValue = data.plays > 0 ? data.plays : 1;
+                const ret25 = ((data.plays_25 / baseValue) * 100).toFixed(1);
+                const ret50 = ((data.plays_50 / baseValue) * 100).toFixed(1);
+                const ret75 = ((data.plays_75 / baseValue) * 100).toFixed(1);
+                const ret100 = ((data.plays_100 / baseValue) * 100).toFixed(1);
+                const leadRate = ((data.leads / data.plays) * 100).toFixed(2);
+                const avgRetention = ((parseFloat(ret25) + parseFloat(ret50) + parseFloat(ret75) + parseFloat(ret100)) / 4).toFixed(1);
+                
+                return {
+                    name,
+                    plays: data.plays,
+                    leads: data.leads,
+                    leadRate: parseFloat(leadRate),
+                    avgRetention: parseFloat(avgRetention),
+                    ret100: parseFloat(ret100)
+                };
+            }).sort((a, b) => b.leadRate - a.leadRate);
+            
+            const comparativaHTML = `
+                <div style="background: linear-gradient(135deg, #f0f9ff 0%, #f9fafb 100%); border: 1px solid #dbeafe; border-radius: 12px; padding: 25px; margin-top: 40px;">
+                    <div class="section-title" style="margin-bottom: 20px; border-bottom: none;">🏆 Comparativa: Mejor Audiencia</div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 20px;">
+                        ${audComparativa.map((aud, idx) => {
+                            const medal = idx === 0 ? '🥇' : idx === 1 ? '🥈' : '🥉';
+                            const isWinner = idx === 0;
+                            return `
+                                <div style="background: white; border: 2px solid ${isWinner ? '#10B981' : '#e5e7eb'}; border-radius: 10px; padding: 18px; ${isWinner ? 'box-shadow: 0 4px 12px rgba(16,185,129,0.2)' : ''}">
+                                    <div style="font-size: 1.5em; margin-bottom: 10px;">${medal} <strong>${aud.name}</strong></div>
+                                    <div style="font-size: 0.9em; line-height: 1.8; color: #333;">
+                                        <div>📊 <strong>Plays:</strong> ${aud.plays}</div>
+                                        <div>🎯 <strong>Leads:</strong> ${aud.leads}</div>
+                                        <div>💹 <strong>Lead Rate:</strong> <span style="color: ${aud.leadRate > 2 ? '#10B981' : aud.leadRate > 1 ? '#F59E0B' : '#EF4444'}; font-weight: 700;">${aud.leadRate}%</span></div>
+                                        <div>📈 <strong>Retención Avg:</strong> ${aud.avgRetention}%</div>
+                                        <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #e5e7eb; color: #666; font-size: 0.85em;">
+                                            ${isWinner ? '✅ <strong>GANADORA:</strong> Mejor convertidor. Duplica presupuesto aquí.' : 'Alternativa viable para testear.'}
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+            
+            // Agregar comparativa después de los embudos
+            setTimeout(() => {
+                const embudosContainer = document.getElementById('embudosContainer');
+                embudosContainer.insertAdjacentHTML('afterend', comparativaHTML);
+            }, 500);
 
             // === PROYECCIONES ===
             Plotly.newPlot('projectionChart',
