@@ -1203,8 +1203,9 @@
                     cpl: 11.59,
                     descripcion: 'Mantén el status quo. Presupuesto: €20/día. Audience saturada (CPL €20.80 en Sem2).',
                     riesgo: '🔴 Alto riesgo. CPL subirá más con el tiempo.',
-                    leadsMes: Math.round((20 * 30) / 11.59),
-                    ingresosMes: Math.round((20 * 30) / 11.59) * 50
+                    leadsMes: 52,
+                    clientesPotenciales: 0.52,
+                    ingresosMes: Math.round(52 * 0.01 * 300)
                 },
                 {
                     name: 'Optimizado (Recomendado)',
@@ -1213,7 +1214,8 @@
                     descripcion: 'Crea 2 nuevas audiencias (cold + retargeting). Pausa Ad 3, focus Ad 2. CPL bajará a €9.',
                     riesgo: '🟢 Bajo riesgo. ROI mejora +29% vs Actual.',
                     leadsMes: Math.round((20 * 30) / 9.0),
-                    ingresosMes: Math.round((20 * 30) / 9.0) * 50,
+                    clientesPotenciales: Math.round((20 * 30) / 9.0 * 0.01 * 100) / 100,
+                    ingresosMes: Math.round((20 * 30) / 9.0 * 0.01 * 300),
                     acciones: ['✅ Crea 2 new ad sets (Small Business + Interest 2)', '✅ Pausa Ad 3 Pablo', '✅ Invierte 70% presupuesto en Ad 2', '✅ Monitorea CPL semanal']
                 },
                 {
@@ -1223,7 +1225,8 @@
                     descripcion: 'Aumenta presupuesto €20 → €30/día. Requiere 3-4 nuevas audiencias. Creativos adicionales.',
                     riesgo: '🟡 Riesgo medio. Necesita capital + nuevas audiencias probadas.',
                     leadsMes: Math.round((30 * 30) / 9.5),
-                    ingresosMes: Math.round((30 * 30) / 9.5) * 50,
+                    clientesPotenciales: Math.round((30 * 30) / 9.5 * 0.01 * 100) / 100,
+                    ingresosMes: Math.round((30 * 30) / 9.5 * 0.01 * 300),
                     acciones: ['📈 Escala presupuesto a €30/día', '🎬 Crea 2-3 nuevos creativos de prueba', '👥 Lanza 3-4 nuevas audiencias en paralelo', '📊 A/B test: Ad 2 vs nuevos creativos']
                 },
                 {
@@ -1233,7 +1236,8 @@
                     descripcion: 'Duplica presupuesto (€50/día). Requiere infraestructura de test, creativos nuevos, nuevas audiencias.',
                     riesgo: '🔴 Alto riesgo. Capital requerido €1,500/mes. Requiere optimización continua.',
                     leadsMes: Math.round((50 * 30) / 10.0),
-                    ingresosMes: Math.round((50 * 30) / 10.0) * 50,
+                    clientesPotenciales: Math.round((50 * 30) / 10.0 * 0.01 * 100) / 100,
+                    ingresosMes: Math.round((50 * 30) / 10.0 * 0.01 * 300),
                     acciones: ['🚀 Aumenta presupuesto a €50/día', '🎬 Desarrolla 5-6 nuevos creativos', '👥 Prueba 6-8 nuevas audiencias simultaneamente', '⚡ Automation + Pixel retargeting avanzado']
                 }
             ];
@@ -1262,9 +1266,9 @@
                                 <div style="color: #999; font-size: 0.8em;">${Math.round((esc.leadsMes - 52) / 52 * 100)}% vs actual</div>
                             </div>
                             <div>
-                                <div style="color: #666; font-size: 0.85em; margin-bottom: 5px;">Ingresos/mes (€50/lead)</div>
-                                <div style="font-size: 1.8em; font-weight: 900; color: #06B6D4;">€${esc.ingresosMes.toLocaleString()}</div>
-                                <div style="color: #999; font-size: 0.8em;">+€${(esc.ingresosMes - 2600).toLocaleString()} vs actual</div>
+                                <div style="color: #666; font-size: 0.85em; margin-bottom: 5px;">Clientes Potenciales (1% × €300)</div>
+                                <div style="font-size: 1.8em; font-weight: 900; color: #06B6D4;">${esc.clientesPotenciales.toFixed(2)} clientes</div>
+                                <div style="color: #999; font-size: 0.8em;">↳ €${esc.ingresosMes.toLocaleString()}/mes potencial</div>
                             </div>
                         </div>
                         
