@@ -5,91 +5,104 @@
       "spend": 13.4,
       "impressions": 716,
       "clicks": 7,
-      "leads": 1
+      "leads": 1,
+      "cpl": 13.4
     },
     {
       "date": "2026-03-03",
       "spend": 24.16,
       "impressions": 1227,
       "clicks": 31,
-      "leads": 6
+      "leads": 6,
+      "cpl": 4.026666666666666
     },
     {
       "date": "2026-03-04",
       "spend": 17.33,
       "impressions": 3131,
       "clicks": 22,
-      "leads": 2
+      "leads": 2,
+      "cpl": 8.665
     },
     {
       "date": "2026-03-05",
       "spend": 16.37,
       "impressions": 3036,
       "clicks": 31,
-      "leads": 2
+      "leads": 2,
+      "cpl": 8.185
     },
     {
       "date": "2026-03-06",
       "spend": 16.93,
       "impressions": 8173,
       "clicks": 79,
-      "leads": 0
+      "leads": 0,
+      "cpl": 0
     },
     {
       "date": "2026-03-07",
       "spend": 16.01,
       "impressions": 5541,
       "clicks": 38,
-      "leads": 2
+      "leads": 2,
+      "cpl": 8.005
     },
     {
       "date": "2026-03-08",
       "spend": 23.66,
       "impressions": 3778,
       "clicks": 37,
-      "leads": 2
+      "leads": 2,
+      "cpl": 11.83
     },
     {
       "date": "2026-03-09",
       "spend": 20.74,
       "impressions": 3263,
       "clicks": 32,
-      "leads": 2
+      "leads": 2,
+      "cpl": 10.37
     },
     {
       "date": "2026-03-10",
       "spend": 18.25,
       "impressions": 2794,
       "clicks": 32,
-      "leads": 0
+      "leads": 0,
+      "cpl": 0
     },
     {
       "date": "2026-03-11",
       "spend": 21.57,
       "impressions": 3058,
       "clicks": 27,
-      "leads": 1
+      "leads": 1,
+      "cpl": 21.57
     },
     {
       "date": "2026-03-12",
       "spend": 17.28,
       "impressions": 1506,
       "clicks": 17,
-      "leads": 2
+      "leads": 2,
+      "cpl": 8.64
     },
     {
       "date": "2026-03-13",
       "spend": 18.0,
       "impressions": 4084,
       "clicks": 71,
-      "leads": 0
+      "leads": 0,
+      "cpl": 0
     },
     {
       "date": "2026-03-14",
       "spend": 8.14,
       "impressions": 519,
       "clicks": 8,
-      "leads": 0
+      "leads": 0,
+      "cpl": 0
     }
   ]
 }
