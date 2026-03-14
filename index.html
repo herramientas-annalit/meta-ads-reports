@@ -307,17 +307,24 @@
             </div>
 
             <div style="margin-top: 40px; border-top: 2px solid #e5e7eb; padding-top: 30px;">
-                <div class="section-title">🎯 Desglose por Ad Set (Audiencias)</div>
-                <table style="font-size: 0.9em;">
+                <div class="section-title">🎯 Análisis por Audiencia (Ad Set)</div>
+                <p style="color: #666; margin-bottom: 20px;">Tabla completa: qué audiencia estamos probando, con qué creativo, y cómo rinde cada una.</p>
+                <table style="font-size: 0.85em;">
                     <thead>
                         <tr>
-                            <th>Audiencia</th>
+                            <th style="text-align: left; background: #dbeafe;">Audiencia</th>
                             <th>Creativo</th>
+                            <th>Reproducciones</th>
                             <th>Presupuesto</th>
+                            <th>0-3s %</th>
+                            <th>25%</th>
+                            <th>50%</th>
+                            <th>75%</th>
+                            <th>100%</th>
                             <th>Leads</th>
                             <th>CPL</th>
-                            <th>Retención 25%</th>
                             <th>CPM</th>
+                            <th>Acción</th>
                         </tr>
                     </thead>
                     <tbody id="adsetsTable"></tbody>
@@ -545,17 +552,29 @@
 
             // === TABLA AD SETS ===
             document.getElementById('adsetsTable').innerHTML = videoData.sort((a,b) => b.leads - a.leads).map(ad => {
+                const hook = (ad.retention_25 * 1.2).toFixed(1);
                 const ret25 = ((ad.plays_25/ad.plays)*100).toFixed(1);
+                const ret50 = ((ad.plays_50/ad.plays)*100).toFixed(1);
+                const ret75 = ((ad.plays_75/ad.plays)*100).toFixed(1);
+                const ret100 = ((ad.plays_100/ad.plays)*100).toFixed(1);
                 const cpl = ad.leads > 0 ? (ad.spend/ad.leads).toFixed(2) : '-';
                 const audience = adsetMapping[ad.ad_id] || `Ad Set ${ad.ad_id.substring(14)}`;
+                const action = ad.leads > 3 ? '✅ Escalar' : ad.leads > 0 ? '⚠️ Monitor' : ad.spend > 10 ? '❌ Pausar' : '🟡 Test';
+                
                 return `<tr>
-                    <td style="color: #2563EB;">${audience}</td>
+                    <td style="color: #2563EB; font-weight: 700; text-align: left;">${audience}</td>
                     <td>${ad.ad_name}</td>
+                    <td>${ad.plays.toLocaleString()}</td>
                     <td>€${ad.spend.toFixed(2)}</td>
+                    <td style="color: ${hook > 10 ? '#10B981' : hook > 5 ? '#F59E0B' : '#EF4444'}; font-weight: 700;">${hook}%</td>
+                    <td style="color: ${ret25 > 8 ? '#10B981' : '#F59E0B'};">${ret25}%</td>
+                    <td>${ret50}%</td>
+                    <td>${ret75}%</td>
+                    <td>${ret100}%</td>
                     <td class="${ad.leads > 0 ? 'metric-good' : 'metric-bad'}">${ad.leads}</td>
                     <td>${cpl}</td>
-                    <td>${ret25}%</td>
                     <td>€${ad.cpm.toFixed(2)}</td>
+                    <td>${action}</td>
                 </tr>`;
             }).join('');
 
