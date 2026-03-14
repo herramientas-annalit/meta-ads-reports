@@ -1125,7 +1125,7 @@
                 });
                 
                 const seleccionado = creativeStats[adName];
-                const cplSeleccionado = seleccionado.totalLeads > 0 ? (seleccionado.totalSpend / seleccionado.totalLeads) : 999;
+                const cplSeleccionado = seleccionado.totalLeads > 0 ? (seleccionado.totalSpend / seleccionado.totalLeads) : 'N/A';
                 
                 // Encontrar mejor y peor
                 let mejorAd = 'Ad 2 Pablo', peorAd = 'Ad 3 Pablo';
@@ -1175,7 +1175,7 @@
                     <div style="background: linear-gradient(135deg, #f0fdf4 0%, #f9fafb 100%); border-left: 5px solid #10B981; border-radius: 10px; padding: 18px; margin-bottom: 20px; font-size: 0.95em; line-height: 1.8;">
                         <strong style="font-size: 1.05em;">💡 Resumen de ${adName}:</strong><br>
                         <strong>Total Leads:</strong> ${seleccionado.totalLeads} | 
-                        <strong>CPL Promedio:</strong> €${cplSeleccionado.toFixed(2)} | 
+                        <strong>CPL Promedio:</strong> ${typeof cplSeleccionado === 'string' ? cplSeleccionado : '€' + cplSeleccionado.toFixed(2)} | 
                         <strong>Gasto Total:</strong> €${seleccionado.totalSpend.toFixed(2)}<br><br>
                         <strong style="font-size: 1em;">📊 Comparación:</strong> ${comparacion}
                     </div>
