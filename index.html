@@ -561,15 +561,15 @@
                     
                     <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 30px; margin-bottom: 25px;">
                         <div style="text-align: center;">
-                            <div style="font-size: 2.8em; font-weight: 900; color: #2563EB; margin-bottom: 10px;">€${totalCampaignSpend.toFixed(2)}</div>
+                            <div style="font-size: 2.8em; font-weight: 900; color: #2563EB; margin-bottom: 10px;">€${(w1Spend + w2Spend).toFixed(2)}</div>
                             <div style="font-size: 0.75em; color: #999; text-transform: uppercase; font-weight: 800;">Inversión Total</div>
                         </div>
                         <div style="text-align: center;">
-                            <div style="font-size: 2.8em; font-weight: 900; color: #10B981; margin-bottom: 10px;">${totalCampaignLeads}</div>
+                            <div style="font-size: 2.8em; font-weight: 900; color: #10B981; margin-bottom: 10px;">${w1Leads + w2Leads}</div>
                             <div style="font-size: 0.75em; color: #999; text-transform: uppercase; font-weight: 800;">Leads Totales</div>
                         </div>
                         <div style="text-align: center;">
-                            <div style="font-size: 2.8em; font-weight: 900; color: #06B6D4; margin-bottom: 10px;">€${totalCampaignCPL.toFixed(2)}</div>
+                            <div style="font-size: 2.8em; font-weight: 900; color: #06B6D4; margin-bottom: 10px;">€${((w1Spend + w2Spend)/(w1Leads + w2Leads)).toFixed(2)}</div>
                             <div style="font-size: 0.75em; color: #999; text-transform: uppercase; font-weight: 800;">CPL Promedio</div>
                         </div>
                     </div>
