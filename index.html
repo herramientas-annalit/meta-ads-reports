@@ -1018,7 +1018,7 @@
                     ret100: parseFloat(ret100),
                     playRate: ((data.plays / impressions) * 100).toFixed(2)
                 };
-            }).sort((a, b) => b.leadRate - a.leadRate);
+            }).sort((a, b) => b.leads - a.leads);
             
             const comparativaHTML = `
                 <div style="background: linear-gradient(135deg, #f0f9ff 0%, #f9fafb 100%); border: 1px solid #dbeafe; border-radius: 12px; padding: 25px; margin-top: 40px;">
