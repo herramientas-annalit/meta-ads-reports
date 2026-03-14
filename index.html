@@ -404,6 +404,9 @@
             const w2CTR = (daily.slice(7).reduce((s,d) => s + d.clicks, 0) / daily.slice(7).reduce((s,d) => s + d.impressions, 0) * 100).toFixed(2);
             const w1CTR = (daily.slice(0,7).reduce((s,d) => s + d.clicks, 0) / daily.slice(0,7).reduce((s,d) => s + d.impressions, 0) * 100).toFixed(2);
             const ctrChange = ((w2CTR - w1CTR) / w1CTR * 100);
+            const w2CPM = (w2Spend / (daily.slice(7).reduce((s,d) => s + d.impressions, 0) / 1000)).toFixed(2);
+            const w1CPM = (w1Spend / (daily.slice(0,7).reduce((s,d) => s + d.impressions, 0) / 1000)).toFixed(2);
+            const cpmChange = ((w2CPM - w1CPM) / w1CPM * 100);
             
             document.getElementById('weeklyStats').innerHTML = `
                 <div class="weekly-card ${cplChange > 100 ? 'bad' : cplChange > 50 ? 'warning' : 'good'}">
@@ -439,16 +442,29 @@
                         </div>
                     </div>
                     
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 25px;">
                         <div style="text-align: center; padding: 12px; background: rgba(0,0,0,0.03); border-radius: 6px;">
-                            <div style="font-size: 1.5em; font-weight: 900; color: #2563EB; margin-bottom: 5px;">${w2CTR}%</div>
-                            <div style="font-size: 0.75em; color: #999;">CTR Semana 2</div>
-                            <div style="font-size: 0.7em; color: #999; margin-top: 5px;">vs ${w1CTR}%</div>
+                            <div style="font-size: 1.3em; font-weight: 900; color: #2563EB; margin-bottom: 5px;">${w2CTR}%</div>
+                            <div style="font-size: 0.7em; color: #999; text-transform: uppercase;">CTR</div>
+                            <div style="font-size: 0.7em; color: #999; margin-top: 5px; padding-top: 5px; border-top: 1px solid rgba(0,0,0,0.1);">
+                                <strong>vs ${w1CTR}%</strong><br>
+                                <span style="color: ${ctrChange > 0 ? '#10B981' : '#EF4444'};">${ctrChange > 0 ? '+' : ''}${ctrChange.toFixed(0)}%</span>
+                            </div>
                         </div>
                         <div style="text-align: center; padding: 12px; background: rgba(0,0,0,0.03); border-radius: 6px;">
-                            <div style="font-size: 1.5em; font-weight: 900; color: #06B6D4; margin-bottom: 5px;">${(daily.slice(7).reduce((s,d) => s + d.spend, 0) / 7).toFixed(2)}</div>
-                            <div style="font-size: 0.75em; color: #999;">€ Promedio/día Sem2</div>
-                            <div style="font-size: 0.7em; color: #999; margin-top: 5px;">vs €${(daily.slice(0,7).reduce((s,d) => s + d.spend, 0) / 7).toFixed(2)}</div>
+                            <div style="font-size: 1.3em; font-weight: 900; color: #06B6D4; margin-bottom: 5px;">€${w2CPM}</div>
+                            <div style="font-size: 0.7em; color: #999; text-transform: uppercase;">CPM</div>
+                            <div style="font-size: 0.7em; color: #999; margin-top: 5px; padding-top: 5px; border-top: 1px solid rgba(0,0,0,0.1);">
+                                <strong>vs €${w1CPM}</strong><br>
+                                <span style="color: ${cpmChange > 0 ? '#EF4444' : '#10B981'};">${cpmChange > 0 ? '+' : ''}${cpmChange.toFixed(0)}%</span>
+                            </div>
+                        </div>
+                        <div style="text-align: center; padding: 12px; background: rgba(0,0,0,0.03); border-radius: 6px;">
+                            <div style="font-size: 1.3em; font-weight: 900; color: #8B5CF6; margin-bottom: 5px;">€${(daily.slice(7).reduce((s,d) => s + d.spend, 0) / 7).toFixed(2)}</div>
+                            <div style="font-size: 0.7em; color: #999; text-transform: uppercase;">€/día Prom</div>
+                            <div style="font-size: 0.7em; color: #999; margin-top: 5px; padding-top: 5px; border-top: 1px solid rgba(0,0,0,0.1);">
+                                <strong>vs €${(daily.slice(0,7).reduce((s,d) => s + d.spend, 0) / 7).toFixed(2)}</strong>
+                            </div>
                         </div>
                     </div>
                     
