@@ -353,23 +353,24 @@
             <div class="section-title">📈 Proyecciones de Escalabilidad</div>
 
             <div style="background: #dbeafe; border-left: 5px solid #2563EB; padding: 20px; border-radius: 12px; margin-bottom: 20px; font-size: 0.95em; line-height: 1.7;">
-                <strong>📊 Escenario Actual (CPL $11.58):</strong><br>
-                Presupuesto: $7.70/día → Leads/mes: 20 leads → Costo/mes: $231.84<br>
-                <em>Status: SATURADO. No escalar sin cambios.</em>
+                <strong>📊 Escenario Actual (SIN CAMBIOS, audience fatiga):</strong><br>
+                Presupuesto: $20/día (17.83€ real) | CPL: $11.58 | Leads/mes: ~52 leads<br>
+                Costo/mes: $600 | ROI asumido: $50/lead = $2,600/mes<br>
+                <em>Status: ⚠️ SATURADO. Audiencia cansada. CPL sube cada día.</em>
             </div>
 
             <div style="background: #f0fdf4; border-left: 5px solid #10B981; padding: 20px; border-radius: 12px; margin-bottom: 20px; font-size: 0.95em; line-height: 1.7;">
-                <strong>🚀 Escenario Recomendado (nuevas audiencias, CPL $9):</strong><br>
-                Presupuesto: $20/día → Leads/mes: 67 leads → Costo/mes: $600<br>
-                ROI asumido: $50/lead → Ingresos/mes: $3,350<br>
-                <em>Status: Viable si nuevas audiencias funcionan.</em>
+                <strong>🚀 Escenario Recomendado (OPTIMIZAR + nuevas audiencias):</strong><br>
+                Presupuesto: $20/día (mantiene) | CPL: $9 (mejora) | Leads/mes: ~67 leads<br>
+                Costo/mes: $600 | ROI asumido: $50/lead = $3,350/mes<br>
+                <em>Status: ✅ Viable. Agregar 2-3 nuevas ad sets con audiencias frescas.</em>
             </div>
 
             <div style="background: #fee2e2; border-left: 5px solid #EF4444; padding: 20px; border-radius: 12px; margin-bottom: 20px; font-size: 0.95em; line-height: 1.7;">
-                <strong>⚡ Escenario Agresivo (scaling 4x, CPL $10):</strong><br>
-                Presupuesto: $50/día → Leads/mes: 150 leads → Costo/mes: $1,500<br>
-                ROI asumido: $50/lead → Ingresos/mes: $7,500<br>
-                <em>Status: Solo DESPUÉS de validar escenario recomendado.</em>
+                <strong>⚡ Escenario Agresivo (SCALING 2.5x, CPL $10):</strong><br>
+                Presupuesto: $50/día (2.5x) | CPL: $10 | Leads/mes: ~150 leads<br>
+                Costo/mes: $1,500 | ROI asumido: $50/lead = $7,500/mes<br>
+                <em>Status: 🔴 SOLO después de validar escenario recomendado.</em>
             </div>
 
             <div class="chart-box" id="projectionChart" style="background: #fafbfc; border-radius: 12px; padding: 12px; margin-bottom: 20px;"></div>
@@ -555,11 +556,13 @@
             }).join('');
 
             // === PROYECCIONES TAB ===
+            // Cálculo: leads/mes = (presupuesto_diario / CPL) * 30
+            // ingresos/mes = leads/mes * $50
             Plotly.newPlot('projectionChart',
-                [{x: [10, 20, 30, 50], y: [150, 300, 450, 750], name: 'CPL $9 (mejor)', line: {color: '#10B981', width: 3}},
-                 {x: [10, 20, 30, 50], y: [120, 240, 360, 600], name: 'CPL $10 (actual)', line: {color: '#F59E0B', width: 3}},
-                 {x: [10, 20, 30, 50], y: [82, 164, 246, 410], name: 'CPL $12 (peor)', line: {color: '#EF4444', width: 3}}],
-                {title: '<b>Ingresos Proyectados/mes (asumiendo $50/lead)</b>', xaxis: {title: 'Presupuesto diario ($)'}, yaxis: {title: 'Ingresos/mes ($)'}, height: 350, margin: {t: 60}},
+                [{x: [20, 50], y: [3350, 7500], mode: 'lines+markers', name: 'CPL $9 (Optimizado)', line: {color: '#10B981', width: 4}, marker: {size: 12}},
+                 {x: [20, 50], y: [2600, 6500], mode: 'lines+markers', name: 'CPL $11.58 (Actual)', line: {color: '#F59E0B', width: 4, dash: 'dash'}, marker: {size: 12}},
+                 {x: [20, 50], y: [2500, 6250], mode: 'lines+markers', name: 'CPL $12 (Peor caso)', line: {color: '#EF4444', width: 3}, marker: {size: 10}}],
+                {title: '<b>Ingresos Proyectados/mes (x $50/lead)</b>', xaxis: {title: 'Presupuesto diario ($)'}, yaxis: {title: 'Ingresos/mes ($)', tickformat: '$'}, height: 350, margin: {t: 60}, hovermode: 'x unified'},
                 {responsive: true, displayModeBar: false});
         }).catch(err => console.log('Error cargando datos:', err));
     </script>
