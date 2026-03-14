@@ -233,7 +233,7 @@
             <div class="chart-grid">
                 <div>
                     <div class="chart-box" id="chart1"></div>
-                    <div class="description"><strong>Gasto vs Leads Acumulado (Diario):</strong> Muestra cómo crece el gasto total (azul) y leads totales (verde) día a día. Período: 2-14 de Marzo.</div>
+                    <div class="description"><strong>Gasto vs Leads Acumulado:</strong> Eje izquierdo (azul) = dinero total gastado cada día. Eje derecho (verde) = cantidad REAL de leads conseguidos. Ejemplo: día 3 = $37.56 acumulados, 7 leads totales. Período: 2-14 Marzo.</div>
                 </div>
                 <div>
                     <div class="chart-box" id="chart2"></div>
@@ -411,9 +411,12 @@
 
             // Gráfico 1: Acumulado
             Plotly.newPlot('chart1',
-                [{x: dates, y: spend, name: 'Gasto ($)', line: {color: '#2563EB', width: 3}, yaxis: 'y'},
-                 {x: dates, y: leads, name: 'Leads', line: {color: '#10B981', width: 3}, yaxis: 'y2'}],
-                {title: '<b>Gasto vs Leads Acumulado</b>', yaxis: {title: 'Gasto ($)'}, yaxis2: {title: 'Leads', overlaying: 'y', side: 'right'}, height: 350, margin: {t: 50}, hovermode: 'x unified'},
+                [{x: dates, y: spend, name: 'Gasto ($)', line: {color: '#2563EB', width: 4}, yaxis: 'y', hovertemplate: '%{x}: $%{y:.2f}'},
+                 {x: dates, y: leads, name: 'Leads', line: {color: '#10B981', width: 4}, yaxis: 'y2', hovertemplate: '%{x}: %{y} leads'}],
+                {title: '<b>Acumulado: Gasto ($) vs Leads (cantidad)</b>', 
+                 yaxis: {title: 'Gasto Acumulado ($)', titlefont: {color: '#2563EB'}, tickfont: {color: '#2563EB'}}, 
+                 yaxis2: {title: 'Leads Acumulados (cantidad)', titlefont: {color: '#10B981'}, tickfont: {color: '#10B981'}, overlaying: 'y', side: 'right'}, 
+                 height: 350, margin: {t: 60, r: 80}, hovermode: 'x unified'},
                 {responsive: true, displayModeBar: false});
 
             // Gráfico 2: CPL Diario (con etiquetas)
