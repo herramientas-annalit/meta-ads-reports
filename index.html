@@ -527,8 +527,8 @@
             const totalSpend = creativos.reduce((s, c) => s + c.spend, 0);
 
             // === RENDIMIENTO SEMANAL ===
-            const week1 = daily.slice(0, 7); // 2-8 mar
-            const week2 = daily.slice(7); // 9-14 mar
+            const week1 = daily.slice(0, 7); // 2-8 mar (7 días)
+            const week2 = daily.slice(7); // 9-14 mar (6 días) - Incluye 14
             
             const w1Spend = week1.reduce((s, d) => s + d.spend, 0);
             const w1Leads = week1.reduce((l, d) => l + d.leads, 0);
@@ -577,7 +577,7 @@
                 
                 <!-- DESGLOSE SEMANAL -->
                 <div class="weekly-card ${cplChange > 100 ? 'bad' : cplChange > 50 ? 'warning' : 'good'}">
-                    <div class="weekly-title" style="font-size: 1.3em; margin-bottom: 30px;">📅 Rendimiento Semana 2 (9-14 mar)</div>
+                    <div class="weekly-title" style="font-size: 1.3em; margin-bottom: 30px;">📅 Rendimiento Semana 2 (9-14 Marzo)</div>
                     
                     <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 30px; margin-bottom: 40px;">
                         <div style="text-align: center;">
