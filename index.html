@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reporte Meta Ads - Test Manual SEO Local Pablo</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -48,7 +48,7 @@
         }
         .charts-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
             gap: 35px;
             margin-bottom: 50px;
         }
@@ -83,8 +83,8 @@
         .chart-card.warning .chart-title {
             color: #F59E0B;
         }
-        canvas {
-            max-height: 350px;
+        .plot-container {
+            min-height: 400px;
             margin-bottom: 25px;
         }
         .stats {
@@ -161,6 +161,51 @@
         .insight.success strong {
             color: #10B981;
         }
+        .recommendations {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(37, 99, 235, 0.2);
+            margin-bottom: 50px;
+        }
+        .recommendations h2 {
+            font-size: 1.8em;
+            color: #2563EB;
+            margin-bottom: 25px;
+            font-weight: 800;
+        }
+        .rec-item {
+            border-left: 4px solid #2563EB;
+            padding: 20px;
+            background: #f0f7ff;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .rec-item.warning {
+            border-left-color: #F59E0B;
+            background: #fffbf0;
+        }
+        .rec-item.success {
+            border-left-color: #10B981;
+            background: #f0fdf4;
+        }
+        .rec-item h3 {
+            color: #2563EB;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        .rec-item.warning h3 {
+            color: #F59E0B;
+        }
+        .rec-item.success h3 {
+            color: #10B981;
+        }
+        .footer {
+            text-align: center;
+            color: #999;
+            margin-top: 40px;
+            font-size: 0.9em;
+        }
         @media (max-width: 768px) {
             .charts-grid {
                 grid-template-columns: 1fr;
@@ -183,10 +228,10 @@
         </div>
 
         <div class="charts-grid">
-            <!-- Card 1: Inversión y Retorno -->
+            <!-- Card 1: Inversión y Leads -->
             <div class="chart-card">
                 <div class="chart-title">💰 Inversión y Leads</div>
-                <canvas id="chart1"></canvas>
+                <div class="plot-container" id="chart1"></div>
                 <div class="stats">
                     <div class="stat">
                         <div class="stat-value">$231.53</div>
@@ -205,10 +250,10 @@
                 </div>
             </div>
 
-            <!-- Card 2: Alcance y Engagement -->
+            <!-- Card 2: Alcance y Clics -->
             <div class="chart-card secondary">
                 <div class="chart-title">👥 Alcance y Clics</div>
-                <canvas id="chart2"></canvas>
+                <div class="plot-container" id="chart2"></div>
                 <div class="stats">
                     <div class="stat">
                         <div class="stat-value">40.8K</div>
@@ -232,10 +277,10 @@
                 </div>
             </div>
 
-            <!-- Card 3: Eficiencia de Costos -->
+            <!-- Card 3: Eficiencia -->
             <div class="chart-card success">
                 <div class="chart-title">💎 Eficiencia de Costos</div>
-                <canvas id="chart3"></canvas>
+                <div class="plot-container" id="chart3"></div>
                 <div class="stats">
                     <div class="stat">
                         <div class="stat-value">$0.54</div>
@@ -261,10 +306,10 @@
                 </div>
             </div>
 
-            <!-- Card 4: Proyección Real -->
+            <!-- Card 4: Proyección -->
             <div class="chart-card warning">
                 <div class="chart-title">📈 Si Escalas a 30€/día</div>
-                <canvas id="chart4"></canvas>
+                <div class="plot-container" id="chart4"></div>
                 <div class="stats">
                     <div class="stat">
                         <div class="stat-value">~900€</div>
@@ -283,143 +328,126 @@
                     </div>
                 </div>
                 <div class="insight warning">
-                    <strong>⚠️ Cuidado con la fatiga de audiencia:</strong> La campaña actual está viendo saturación (CPL subió de $5.14 a $11.58). Si escalas presupuesto, necesitas nuevas audiencias o creativos frescos. Recomendación: activa el borrador con 2 ad sets nuevos en paralelo.
+                    <strong>⚠️ Cuidado con fatiga de audiencia:</strong> La campaña actual está saturada (CPL subió de $5.14 a $11.58). Si escalas presupuesto, necesitas nuevas audiencias o creativos frescos. Recomendación: activa el borrador con 2 ad sets nuevos en paralelo.
                 </div>
             </div>
         </div>
 
-        <!-- Recomendaciones finales -->
-        <div style="background: white; border-radius: 20px; padding: 40px; box-shadow: 0 20px 60px rgba(37, 99, 235, 0.2);">
-            <h2 style="font-size: 1.8em; color: #2563EB; margin-bottom: 25px; font-weight: 800;">🎯 Recomendaciones</h2>
+        <!-- Recomendaciones -->
+        <div class="recommendations">
+            <h2>🎯 Recomendaciones</h2>
             
-            <div style="display: grid; gap: 20px;">
-                <div style="border-left: 4px solid #F59E0B; padding: 20px; background: #fffbf0; border-radius: 8px;">
-                    <h3 style="color: #F59E0B; margin-bottom: 10px; font-weight: 700;">1. Pausa "Small Business"</h3>
-                    <p>Solo 2 leads en 13 días. No es viable. Libera presupuesto para audiencias que funcionan.</p>
-                </div>
+            <div class="rec-item warning">
+                <h3>1. Pausa "Small Business"</h3>
+                <p>Solo 2 leads en 13 días. No es viable. Libera presupuesto para audiencias que funcionan.</p>
+            </div>
 
-                <div style="border-left: 4px solid #10B981; padding: 20px; background: #f0fdf4; border-radius: 8px;">
-                    <h3 style="color: #10B981; margin-bottom: 10px; font-weight: 700;">2. Optimiza el Ad Set "Negocios"</h3>
-                    <p>CPL de $5.95 vs $4.59 del ganador. Prueba cambiar el copy o targeting. Si no mejora en 1 semana, descontinúa.</p>
-                </div>
+            <div class="rec-item warning">
+                <h3>2. Optimiza el Ad Set "Negocios"</h3>
+                <p>CPL de $5.95 vs $4.59 del ganador. Prueba cambiar el copy o targeting. Si no mejora en 1 semana, descontinúa.</p>
+            </div>
 
-                <div style="border-left: 4px solid #2563EB; padding: 20px; background: #f0f7ff; border-radius: 8px;">
-                    <h3 style="color: #2563EB; margin-bottom: 10px; font-weight: 700;">3. Lanza Borrador Nuevo</h3>
-                    <p>La campaña actual está saturada. Activa los 2 ad sets nuevos en paralelo para comparar y reducir fatiga de audiencia.</p>
-                </div>
+            <div class="rec-item">
+                <h3>3. Lanza Borrador Nuevo</h3>
+                <p>La campaña actual está saturada. Activa los 2 ad sets nuevos en paralelo para comparar y reducir fatiga de audiencia.</p>
+            </div>
 
-                <div style="border-left: 4px solid #06B6D4; padding: 20px; background: #f0f9fc; border-radius: 8px;">
-                    <h3 style="color: #06B6D4; margin-bottom: 10px; font-weight: 700;">4. Valida Conversión Real</h3>
-                    <p>De esos 20 leads, ¿cuántos se convirtieron en cliente pagador? Con eso dimensionamos el ROI real.</p>
-                </div>
+            <div class="rec-item success">
+                <h3>4. Valida Conversión Real</h3>
+                <p>De esos 20 leads, ¿cuántos se convirtieron en cliente pagador? Con eso dimensionamos el ROI real y sabemos si escalamos presupuesto.</p>
             </div>
         </div>
 
-        <p style="text-align: center; color: #999; margin-top: 40px; font-size: 0.9em;">
-            Reporte generado: 14 de Marzo 2026 | Datos hasta 13:57 UTC
-        </p>
+        <div class="footer">
+            Reporte generado: 14 de Marzo 2026 | Datos hasta 13:57 UTC<br>
+            Powered by Annalitips
+        </div>
     </div>
 
     <script>
-        // Chart 1: Inversión vs Leads (barras horizontales)
-        const ctx1 = document.getElementById('chart1').getContext('2d');
-        new Chart(ctx1, {
+        // Gráfico 1: Inversión vs Leads
+        var data1 = [{
+            x: ['Inversión\n($231.53)', 'Leads\nGenerados\n(20)'],
+            y: [231.53, 240],
             type: 'bar',
-            data: {
-                labels: ['Inversión Total', 'Leads Generados (x12 escala)'],
-                datasets: [{
-                    label: 'Valores',
-                    data: [231.53, 240],
-                    backgroundColor: ['#2563EB', '#06B6D4'],
-                    borderRadius: 10,
-                    borderSkipped: false
-                }]
-            },
-            options: {
-                indexAxis: 'y',
-                responsive: true,
-                maintainAspectRatio: true,
-                plugins: {
-                    legend: { display: false }
-                },
-                scales: {
-                    x: {
-                        beginAtZero: true,
-                        ticks: { callback: (v) => '$' + v }
-                    }
-                }
-            }
-        });
+            marker: {color: ['#2563EB', '#06B6D4'], line: {color: '#000', width: 2}},
+            text: ['$231.53', '20 leads'],
+            textposition: 'outside',
+            hovertemplate: '<b>%{x}</b><br>Valor: %{y}<extra></extra>'
+        }];
+        var layout1 = {
+            title: '',
+            xaxis: {tickfont: {size: 12}},
+            yaxis: {title: 'Valor', range: [0, 300]},
+            showlegend: false,
+            height: 400,
+            margin: {t: 20}
+        };
+        Plotly.newPlot('chart1', data1, layout1, {responsive: true});
 
-        // Chart 2: Alcance (columnas)
-        const ctx2 = document.getElementById('chart2').getContext('2d');
-        new Chart(ctx2, {
+        // Gráfico 2: Alcance
+        var data2 = [{
+            x: ['Impresiones', 'Clics', 'Leads'],
+            y: [40794, 431, 20],
             type: 'bar',
-            data: {
-                labels: ['Impresiones', 'Clics', 'Leads'],
-                datasets: [{
-                    label: 'Cantidad',
-                    data: [40794, 431, 20],
-                    backgroundColor: ['#2563EB', '#06B6D4', '#10B981'],
-                    borderRadius: 10
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                plugins: { legend: { display: false } },
-                scales: { y: { beginAtZero: true } }
-            }
-        });
+            marker: {color: ['#2563EB', '#06B6D4', '#10B981'], line: {color: '#000', width: 2}},
+            text: ['40,794', '431', '20'],
+            textposition: 'outside',
+            hovertemplate: '<b>%{x}</b><br>Cantidad: %{y}<extra></extra>'
+        }];
+        var layout2 = {
+            title: '',
+            xaxis: {tickfont: {size: 12}},
+            yaxis: {title: 'Cantidad'},
+            showlegend: false,
+            height: 400,
+            margin: {t: 20}
+        };
+        Plotly.newPlot('chart2', data2, layout2, {responsive: true});
 
-        // Chart 3: Costos (línea)
-        const ctx3 = document.getElementById('chart3').getContext('2d');
-        new Chart(ctx3, {
-            type: 'line',
-            data: {
-                labels: ['CPC\n(por clic)', 'CPM\n(por 1000 imp)', 'CPL\n(por lead)'],
-                datasets: [{
-                    label: 'Costo ($)',
-                    data: [0.54, 5.67, 11.58],
-                    borderColor: '#10B981',
-                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                    borderWidth: 4,
-                    fill: true,
-                    tension: 0.4,
-                    pointRadius: 8,
-                    pointBackgroundColor: '#10B981',
-                    pointBorderColor: 'white',
-                    pointBorderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                plugins: { legend: { display: false } },
-                scales: { y: { beginAtZero: true, ticks: { callback: (v) => '$' + v.toFixed(2) } } }
-            }
-        });
+        // Gráfico 3: Costos (línea)
+        var data3 = [{
+            x: ['CPC\n(por clic)', 'CPM\n(por 1000 imp)', 'CPL\n(por lead)'],
+            y: [0.54, 5.67, 11.58],
+            type: 'scatter',
+            mode: 'lines+markers',
+            line: {color: '#10B981', width: 4},
+            marker: {size: 12, color: '#10B981', line: {color: 'white', width: 2}},
+            fill: 'tozeroy',
+            fillcolor: 'rgba(16, 185, 129, 0.2)',
+            text: ['$0.54', '$5.67', '$11.58'],
+            textposition: 'top center',
+            hovertemplate: '<b>%{x}</b><br>Costo: %{y:.2f}$<extra></extra>'
+        }];
+        var layout3 = {
+            title: '',
+            xaxis: {tickfont: {size: 12}},
+            yaxis: {title: 'Costo ($)', range: [0, 14]},
+            showlegend: false,
+            height: 400,
+            margin: {t: 20}
+        };
+        Plotly.newPlot('chart3', data3, layout3, {responsive: true});
 
-        // Chart 4: Proyección (barras)
-        const ctx4 = document.getElementById('chart4').getContext('2d');
-        new Chart(ctx4, {
+        // Gráfico 4: Proyección
+        var data4 = [{
+            x: ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4'],
+            y: [19, 20, 20, 19],
             type: 'bar',
-            data: {
-                labels: ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4'],
-                datasets: [{
-                    label: 'Leads Proyectados',
-                    data: [19, 20, 20, 19],
-                    backgroundColor: '#F59E0B',
-                    borderRadius: 10
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                plugins: { legend: { display: false } },
-                scales: { y: { beginAtZero: true } }
-            }
-        });
+            marker: {color: '#F59E0B', line: {color: '#000', width: 2}},
+            text: ['19', '20', '20', '19'],
+            textposition: 'outside',
+            hovertemplate: '<b>%{x}</b><br>Leads: %{y}<extra></extra>'
+        }];
+        var layout4 = {
+            title: '',
+            xaxis: {tickfont: {size: 12}},
+            yaxis: {title: 'Leads Proyectados', range: [0, 25]},
+            showlegend: false,
+            height: 400,
+            margin: {t: 20}
+        };
+        Plotly.newPlot('chart4', data4, layout4, {responsive: true});
     </script>
 </body>
 </html>
