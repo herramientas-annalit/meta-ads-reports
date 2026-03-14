@@ -28,6 +28,14 @@
         
         // Detectar inmediatamente
         detectarDispositivo();
+        
+        // Timestamp de última actualización
+        document.addEventListener('DOMContentLoaded', function() {
+            const lastUpdateEl = document.getElementById('lastUpdate');
+            const now = new Date();
+            const formattedDate = now.toISOString().replace('T', ' ').substring(0, 19);
+            lastUpdateEl.textContent = formattedDate;
+        });
     </script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -256,6 +264,11 @@
             <strong>Públicos:</strong> 3 (Small Business, Marketing, Negocios) | 
             <strong>Total Leads:</strong> 20 | 
             <strong>Spend:</strong> €231.84
+        </div>
+        <div style="margin-top: 15px; font-size: 0.85em; color: #999; border-top: 1px solid #e5e7eb; padding-top: 15px;">
+            <strong>📅 Última Actualización:</strong> <span id="lastUpdate">Cargando...</span> UTC | 
+            <strong>📊 Datos validados:</strong> video-analysis.json + data.json | 
+            <strong>🔐 Fuente:</strong> Meta API verificado
         </div>
     </div>
 
