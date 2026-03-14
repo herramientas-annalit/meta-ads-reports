@@ -11,7 +11,6 @@
     {"date": "2026-03-10", "spend": 18.25, "impressions": 2794, "clicks": 30, "leads": 0, "cpl": 0.00},
     {"date": "2026-03-11", "spend": 21.57, "impressions": 3058, "clicks": 33, "leads": 1, "cpl": 21.57},
     {"date": "2026-03-12", "spend": 17.28, "impressions": 1506, "clicks": 16, "leads": 2, "cpl": 8.64},
-    {"date": "2026-03-13", "spend": 18.00, "impressions": 4084, "clicks": 44, "leads": 0, "cpl": 0.00},
-    {"date": "2026-03-14", "spend": 18.46, "impressions": 1202, "clicks": 13, "leads": 0, "cpl": 0.00}
+    {"date": "2026-03-13", "spend": 18.00, "impressions": 4084, "clicks": 44, "leads": 0, "cpl": 0.00}
   ]
 }

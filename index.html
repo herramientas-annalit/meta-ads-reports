@@ -266,10 +266,10 @@
             <strong>Spend:</strong> €231.84
         </div>
         <div style="margin-top: 15px; font-size: 0.85em; color: #999; border-top: 1px solid #e5e7eb; padding-top: 15px;">
-            <strong>📅 Actualizado hasta:</strong> <span id="lastUpdate">14 Marzo 2026, 21:41 UTC</span> | 
-            <strong>📊 Datos validados:</strong> 100% consistente (2-14 Marzo) | 
-            <strong>🔐 Fuente:</strong> Meta Graph API | 
-            <strong>✅ v2.2 - HASTA HOY</strong>
+            <strong>📅 Actualizado hasta:</strong> <span id="lastUpdate">13 Marzo 2026, 21:50 UTC</span> | 
+            <strong>📊 Datos validados:</strong> 100% Meta API | 
+            <strong>🔐 Fuente:</strong> Meta Graph API (time_increment=1) | 
+            <strong>✅ v2.3 - META API VÁLIDO</strong>
         </div>
     </div>
 
@@ -284,7 +284,7 @@
         <div class="section">
             <div class="kpi-grid">
                 <div class="kpi-card">
-                    <div class="kpi-value">€<span id="kpiSpend">242.16</span></div>
+                    <div class="kpi-value">€<span id="kpiSpend">223.70</span></div>
                     <div class="kpi-label">Inversión Total</div>
                 </div>
                 <div class="kpi-card success">
@@ -292,7 +292,7 @@
                     <div class="kpi-label">Leads</div>
                 </div>
                 <div class="kpi-card warning">
-                    <div class="kpi-value">€<span id="kpiCPL">12.11</span></div>
+                    <div class="kpi-value">€<span id="kpiCPL">11.18</span></div>
                     <div class="kpi-label">CPL Promedio</div>
                 </div>
                 <div class="kpi-card success">
@@ -540,7 +540,7 @@
 
             // === RENDIMIENTO SEMANAL ===
             const week1 = daily.slice(0, 7); // 2-8 mar (7 días)
-            const week2 = daily.slice(7); // 9-14 mar (6 días + 14)
+            const week2 = daily.slice(7); // 9-13 mar (5 días)
             
             const w1Spend = week1.reduce((s, d) => s + d.spend, 0);
             const w1Leads = week1.reduce((l, d) => l + d.leads, 0);
@@ -570,7 +570,7 @@
             document.getElementById('weeklyStats').innerHTML = `
                 <!-- DESGLOSE SEMANAL -->
                 <div class="weekly-card ${cplChange > 100 ? 'bad' : cplChange > 50 ? 'warning' : 'good'}">
-                    <div class="weekly-title" style="font-size: 1.3em; margin-bottom: 30px;">📅 Rendimiento Semana 2 (9-14 Marzo)</div>
+                    <div class="weekly-title" style="font-size: 1.3em; margin-bottom: 30px;">📅 Rendimiento Semana 2 (9-13 Marzo)</div>
                     
                     <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 30px; margin-bottom: 40px;">
                         <div style="text-align: center;">
@@ -1294,7 +1294,7 @@
                             <div>
                                 <div style="color: #666; font-size: 0.85em; margin-bottom: 5px;">CPL (promedio)</div>
                                 <div style="font-size: 1.8em; font-weight: 900; color: #10B981;">€${esc.cpl}</div>
-                                <div style="color: #999; font-size: 0.8em;">vs €<span id="actualCPLText">12.11</span> actual</div>
+                                <div style="color: #999; font-size: 0.8em;">vs €<span id="actualCPLText">11.18</span> actual</div>
                             </div>
                             <div>
                                 <div style="color: #666; font-size: 0.85em; margin-bottom: 5px;">Leads/mes (estimado)</div>
