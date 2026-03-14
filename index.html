@@ -403,48 +403,27 @@
             
             document.getElementById('weeklyStats').innerHTML = `
                 <div class="weekly-card ${cplChange > 100 ? 'bad' : cplChange > 50 ? 'warning' : 'good'}">
-                    <div class="weekly-title" style="font-size: 1.3em; margin-bottom: 20px;">📅 Rendimiento Semana 2 (9-14 Marzo)</div>
+                    <div class="weekly-title" style="font-size: 1.3em; margin-bottom: 30px;">📅 Rendimiento Semana 2 (9-14 Marzo)</div>
                     
-                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 30px; margin-bottom: 30px; border-bottom: 2px solid rgba(0,0,0,0.1); padding-bottom: 30px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 30px; margin-bottom: 40px;">
                         <div style="text-align: center;">
-                            <div style="font-size: 0.8em; color: #999; margin-bottom: 5px; text-transform: uppercase; font-weight: 800;">Inversión</div>
-                            <div style="font-size: 2.5em; font-weight: 900; color: #2563EB;">€${w2Spend.toFixed(2)}</div>
+                            <div style="font-size: 2.8em; font-weight: 900; color: #2563EB; margin-bottom: 8px;">€${w2Spend.toFixed(2)}</div>
+                            <div style="font-size: 0.75em; color: #999;">Inversión</div>
+                            <div style="font-size: 0.75em; color: #999; margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(0,0,0,0.1);">vs €${w1Spend.toFixed(2)}</div>
                         </div>
                         <div style="text-align: center;">
-                            <div style="font-size: 0.8em; color: #999; margin-bottom: 5px; text-transform: uppercase; font-weight: 800;">Leads</div>
-                            <div style="font-size: 2.5em; font-weight: 900; color: #10B981;">${w2Leads}</div>
+                            <div style="font-size: 2.8em; font-weight: 900; color: #10B981; margin-bottom: 8px;">${w2Leads}</div>
+                            <div style="font-size: 0.75em; color: #999;">Leads</div>
+                            <div style="font-size: 0.75em; color: #999; margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(0,0,0,0.1);">vs ${w1Leads}</div>
                         </div>
                         <div style="text-align: center;">
-                            <div style="font-size: 0.8em; color: #999; margin-bottom: 5px; text-transform: uppercase; font-weight: 800;">CPL</div>
-                            <div style="font-size: 2.5em; font-weight: 900; color: #F59E0B;">€${w2CPL.toFixed(2)}</div>
+                            <div style="font-size: 2.8em; font-weight: 900; color: #F59E0B; margin-bottom: 8px;">€${w2CPL.toFixed(2)}</div>
+                            <div style="font-size: 0.75em; color: #999;">CPL</div>
+                            <div style="font-size: 0.75em; color: #999; margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(0,0,0,0.1);">vs €${w1CPL.toFixed(2)}</div>
                         </div>
                     </div>
                     
-                    <div style="background: rgba(0,0,0,0.05); padding: 20px; border-radius: 8px;">
-                        <div style="font-size: 0.85em; font-weight: 800; margin-bottom: 15px; color: #666;">vs Semana Anterior (2-8 Marzo)</div>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
-                            <div>
-                                <div style="font-size: 0.8em; color: #999; margin-bottom: 5px;">Inversión</div>
-                                <div style="font-size: 1.4em; font-weight: 900; color: ${investChange < 0 ? '#EF4444' : '#10B981'};">
-                                    ${investChange > 0 ? '+' : ''}${investChange.toFixed(0)}%
-                                </div>
-                            </div>
-                            <div>
-                                <div style="font-size: 0.8em; color: #999; margin-bottom: 5px;">Leads</div>
-                                <div style="font-size: 1.4em; font-weight: 900; color: ${leadsChange < 0 ? '#EF4444' : '#10B981'};">
-                                    ${leadsChange > 0 ? '+' : ''}${leadsChange.toFixed(0)}%
-                                </div>
-                            </div>
-                            <div>
-                                <div style="font-size: 0.8em; color: #999; margin-bottom: 5px;">CPL</div>
-                                <div style="font-size: 1.4em; font-weight: 900; color: #EF4444;">
-                                    +${cplChange.toFixed(0)}%
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div style="margin-top: 20px; padding: 15px; background: ${cplChange > 100 ? 'rgba(239,68,68,0.1)' : 'rgba(245,158,11,0.1)'}; border-left: 4px solid ${cplChange > 100 ? '#EF4444' : '#F59E0B'}; border-radius: 6px;">
+                    <div style="padding: 15px; background: ${cplChange > 100 ? 'rgba(239,68,68,0.1)' : 'rgba(245,158,11,0.1)'}; border-left: 4px solid ${cplChange > 100 ? '#EF4444' : '#F59E0B'}; border-radius: 6px;">
                         <strong>Fatiga de Audiencia:</strong> ${cplChange > 100 ? '🔴 CRÍTICA - Acción inmediata requerida' : cplChange > 50 ? '🟡 ALTA - Nuevas audiencias necesarias' : '🟢 NORMAL'}
                     </div>
                 </div>
