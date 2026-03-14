@@ -636,27 +636,41 @@
                  height: 350, margin: {t: 60, r: 80}, hovermode: 'x unified'},
                 {responsive: true, displayModeBar: false});
 
-            // Gráfico 2: CPL Diario (con etiquetas descriptivas)
+            // Gráfico 2: CPL Diario (INCLUYE TODOS LOS DÍAS con formato DD-mes-YYYY)
             let cplDates = [], cplValues = [], cplText = [], cplStatus = [];
             daily.forEach(d => {
+                // Formatear fecha como DD-mes-YYYY
+                const dateObj = new Date(d.date + 'T00:00:00Z');
+                const formattedDate = dateObj.toLocaleDateString('es-ES', {year: 'numeric', month: 'short', day: '2-digit'});
+                const dayName = dateObj.toLocaleDateString('es-ES', {weekday: 'short'});
+                
+                // Incluir todos los días
+                cplDates.push(formattedDate);
+                
                 if (d.cpl && d.cpl > 0) {
-                    cplDates.push(d.date);
                     cplValues.push(d.cpl);
-                    
-                    // Etiqueta descriptiva mejorada
-                    const dateObj = new Date(d.date);
-                    const dayName = dateObj.toLocaleDateString('es-ES', {weekday: 'short'});
                     const status = d.cpl < 10 ? '✅ Bueno' : d.cpl < 15 ? '🟡 Aceptable' : '🔴 Alto';
                     const insight = d.leads > 2 ? '(Múltiples conversiones)' : d.leads === 1 ? '(1 lead)' : '(0 leads)';
                     
                     cplText.push(
-                        `<b>${d.date} (${dayName.toUpperCase()})</b><br>` +
+                        `<b>${formattedDate} (${dayName.toUpperCase()})</b><br>` +
                         `CPL: €${d.cpl.toFixed(2)}<br>` +
                         `Leads: ${d.leads} ${insight}<br>` +
                         `Gasto: €${d.spend.toFixed(2)}<br>` +
                         `Status: ${status}`
                     );
                     cplStatus.push(d.cpl < 10 ? '#10B981' : d.cpl < 15 ? '#F59E0B' : '#EF4444');
+                } else {
+                    // Días sin leads/CPL
+                    cplValues.push(null);
+                    cplText.push(
+                        `<b>${formattedDate} (${dayName.toUpperCase()})</b><br>` +
+                        `CPL: N/A<br>` +
+                        `Leads: 0 (sin conversiones)<br>` +
+                        `Gasto: €${d.spend.toFixed(2)}<br>` +
+                        `Status: ❌ Sin datos`
+                    );
+                    cplStatus.push('#CCCCCC');
                 }
             });
 
