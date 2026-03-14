@@ -283,7 +283,7 @@
         <div class="section">
             <div class="kpi-grid">
                 <div class="kpi-card">
-                    <div class="kpi-value">€231.84</div>
+                    <div class="kpi-value">€<span id="kpiSpend">223.70</span></div>
                     <div class="kpi-label">Inversión Total</div>
                 </div>
                 <div class="kpi-card success">
@@ -291,7 +291,7 @@
                     <div class="kpi-label">Leads</div>
                 </div>
                 <div class="kpi-card warning">
-                    <div class="kpi-value">€11.59</div>
+                    <div class="kpi-value">€<span id="kpiCPL">11.18</span></div>
                     <div class="kpi-label">CPL Promedio</div>
                 </div>
                 <div class="kpi-card success">
@@ -524,7 +524,18 @@
             });
 
             const creativos = Object.entries(creativeMap).map(([k, v]) => ({name: k, ...v})).sort((a,b) => b.leads - a.leads);
-            const totalSpend = creativos.reduce((s, c) => s + c.spend, 0);
+            
+            // Usar data.json como fuente de verdad para totales
+            const totalSpend = daily.reduce((s, d) => s + d.spend, 0);
+            const totalLeads = daily.reduce((l, d) => l + d.leads, 0);
+            const totalCPL = totalLeads > 0 ? totalSpend / totalLeads : 0;
+            
+            // Actualizar KPIs generales con data.json
+            document.getElementById('kpiSpend').textContent = totalSpend.toFixed(2);
+            document.getElementById('kpiCPL').textContent = totalCPL.toFixed(2);
+            if (document.getElementById('actualCPLText')) {
+                document.getElementById('actualCPLText').textContent = totalCPL.toFixed(2);
+            }
 
             // === RENDIMIENTO SEMANAL ===
             const week1 = daily.slice(0, 7); // 2-8 mar (7 días)
@@ -550,14 +561,15 @@
             const w1CPM = (w1Spend / (daily.slice(0,7).reduce((s,d) => s + d.impressions, 0) / 1000)).toFixed(2);
             const cpmChange = ((w2CPM - w1CPM) / w1CPM * 100);
             
-            const totalCampaignSpend = daily.reduce((s, d) => s + d.spend, 0);
-            const totalCampaignLeads = daily.reduce((l, d) => l + d.leads, 0);
-            const totalCampaignCPL = totalCampaignLeads > 0 ? totalCampaignSpend / totalCampaignLeads : 0;
+            // RESUMEN GENERAL usa los mismos totales
+            const totalCampaignSpend = totalSpend;
+            const totalCampaignLeads = totalLeads;
+            const totalCampaignCPL = totalCPL;
             
             document.getElementById('weeklyStats').innerHTML = `
                 <!-- RESUMEN GENERAL DE CAMPAÑA -->
                 <div class="weekly-card" style="background: linear-gradient(135deg, #f0fdf4 0%, #f9fafb 100%); border-left: 5px solid #10B981; margin-bottom: 40px;">
-                    <div class="weekly-title" style="font-size: 1.3em; margin-bottom: 30px; color: #10B981;">📊 RESUMEN GENERAL: Campaña Completa (2-14 Marzo - Actualizado)</div>
+                    <div class="weekly-title" style="font-size: 1.3em; margin-bottom: 30px; color: #10B981;">📊 RESUMEN GENERAL: Campaña Completa (2-13 Marzo)</div>
                     
                     <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 30px; margin-bottom: 25px;">
                         <div style="text-align: center;">
@@ -577,7 +589,7 @@
                 
                 <!-- DESGLOSE SEMANAL -->
                 <div class="weekly-card ${cplChange > 100 ? 'bad' : cplChange > 50 ? 'warning' : 'good'}">
-                    <div class="weekly-title" style="font-size: 1.3em; margin-bottom: 30px;">📅 Rendimiento Semana 2 (9-14 Marzo)</div>
+                    <div class="weekly-title" style="font-size: 1.3em; margin-bottom: 30px;">📅 Rendimiento Semana 2 (9-13 Marzo)</div>
                     
                     <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 30px; margin-bottom: 40px;">
                         <div style="text-align: center;">
@@ -1107,9 +1119,13 @@
             }, 500);
 
             // === PROYECCIONES ===
+            const actualCPL = totalCPL.toFixed(2);
+            const optimizedIncome = Math.round((50 / 9) * 50 * 20); // CPL €9 optimizado
+            const actualIncome = Math.round((50 / actualCPL) * 50 * 20); // CPL actual
+            
             Plotly.newPlot('projectionChart',
-                [{x: [20, 50], y: [3350, 7500], mode: 'lines+markers', name: 'CPL €9 (Optimizado)', line: {color: '#10B981', width: 4}, marker: {size: 12}},
-                 {x: [20, 50], y: [2600, 6500], mode: 'lines+markers', name: 'CPL €11.59 (Actual)', line: {color: '#F59E0B', width: 4, dash: 'dash'}, marker: {size: 12}}],
+                [{x: [20, 50], y: [3350, 8375], mode: 'lines+markers', name: 'CPL €9 (Optimizado)', line: {color: '#10B981', width: 4}, marker: {size: 12}},
+                 {x: [20, 50], y: [Math.round((50/actualCPL)*20*20), Math.round((50/actualCPL)*50*20)], mode: 'lines+markers', name: `CPL €${actualCPL} (Actual)`, line: {color: '#F59E0B', width: 4, dash: 'dash'}, marker: {size: 12}}],
                 {title: '<b>Ingresos Proyectados/mes (x €50/lead)</b>', xaxis: {title: 'Presupuesto diario (€)'}, yaxis: {title: 'Ingresos/mes (€)'}, height: 350, margin: {t: 60}, hovermode: 'x unified'},
                 {responsive: true, displayModeBar: false});
             
@@ -1297,7 +1313,7 @@
                             <div>
                                 <div style="color: #666; font-size: 0.85em; margin-bottom: 5px;">CPL (promedio)</div>
                                 <div style="font-size: 1.8em; font-weight: 900; color: #10B981;">€${esc.cpl}</div>
-                                <div style="color: #999; font-size: 0.8em;">vs €11.59 actual</div>
+                                <div style="color: #999; font-size: 0.8em;">vs €<span id="actualCPLText">11.18</span> actual</div>
                             </div>
                             <div>
                                 <div style="color: #666; font-size: 0.85em; margin-bottom: 5px;">Leads/mes (estimado)</div>
