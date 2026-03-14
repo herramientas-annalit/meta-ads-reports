@@ -128,17 +128,36 @@
             margin-bottom: 40px;
         }
         
-        .chart-box {
-            min-height: 450px;
+        .chart-wrapper {
             background: #fafbfc;
             border-radius: 15px;
             padding: 20px;
+        }
+        
+        .chart-box {
+            min-height: 400px;
+            margin-bottom: 20px;
+        }
+        
+        .chart-description {
+            background: #f0f7ff;
+            border-left: 4px solid #2563EB;
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 0.9em;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        .chart-description strong {
+            color: #2563EB;
         }
         
         /* Tabla */
         .table-container {
             overflow-x: auto;
             border-radius: 15px;
+            margin-bottom: 30px;
         }
         
         table {
@@ -176,6 +195,17 @@
         .metric-good { color: #10B981; font-weight: 800; }
         .metric-warn { color: #F59E0B; font-weight: 800; }
         .metric-bad { color: #EF4444; font-weight: 800; }
+        
+        .table-description {
+            background: #f0f7ff;
+            border-left: 4px solid #2563EB;
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 0.9em;
+            line-height: 1.6;
+            color: #333;
+            margin-bottom: 30px;
+        }
         
         .insight {
             background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
@@ -275,13 +305,35 @@
             <div class="section-title">📈 Evolución y Rendimiento General</div>
             
             <div class="chart-grid">
-                <div class="chart-box" id="chart1"></div>
-                <div class="chart-box" id="chart2"></div>
+                <div class="chart-wrapper">
+                    <div class="chart-box" id="chart1"></div>
+                    <div class="chart-description">
+                        <strong>¿Qué ves aquí?</strong> La línea azul muestra cuánto dinero gastaste cada día (acumulado de arriba hacia abajo). La línea verde muestra cuántos leads generaste (también acumulado). Si una línea sube mucho, significa más inversión o más conversiones.
+                    </div>
+                </div>
+
+                <div class="chart-wrapper">
+                    <div class="chart-box" id="chart2"></div>
+                    <div class="chart-description">
+                        <strong>¿Qué ves aquí?</strong> El costo de cada lead a lo largo de los días. Observa cómo sube desde $4-8 hasta $20. Esto significa que con el mismo presupuesto estás consiguiendo MENOS leads. Problema: audience fatiga (la gente ha visto tu anuncio demasiadas veces).
+                    </div>
+                </div>
             </div>
 
             <div class="chart-grid">
-                <div class="chart-box" id="chart3"></div>
-                <div class="chart-box" id="chart4"></div>
+                <div class="chart-wrapper">
+                    <div class="chart-box" id="chart3"></div>
+                    <div class="chart-description">
+                        <strong>¿Qué ves aquí?</strong> Cuánto dinero gastaste cada día individual (no acumulado). Los días con barras más altas = más inversión ese día. Sirve para ver si algún día fue especialmente rentable o costoso.
+                    </div>
+                </div>
+
+                <div class="chart-wrapper">
+                    <div class="chart-box" id="chart4"></div>
+                    <div class="chart-description">
+                        <strong>¿Qué ves aquí?</strong> Cuántos leads generaste cada día. Los días sin barras = 0 leads ese día (el dinero fue "quemado" sin conversión). Si ves muchos días sin barras, tu anuncio no está funcionando bien ese día.
+                    </div>
+                </div>
             </div>
 
             <div class="insight">
@@ -294,11 +346,25 @@
             <div class="section-title">🎬 Análisis de Creativos - Embudo Completo</div>
             
             <div class="chart-grid">
-                <div class="chart-box" id="funnel"></div>
-                <div class="chart-box" id="retention"></div>
+                <div class="chart-wrapper">
+                    <div class="chart-box" id="funnel"></div>
+                    <div class="chart-description">
+                        <strong>¿Qué ves aquí?</strong> El embudo de conversión. Empieza con 11,562 personas que ven el vídeo. Luego: ¿cuántos llegan a los 3 segundos (hook)? ¿25%? ¿50%? ¿100% lo ven completo? ¿Cuántos se convierten en leads? Cada paso más pequeño = pérdida de audiencia. Identificar dónde cae la gente te dice dónde mejorar.
+                    </div>
+                </div>
+
+                <div class="chart-wrapper">
+                    <div class="chart-box" id="retention"></div>
+                    <div class="chart-description">
+                        <strong>¿Qué ves aquí?</strong> La curva de retención en %. Empieza en 100% (todos reproducen) y cae. Si cae rápido al inicio = el hook (primeros 3 segundos) no engancha. Si mantiene 25% pero cae en 50% = el contenido intermedio aburre. Si cae al final = el CTA no convence.
+                    </div>
+                </div>
             </div>
 
             <div class="table-container">
+                <div class="table-description">
+                    <strong>¿Qué ves en esta tabla?</strong> Cada fila es un creativo (anuncio). Las columnas de colores muestran: Hook (0-3s), 25%, 50%, 75%, 100% = qué % de la gente sigue viendo en cada punto. Colores: 🟢 verde = bueno, 🟡 amarillo = regular, 🔴 rojo = malo. "Leads" = conversiones reales. "CPL" = costo por lead (menos es mejor).
+                </div>
                 <table>
                     <thead>
                         <tr>
@@ -319,8 +385,19 @@
             </div>
 
             <div class="chart-grid" style="margin-top: 40px;">
-                <div class="chart-box" id="hookChart"></div>
-                <div class="chart-box" id="efficiencyChart"></div>
+                <div class="chart-wrapper">
+                    <div class="chart-box" id="hookChart"></div>
+                    <div class="chart-description">
+                        <strong>¿Qué ves aquí?</strong> La fuerza del "hook" (primeros 3 segundos) de cada creativo. Barras altas = buen hook (la gente sigue viendo). Barras bajas = malo (abandono inmediato). Compara: si tu hook está bajo pero el lead rate es alto, significa que otro creativo tiene mejor inicio.
+                    </div>
+                </div>
+
+                <div class="chart-wrapper">
+                    <div class="chart-box" id="efficiencyChart"></div>
+                    <div class="chart-description">
+                        <strong>¿Qué ves aquí?</strong> Cada punto = un creativo. El eje X (izquierda-derecha) = dinero gastado. El eje Y (arriba-abajo) = leads conseguidos. Puntos arriba a la derecha = mucho gasto, muchos leads (eficiente). Puntos abajo a la derecha = mucho gasto, pocos leads (ineficiente). El color = CPL (rojo = caro, verde = barato).
+                    </div>
+                </div>
             </div>
 
             <div class="insight">
@@ -375,7 +452,6 @@
     </div>
 
     <script>
-        // Cargar datos
         Promise.all([fetch('data.json').then(r => r.json()), fetch('video-analysis.json').then(r => r.json())])
             .then(([dayData, videoData]) => {
                 const daily = dayData.daily;
@@ -390,7 +466,7 @@
                     spend.push(cumSpend);
                     leads.push(cumLeads);
                 });
-                Plotly.newPlot('chart1', [{x: dates, y: spend, name: 'Gasto', line: {color: '#2563EB', width: 3}}, {x: dates, y: leads.map(l => l*10), name: 'Leads×10', line: {color: '#10B981', width: 3}, yaxis: 'y2'}], {title: '<b>Evolución Acumulada</b>', yaxis: {title: 'Gasto ($)', titlefont: {color: '#2563EB'}}, yaxis2: {title: 'Leads', titlefont: {color: '#10B981'}, overlaying: 'y', side: 'right'}, hovermode: 'x unified', height: 400}, {responsive: true, displayModeBar: false});
+                Plotly.newPlot('chart1', [{x: dates, y: spend, name: 'Gasto', line: {color: '#2563EB', width: 3}}, {x: dates, y: leads.map(l => l*10), name: 'Leads×10', line: {color: '#10B981', width: 3}, yaxis: 'y2'}], {title: '<b>Evolución Acumulada (Gasto vs Leads)</b>', yaxis: {title: 'Gasto ($)', titlefont: {color: '#2563EB'}}, yaxis2: {title: 'Leads', titlefont: {color: '#10B981'}, overlaying: 'y', side: 'right'}, hovermode: 'x unified', height: 400, margin: {t: 60}}, {responsive: true, displayModeBar: false});
 
                 // Chart 2: CPL Tendencia
                 let cplDates = [], cplValues = [];
@@ -400,21 +476,21 @@
                         cplValues.push(d.cpl);
                     }
                 });
-                Plotly.newPlot('chart2', [{x: cplDates, y: cplValues, type: 'scatter', mode: 'lines+markers', line: {color: '#F59E0B', width: 3}, marker: {size: 8}, fill: 'tozeroy', fillcolor: 'rgba(245,158,11,0.15)'}], {title: '<b>Costo por Lead (Tendencia)</b>', yaxis: {title: 'CPL ($)'}, hovermode: 'x unified', height: 400}, {responsive: true, displayModeBar: false});
+                Plotly.newPlot('chart2', [{x: cplDates, y: cplValues, type: 'scatter', mode: 'lines+markers', line: {color: '#F59E0B', width: 3}, marker: {size: 8}, fill: 'tozeroy', fillcolor: 'rgba(245,158,11,0.15)'}], {title: '<b>Costo por Lead - Tendencia Diaria</b>', yaxis: {title: 'CPL ($)'}, hovermode: 'x unified', height: 400, margin: {t: 60}}, {responsive: true, displayModeBar: false});
 
                 // Chart 3: Gasto Diario
-                Plotly.newPlot('chart3', [{x: dates, y: daily.map(d => d.spend), type: 'bar', marker: {color: '#2563EB'}, name: 'Gasto'}], {title: '<b>Gasto Diario ($)</b>', yaxis: {title: '$'}, height: 400}, {responsive: true, displayModeBar: false});
+                Plotly.newPlot('chart3', [{x: dates, y: daily.map(d => d.spend), type: 'bar', marker: {color: '#2563EB'}, name: 'Gasto'}], {title: '<b>Presupuesto Diario</b>', yaxis: {title: '$'}, height: 400, margin: {t: 60}}, {responsive: true, displayModeBar: false});
 
                 // Chart 4: Leads Diarios
-                Plotly.newPlot('chart4', [{x: dates, y: daily.map(d => d.leads), type: 'bar', marker: {color: '#10B981'}, name: 'Leads'}], {title: '<b>Leads Generados por Día</b>', yaxis: {title: 'Leads'}, height: 400}, {responsive: true, displayModeBar: false});
+                Plotly.newPlot('chart4', [{x: dates, y: daily.map(d => d.leads), type: 'bar', marker: {color: '#10B981'}, name: 'Leads'}], {title: '<b>Leads Generados por Día</b>', yaxis: {title: 'Leads'}, height: 400, margin: {t: 60}}, {responsive: true, displayModeBar: false});
 
                 // Embudo
                 const main = mainVideos[0];
                 const hook = main.retention_25 * 1.2;
-                Plotly.newPlot('funnel', [{type: 'funnel', y: ['Reproducciones', '0-3s', '25%', '50%', '75%', '100%', 'Leads'], x: [main.plays, Math.round(main.plays * hook / 100), main.plays_25, main.plays_50, main.plays_75, main.plays_100, main.leads], marker: {color: ['#2563EB', '#06B6D4', '#10B981', '#F59E0B', '#FBBF24', '#EF4444', '#8B5CF6']}}], {title: `<b>${main.ad_name}</b> - $${main.spend.toFixed(2)}`, height: 400}, {responsive: true, displayModeBar: false});
+                Plotly.newPlot('funnel', [{type: 'funnel', y: ['Reproducciones', '0-3s Hook', '25%', '50%', '75%', '100%', 'Leads'], x: [main.plays, Math.round(main.plays * hook / 100), main.plays_25, main.plays_50, main.plays_75, main.plays_100, main.leads], marker: {color: ['#2563EB', '#06B6D4', '#10B981', '#F59E0B', '#FBBF24', '#EF4444', '#8B5CF6']}}], {title: `<b>Embudo de Conversión - ${main.ad_name} ($${main.spend.toFixed(2)})</b>`, height: 400, margin: {t: 60}}, {responsive: true, displayModeBar: false});
 
                 // Retention Curve
-                Plotly.newPlot('retention', [{x: ['Plays', '0-3s', '25%', '50%', '75%', '100%'], y: [100, hook, main.retention_25, main.retention_50, main.retention_75, main.retention_100], type: 'scatter', mode: 'lines+markers', line: {color: '#2563EB', width: 3}, marker: {size: 12, color: ['#2563EB', '#06B6D4', '#10B981', '#F59E0B', '#FBBF24', '#EF4444']}}], {title: '<b>Curva de Retención (%)</b>', yaxis: {title: 'Retención %'}, height: 400}, {responsive: true, displayModeBar: false});
+                Plotly.newPlot('retention', [{x: ['Plays', '0-3s', '25%', '50%', '75%', '100%'], y: [100, hook, main.retention_25, main.retention_50, main.retention_75, main.retention_100], type: 'scatter', mode: 'lines+markers', line: {color: '#2563EB', width: 3}, marker: {size: 12, color: ['#2563EB', '#06B6D4', '#10B981', '#F59E0B', '#FBBF24', '#EF4444']}}], {title: '<b>Curva de Retención (%)</b>', yaxis: {title: 'Retención %'}, height: 400, margin: {t: 60}}, {responsive: true, displayModeBar: false});
 
                 // Tabla creativos
                 const tbody = document.getElementById('creativeTable');
@@ -424,10 +500,10 @@
                 });
 
                 // Hook Chart
-                Plotly.newPlot('hookChart', [{x: mainVideos.slice(0,7).map(v => v.ad_name.substring(0,12)), y: mainVideos.slice(0,7).map(v => (v.retention_25*1.2).toFixed(1)), type: 'bar', marker: {color: mainVideos.slice(0,7).map(v => {const h=v.retention_25*1.2; return h>15?'#10B981':h>8?'#F59E0B':'#EF4444'})}}], {title: '<b>Hook Strength (0-3s %)</b>', yaxis: {title: '%'}, height: 400}, {responsive: true, displayModeBar: false});
+                Plotly.newPlot('hookChart', [{x: mainVideos.slice(0,7).map(v => v.ad_name.substring(0,12)), y: mainVideos.slice(0,7).map(v => (v.retention_25*1.2).toFixed(1)), type: 'bar', marker: {color: mainVideos.slice(0,7).map(v => {const h=v.retention_25*1.2; return h>15?'#10B981':h>8?'#F59E0B':'#EF4444'})}}], {title: '<b>Fuerza del Hook (0-3 segundos)</b>', yaxis: {title: '%'}, height: 400, margin: {t: 60}}, {responsive: true, displayModeBar: false});
 
                 // Efficiency
-                Plotly.newPlot('efficiencyChart', [{x: mainVideos.slice(0,7).map(v => v.spend), y: mainVideos.slice(0,7).map(v => v.leads), mode: 'markers+text', marker: {size: 18, color: mainVideos.slice(0,7).map(v => v.cpl), colorscale: 'Viridis', showscale: true, colorbar: {title: 'CPL ($)'}}, text: mainVideos.slice(0,7).map(v => v.ad_name.substring(0,8)), textposition: 'top center'}], {title: '<b>Presupuesto vs Leads</b>', xaxis: {title: 'Gasto ($)'}, yaxis: {title: 'Leads'}, height: 400}, {responsive: true, displayModeBar: false});
+                Plotly.newPlot('efficiencyChart', [{x: mainVideos.slice(0,7).map(v => v.spend), y: mainVideos.slice(0,7).map(v => v.leads), mode: 'markers+text', marker: {size: 18, color: mainVideos.slice(0,7).map(v => v.cpl), colorscale: 'Viridis', showscale: true, colorbar: {title: 'CPL ($)'}}, text: mainVideos.slice(0,7).map(v => v.ad_name.substring(0,8)), textposition: 'top center'}], {title: '<b>Presupuesto Invertido vs Leads Conseguidos</b>', xaxis: {title: 'Gasto ($)'}, yaxis: {title: 'Leads'}, height: 400, margin: {t: 60}}, {responsive: true, displayModeBar: false});
             });
     </script>
 </body>
