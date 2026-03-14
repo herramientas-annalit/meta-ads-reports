@@ -381,21 +381,45 @@
             const cplChange = w1CPL > 0 ? ((w2CPL - w1CPL) / w1CPL) * 100 : 0;
             const leadsChange = w1Leads > 0 ? ((w2Leads - w1Leads) / w1Leads) * 100 : 0;
 
+            const leadsChangeColor = leadsChange < -50 ? 'bad' : leadsChange < 0 ? 'warning' : 'good';
+            const investColor = w1Spend > w2Spend ? 'good' : 'bad';
+            
             document.getElementById('weeklyStats').innerHTML = `
-                <div class="weekly-card good">
-                    <div class="weekly-title">📅 Semana 1 (2-8 Mar)</div>
-                    <div class="weekly-value">€${w1Spend.toFixed(2)}</div>
-                    <div class="weekly-compare">Leads: ${w1Leads} | CPL: €${w1CPL.toFixed(2)}</div>
-                </div>
-                <div class="weekly-card ${cplChange > 50 ? 'bad' : 'warning'}">
-                    <div class="weekly-title">📅 Semana 2 (9-14 Mar)</div>
-                    <div class="weekly-value">€${w2Spend.toFixed(2)}</div>
-                    <div class="weekly-compare">Leads: ${w2Leads} | CPL: €${w2CPL.toFixed(2)}</div>
-                </div>
-                <div class="weekly-card ${cplChange > 100 ? 'bad' : cplChange > 50 ? 'warning' : 'good'}">
-                    <div class="weekly-title">⚖️ Comparativa</div>
-                    <div class="weekly-value">${cplChange > 0 ? '+' : ''}${cplChange.toFixed(0)}% CPL</div>
-                    <div class="weekly-compare">Leads: ${leadsChange > 0 ? '+' : ''}${leadsChange.toFixed(0)}% | Fatiga: ${cplChange > 100 ? '🔴 CRÍTICA' : cplChange > 50 ? '🟡 ALTA' : '🟢 NORMAL'}</div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+                    <div class="weekly-card good">
+                        <div class="weekly-title">📅 Semana 1</div>
+                        <div style="font-size: 0.75em; color: #999; margin-bottom: 10px;">2-8 Marzo</div>
+                        <div class="weekly-value">€${w1Spend.toFixed(2)}</div>
+                        <div class="weekly-compare" style="margin-top: 10px;">
+                            <strong>Leads:</strong> ${w1Leads}<br>
+                            <strong>CPL:</strong> €${w1CPL.toFixed(2)}<br>
+                            <span style="color: #10B981;">🟢 Bueno</span>
+                        </div>
+                    </div>
+                    <div class="weekly-card ${cplChange > 50 ? 'bad' : 'warning'}">
+                        <div class="weekly-title">📅 Semana 2</div>
+                        <div style="font-size: 0.75em; color: #999; margin-bottom: 10px;">9-14 Marzo</div>
+                        <div class="weekly-value">€${w2Spend.toFixed(2)}</div>
+                        <div class="weekly-compare" style="margin-top: 10px;">
+                            <strong>Leads:</strong> ${w2Leads}<br>
+                            <strong>CPL:</strong> €${w2CPL.toFixed(2)}<br>
+                            <span style="color: ${cplChange > 50 ? '#EF4444' : '#F59E0B'};">${cplChange > 100 ? '🔴 Crítico' : cplChange > 50 ? '🟡 Alto' : '🟢 Aceptable'}</span>
+                        </div>
+                    </div>
+                    <div class="weekly-card ${cplChange > 100 ? 'bad' : cplChange > 50 ? 'warning' : 'good'}">
+                        <div class="weekly-title">⚖️ Comparativa</div>
+                        <div style="font-size: 0.75em; color: #999; margin-bottom: 10px;">Sem 1 vs Sem 2</div>
+                        <div style="margin-bottom: 15px;">
+                            <div style="margin-bottom: 8px;">
+                                <strong>Inversión:</strong> ${investColor === 'bad' ? '🔴' : '🟢'} ${((w2Spend - w1Spend) / w1Spend * 100).toFixed(0)}%<br>
+                                <strong>Leads:</strong> ${leadsChangeColor === 'bad' ? '🔴' : '🟡'} ${leadsChange.toFixed(0)}%<br>
+                                <strong>CPL:</strong> 🔴 +${cplChange.toFixed(0)}%
+                            </div>
+                        </div>
+                        <div class="weekly-compare" style="border-top: 1px solid rgba(0,0,0,0.1); padding-top: 8px;">
+                            <strong>Fatiga:</strong><br>${cplChange > 100 ? '🔴 CRÍTICA' : cplChange > 50 ? '🟡 ALTA' : '🟢 NORMAL'}
+                        </div>
+                    </div>
                 </div>
             `;
 
