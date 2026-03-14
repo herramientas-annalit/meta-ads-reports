@@ -237,14 +237,14 @@
                 </div>
                 <div>
                     <div class="chart-box" id="chart2"></div>
-                    <div class="description"><strong>CPL Diario (Costo por Lead):</strong> Coste exacto de cada lead por día. Ej: 11-mar costó $21.57 (1 lead). Muestra cómo sube la fatiga de audiencia.</div>
+                    <div class="description"><strong>CPL Diario (Costo por Lead):</strong> Coste exacto de cada lead por día. Ej: 11-mar costó €21.57 (1 lead). Muestra cómo sube la fatiga de audiencia.</div>
                 </div>
             </div>
 
             <div class="chart-grid">
                 <div>
                     <div class="chart-box" id="chart3"></div>
-                    <div class="description"><strong>CPL por Semana (Comparativa):</strong> Semana 1 (2-8 mar): CPL promedio $8.52 | Semana 2 (9-14 mar): CPL promedio $20.80. Aumento del 144% = audience fatigue.</div>
+                    <div class="description"><strong>CPL por Semana (Comparativa):</strong> Semana 1 (2-8 mar): CPL promedio €8.52 | Semana 2 (9-14 mar): CPL promedio €20.80. Aumento del 144% = audience fatigue.</div>
                 </div>
                 <div>
                     <div class="chart-box" id="chart4"></div>
@@ -253,7 +253,7 @@
             </div>
 
             <div class="insight">
-                <strong>⚠️ HALLAZGO CRÍTICO:</strong> CPL se multiplicó de $8.52 a $20.80 en 13 días. Audiencia saturada. Ad 2 Pablo necesita nuevas audiencias AHORA.
+                <strong>⚠️ HALLAZGO CRÍTICO:</strong> CPL se multiplicó de €8.52 a €20.80 en 13 días. Audiencia saturada. Ad 2 Pablo necesita nuevas audiencias AHORA.
             </div>
         </div>
     </div>
@@ -262,7 +262,7 @@
     <div id="creativos" class="tab-content">
         <div class="section">
             <div class="section-title">🎬 Análisis de Creativos</div>
-            <p style="color: #666; margin-bottom: 20px;">Campaña "Test Manual SEO Local Pablo": 3 creativos testados en 9 ad sets (diferentes públicos). Presupuesto distribuido: Ad 2 Pablo $197.75 (85%) | Ad 3 Pablo $23.64 (10%) | Ad 1 Pablo $10.47 (5%).</p>
+            <p style="color: #666; margin-bottom: 20px;">Campaña "Test Manual SEO Local Pablo": 3 creativos testados en 9 ad sets (diferentes públicos). Presupuesto distribuido: Ad 2 Pablo €197.75 (85%) | Ad 3 Pablo €23.64 (10%) | Ad 1 Pablo €10.47 (5%).</p>
 
             <table>
                 <thead>
@@ -283,9 +283,9 @@
 
             <div class="insight" style="margin-top: 20px;">
                 <strong>🎯 Análisis por Creativo:</strong><br>
-                • <strong>Ad 2 Pablo:</strong> 19 leads, $197.75, CPL $10.41 = GANADOR. Distribuido en 3 ad sets.<br>
-                • <strong>Ad 1 Pablo:</strong> 1 lead, $10.47, CPL $10.47 = Bajo volumen.<br>
-                • <strong>Ad 3 Pablo:</strong> 0 leads, $23.64, CPL N/A = Sin conversión, considera pausar.
+                • <strong>Ad 2 Pablo:</strong> 19 leads, €197.75, CPL €10.41 = GANADOR. Distribuido en 3 ad sets.<br>
+                • <strong>Ad 1 Pablo:</strong> 1 lead, €10.47, CPL €10.47 = Bajo volumen.<br>
+                • <strong>Ad 3 Pablo:</strong> 0 leads, €23.64, CPL N/A = Sin conversión, considera pausar.
             </div>
 
             <div style="margin-top: 40px; border-top: 2px solid #e5e7eb; padding-top: 30px;">
@@ -315,15 +315,15 @@
 
             <div style="background: #dbeafe; border-left: 5px solid #2563EB; padding: 20px; border-radius: 12px; margin-bottom: 20px; font-size: 0.95em; line-height: 1.7;">
                 <strong>📊 Escenario Actual (SIN CAMBIOS):</strong><br>
-                Campaña "Test Manual SEO Local Pablo" | Presupuesto: $20/día | CPL: $11.59 | Leads/mes: ~52 leads<br>
-                Costo/mes: $600 | ROI asumido: $50/lead = $2,600/mes<br>
+                Campaña "Test Manual SEO Local Pablo" | Presupuesto: €20/día | CPL: €11.59 | Leads/mes: ~52 leads<br>
+                Costo/mes: €600 | ROI asumido: €50/lead = €2,600/mes<br>
                 <em>Status: ⚠️ SATURADO. Audiencia cansada.</em>
             </div>
 
             <div style="background: #f0fdf4; border-left: 5px solid #10B981; padding: 20px; border-radius: 12px; margin-bottom: 20px; font-size: 0.95em; line-height: 1.7;">
                 <strong>🚀 Escenario Recomendado (OPTIMIZAR):</strong><br>
-                Campaña: Ad 2 Pablo optimizado + 2-3 nuevas audiencias | Presupuesto: $20/día | CPL: $9 | Leads/mes: ~67 leads<br>
-                Costo/mes: $600 | ROI asumido: $50/lead = $3,350/mes<br>
+                Campaña: Ad 2 Pablo optimizado + 2-3 nuevas audiencias | Presupuesto: €20/día | CPL: €9 | Leads/mes: ~67 leads<br>
+                Costo/mes: €600 | ROI asumido: €50/lead = €3,350/mes<br>
                 <em>Status: ✅ Viable con nuevas ad sets.</em>
             </div>
 
@@ -486,9 +486,9 @@
 
             // === PROYECCIONES ===
             Plotly.newPlot('projectionChart',
-                [{x: [20, 50], y: [3350, 7500], mode: 'lines+markers', name: 'CPL $9 (Optimizado)', line: {color: '#10B981', width: 4}, marker: {size: 12}},
-                 {x: [20, 50], y: [2600, 6500], mode: 'lines+markers', name: 'CPL $11.59 (Actual)', line: {color: '#F59E0B', width: 4, dash: 'dash'}, marker: {size: 12}}],
-                {title: '<b>Ingresos Proyectados/mes (x $50/lead)</b>', xaxis: {title: 'Presupuesto diario ($)'}, yaxis: {title: 'Ingresos/mes ($)'}, height: 350, margin: {t: 60}, hovermode: 'x unified'},
+                [{x: [20, 50], y: [3350, 7500], mode: 'lines+markers', name: 'CPL €9 (Optimizado)', line: {color: '#10B981', width: 4}, marker: {size: 12}},
+                 {x: [20, 50], y: [2600, 6500], mode: 'lines+markers', name: 'CPL €11.59 (Actual)', line: {color: '#F59E0B', width: 4, dash: 'dash'}, marker: {size: 12}}],
+                {title: '<b>Ingresos Proyectados/mes (x €50/lead)</b>', xaxis: {title: 'Presupuesto diario ($)'}, yaxis: {title: 'Ingresos/mes ($)'}, height: 350, margin: {t: 60}, hovermode: 'x unified'},
                 {responsive: true, displayModeBar: false});
         });
     </script>
