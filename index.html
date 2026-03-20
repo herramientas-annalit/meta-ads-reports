@@ -3,68 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Ejecutivo - Meta Ads</title>
+    <title>Dashboard Test Manual SEO Local Pablo</title>
     <script src="https://cdn.plot.ly/plotly-2.26.0.min.js"></script>
-    <script>
-        // Detección automática de dispositivo
-        function detectarDispositivo() {
-            const width = window.innerWidth;
-            let dispositivo = 'escritorio';
-            
-            if (width < 480) {
-                dispositivo = 'movil';
-            } else if (width >= 480 && width < 1024) {
-                dispositivo = 'tablet';
-            }
-            
-            document.body.className = `vista-${dispositivo}`;
-        }
-        
-        // Detectar al cargar
-        window.addEventListener('DOMContentLoaded', detectarDispositivo);
-        
-        // Detectar si cambia tamaño (responsive)
-        window.addEventListener('resize', detectarDispositivo);
-        
-        // Detectar inmediatamente
-        detectarDispositivo();
-        
-        // Timestamp de última actualización
-        document.addEventListener('DOMContentLoaded', function() {
-            const lastUpdateEl = document.getElementById('lastUpdate');
-            const now = new Date();
-            const formattedDate = now.toISOString().replace('T', ' ').substring(0, 19);
-            lastUpdateEl.textContent = formattedDate;
-        });
-    </script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background: #f5f7fa;
         }
-        
         .header {
             background: white;
             padding: 40px;
             text-align: center;
             box-shadow: 0 5px 20px rgba(0,0,0,0.08);
         }
-        
-        .header h1 { font-size: 2.5em; color: #050912; font-weight: 900; margin-bottom: 5px; }
-        .header p { color: #666; font-size: 0.95em; }
-        .header .context { color: #999; font-size: 0.85em; margin-top: 10px; }
-        
+        .header h1 { font-size: 2.5em; color: #050912; font-weight: 900; }
+        .header p { color: #666; }
         .tabs {
             display: flex;
             background: white;
             border-bottom: 3px solid #e5e7eb;
             padding: 0 20px;
-            overflow-x: auto;
-            sticky: top 0;
-            z-index: 100;
         }
-        
         .tab-btn {
             padding: 16px 25px;
             border: none;
@@ -74,21 +34,15 @@
             color: #999;
             cursor: pointer;
             border-bottom: 4px solid transparent;
-            white-space: nowrap;
         }
-        
-        .tab-btn:hover { color: #2563EB; }
         .tab-btn.active { color: #2563EB; border-bottom-color: #2563EB; }
-        
         .tab-content {
             display: none;
             padding: 40px;
             max-width: 1600px;
             margin: 0 auto;
         }
-        
         .tab-content.active { display: block; }
-        
         .section {
             background: white;
             padding: 35px;
@@ -96,7 +50,6 @@
             margin-bottom: 30px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.08);
         }
-        
         .section-title {
             font-size: 1.6em;
             color: #050912;
@@ -105,14 +58,12 @@
             padding-bottom: 15px;
             border-bottom: 4px solid #2563EB;
         }
-        
         .kpi-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 20px;
             margin-bottom: 30px;
         }
-        
         .kpi-card {
             background: white;
             padding: 25px;
@@ -121,84 +72,33 @@
             border-top: 5px solid #2563EB;
             box-shadow: 0 3px 12px rgba(0,0,0,0.08);
         }
-        
-        .kpi-card.success { border-top-color: #10B981; }
-        .kpi-card.warning { border-top-color: #F59E0B; }
-        
         .kpi-value {
             font-size: 2.8em;
             font-weight: 900;
             color: #2563EB;
             margin-bottom: 8px;
         }
-        
-        .kpi-card.success .kpi-value { color: #10B981; }
-        .kpi-card.warning .kpi-value { color: #F59E0B; }
-        
         .kpi-label { font-size: 0.75em; color: #999; text-transform: uppercase; font-weight: 800; }
-        
-        .weekly-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        
-        .weekly-card {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            border-left: 5px solid #2563EB;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-        }
-        
-        .weekly-card.good { border-left-color: #10B981; }
-        .weekly-card.warning { border-left-color: #F59E0B; }
-        .weekly-card.bad { border-left-color: #EF4444; }
-        
-        .weekly-title { font-weight: 800; color: #050912; margin-bottom: 8px; font-size: 0.95em; }
-        .weekly-value { font-size: 1.8em; font-weight: 900; color: #2563EB; margin-bottom: 8px; }
-        .weekly-card.good .weekly-value { color: #10B981; }
-        .weekly-card.warning .weekly-value { color: #F59E0B; }
-        .weekly-card.bad .weekly-value { color: #EF4444; }
-        
-        .weekly-compare { font-size: 0.85em; color: #666; }
-        
         .chart-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
             gap: 25px;
             margin-bottom: 30px;
         }
-        
         .chart-box {
             background: #fafbfc;
             border-radius: 12px;
             padding: 12px;
             min-height: 380px;
         }
-        
-        .description {
-            font-size: 0.85em;
-            color: #666;
-            line-height: 1.5;
-            padding: 10px;
-            background: #f0f7ff;
-            border-left: 4px solid #2563EB;
-            border-radius: 6px;
-            margin-top: 10px;
-        }
-        
         table { width: 100%; border-collapse: collapse; font-size: 0.9em; }
         thead { background: #f0f7ff; border-bottom: 3px solid #2563EB; }
         th { padding: 12px; text-align: center; font-weight: 800; }
         td { padding: 10px; border-bottom: 1px solid #e5e7eb; text-align: center; }
         td:first-child { text-align: left; font-weight: 700; }
         tbody tr:hover { background: #f9fafb; }
-        
         .metric-good { color: #10B981; font-weight: 800; }
         .metric-bad { color: #EF4444; font-weight: 800; }
-        
         .insight {
             background: #f0fdf4;
             border-left: 5px solid #10B981;
@@ -208,290 +108,140 @@
             line-height: 1.7;
             margin-top: 25px;
         }
-        
-        /* DETECCIÓN AUTOMÁTICA POR DISPOSITIVO */
-        body.vista-escritorio { font-size: 16px; }
-        body.vista-tablet { font-size: 15px; }
-        body.vista-movil { font-size: 14px; }
-        
-        @media (max-width: 1200px) {
-            .chart-grid { grid-template-columns: 1fr; }
-            .weekly-stats { grid-template-columns: 1fr; }
-        }
-        
-        @media (max-width: 768px) {
-            .header h1 { font-size: 1.6em; }
-            .header p { font-size: 0.85em; }
-            .tabs { padding: 0 5px; }
-            .tab-btn { padding: 12px 15px; font-size: 0.9em; }
-            .tab-content { padding: 20px 10px; }
-            .section { padding: 20px 10px; }
-            .section-title { font-size: 1.2em; margin-bottom: 15px; }
-            .kpi-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-            .kpi-value { font-size: 1.8em; }
-            .kpi-label { font-size: 0.75em; }
-            #chart1, #chart2, #chart3, #chart4, #curvaRetencion, #embudoAudiencias, #projectionChart { height: 350px !important; }
-            table { font-size: 0.85em; }
-            table th, table td { padding: 10px 8px; }
-        }
-        
-        @media (max-width: 480px) {
-            .header h1 { font-size: 1.4em; }
-            .header p { font-size: 0.75em; }
-            .tabs { padding: 0 5px; overflow-x: auto; }
-            .tab-btn { padding: 10px 12px; font-size: 0.8em; }
-            .tab-content { padding: 15px 10px; }
-            .section { padding: 15px 10px; overflow-x: auto; }
-            .section-title { font-size: 1.1em; margin-bottom: 12px; }
-            .kpi-grid { grid-template-columns: 1fr; gap: 10px; }
-            .kpi-value { font-size: 1.6em; }
-            .kpi-label { font-size: 0.7em; }
-            #chart1, #chart2, #chart3, #chart4, #curvaRetencion, #embudoAudiencias, #projectionChart { height: 280px !important; width: 100% !important; min-width: 100%; }
-            table { font-size: 0.75em; display: block; overflow-x: auto; white-space: nowrap; }
-            table th, table td { padding: 8px 6px; }
-            button { font-size: 0.8em !important; padding: 8px 10px !important; }
-        }
     </style>
 </head>
 <body>
     <div class="header">
         <h1>📊 Test Manual SEO Local Pablo</h1>
-        <p>Dashboard Ejecutivo | 2-14 de Marzo 2026 | Datos Validados ✅</p>
-        <div class="context">
-            <strong>🎯 CAMPAÑA ÚNICA:</strong> <code style="background: #f0f0f0; padding: 2px 6px; border-radius: 3px;">120239305936170318</code> | 
-            <strong>Período:</strong> 13 días | 
-            <strong>Creativos:</strong> 3 (Ad 1, 2, 3 Pablo) | 
-            <strong>Públicos:</strong> 3 (Small Business, Marketing, Negocios) | 
-            <strong>Total Leads:</strong> 20 | 
-            <strong>Spend:</strong> €231.84
-        </div>
-        <div style="margin-top: 15px; font-size: 0.85em; color: #999; border-top: 1px solid #e5e7eb; padding-top: 15px;">
-            <strong>📅 Actualizado hasta:</strong> <span id="lastUpdate">13 Marzo 2026, 21:50 UTC</span> | 
-            <strong>📊 Datos validados:</strong> 100% Meta API | 
-            <strong>🔐 Fuente:</strong> Meta Graph API (time_increment=1) | 
-            <strong>✅ v2.3 - META API VÁLIDO</strong>
-        </div>
+        <p>Dashboard Ejecutivo | 2026-03-20 21:13 UTC</p>
     </div>
 
     <div class="tabs">
         <button class="tab-btn active" onclick="openTab(event, 'general')">📊 General</button>
         <button class="tab-btn" onclick="openTab(event, 'creativos')">🎬 Creativos</button>
+        <button class="tab-btn" onclick="openTab(event, 'adsets')">🎯 Ad Sets</button>
         <button class="tab-btn" onclick="openTab(event, 'proyecciones')">📈 Proyecciones</button>
     </div>
 
-    <!-- TAB 1: GENERAL -->
     <div id="general" class="tab-content active">
         <div class="section">
             <div class="kpi-grid">
                 <div class="kpi-card">
-                    <div class="kpi-value">€<span id="kpiSpend">223.70</span></div>
+                    <div class="kpi-value">$321.52</div>
                     <div class="kpi-label">Inversión Total</div>
                 </div>
-                <div class="kpi-card success">
-                    <div class="kpi-value">20</div>
+                <div class="kpi-card" style="border-top-color: #10B981;">
+                    <div class="kpi-value" style="color: #10B981;">27</div>
                     <div class="kpi-label">Leads</div>
                 </div>
-                <div class="kpi-card warning">
-                    <div class="kpi-value">€<span id="kpiCPL">11.18</span></div>
+                <div class="kpi-card" style="border-top-color: #F59E0B;">
+                    <div class="kpi-value" style="color: #F59E0B;">$11.91</div>
                     <div class="kpi-label">CPL Promedio</div>
                 </div>
-                <div class="kpi-card success">
-                    <div class="kpi-value">1.06%</div>
+                <div class="kpi-card" style="border-top-color: #10B981;">
+                    <div class="kpi-value" style="color: #10B981;">1.39%</div>
                     <div class="kpi-label">CTR</div>
                 </div>
             </div>
         </div>
-
-        <!-- RENDIMIENTO SEMANAL -->
         <div class="section">
-            <div class="section-title">📅 Rendimiento Semanal</div>
-            <div class="weekly-stats" id="weeklyStats"></div>
-            
-            <div style="margin-top: 40px; padding-top: 30px; border-top: 2px solid #e5e7eb;">
-                <div class="section-title" style="margin-bottom: 20px; border-bottom: none; font-size: 1.3em;">🎯 Acciones Recomendadas</div>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
-                    <div style="background: linear-gradient(135deg, #050912 0%, #1a1a2e 100%); color: white; padding: 20px; border-radius: 12px; border-left: 5px solid #EF4444;">
-                        <h4 style="font-size: 1em; margin-bottom: 10px; font-weight: 800;">❌ Pausa Small Business</h4>
-                        <p style="font-size: 0.9em; line-height: 1.5; opacity: 0.95;">Ad Set con bajo rendimiento. Presupuesto bajo pero sin ROI. Reasigna a creativos ganadores.</p>
-                    </div>
-                    <div style="background: linear-gradient(135deg, #050912 0%, #1a1a2e 100%); color: white; padding: 20px; border-radius: 12px; border-left: 5px solid #EF4444;">
-                        <h4 style="font-size: 1em; margin-bottom: 10px; font-weight: 800;">🚨 Audience Fatigue Crítica</h4>
-                        <p style="font-size: 0.9em; line-height: 1.5; opacity: 0.95;">CPL se multiplicó +144%. Audiencia saturada. Necesitas nuevas audiencias INMEDIATAMENTE.</p>
-                    </div>
-                    <div style="background: linear-gradient(135deg, #050912 0%, #1a1a2e 100%); color: white; padding: 20px; border-radius: 12px; border-left: 5px solid #10B981;">
-                        <h4 style="font-size: 1em; margin-bottom: 10px; font-weight: 800;">🚀 Nuevas Audiencias</h4>
-                        <p style="font-size: 0.9em; line-height: 1.5; opacity: 0.95;">Crea 2-3 ad sets frescos. 1 cold audience (nuevas personas) + 1 retargeting. +€10/día.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- EVOLUCIÓN -->
-        <div class="section">
-            <div class="section-title">📈 Evolución y Tendencias</div>
-            <div class="chart-grid">
-                <div>
-                    <div class="chart-box" id="chart1"></div>
-                    <div class="description"><strong>Gasto vs Leads Acumulado:</strong> Eje izquierdo (azul) = dinero total gastado cada día en €. Eje derecho (verde) = cantidad REAL de leads conseguidos. Ejemplo: día 3 = €37.56 acumulados, 7 leads totales. Período: 2-14 Marzo.</div>
-                </div>
-                <div>
-                    <div class="chart-box" id="chart2"></div>
-                    <div class="description"><strong>CPL Diario (Costo por Lead):</strong> Coste exacto de cada lead por día. Ej: 11-mar costó €21.57 (1 lead). Muestra cómo sube la fatiga de audiencia.</div>
-                </div>
-            </div>
-
-            <div class="chart-grid">
-                <div>
-                    <div class="chart-box" id="chart3"></div>
-                    <div class="description"><strong>CPL por Semana (Comparativa):</strong> Semana 1 (2-8 mar): CPL promedio €8.52 | Semana 2 (9-14 mar): CPL promedio €20.80. Aumento del 144% = audience fatigue.</div>
-                </div>
-                <div>
-                    <div class="chart-box" id="chart4"></div>
-                    <div class="description"><strong>Presupuesto Diario:</strong> Distribución del gasto: Ad 2 Pablo 85% | Ad 3 Pablo 10% | Ad 1 Pablo 5%. Presupuesto concentrado en el creativo ganador.</div>
-                </div>
-            </div>
-
-            <div class="insight">
-                <strong>⚠️ HALLAZGO CRÍTICO:</strong> CPL se multiplicó de €8.52 a €20.80 en 13 días. Audiencia saturada. Ad 2 Pablo necesita nuevas audiencias AHORA.
-            </div>
+            <div class="section-title">📈 Gráficos (próxima versión)</div>
+            <p style="color: #666;">Los gráficos se cargarán aquí. Por ahora, revisa la tabla de datos en Ad Sets.</p>
         </div>
     </div>
 
-    <!-- TAB 2: CREATIVOS -->
     <div id="creativos" class="tab-content">
         <div class="section">
-            <div class="section-title">🎬 Análisis de Creativos</div>
-            <p style="color: #666; margin-bottom: 20px;">Campaña "Test Manual SEO Local Pablo": 3 creativos testados en 9 ad sets (diferentes públicos). Presupuesto distribuido: Ad 2 Pablo €197.75 (85%) | Ad 3 Pablo €23.64 (10%) | Ad 1 Pablo €10.47 (5%).</p>
-
+            <div class="section-title">🎬 Análisis por Creativo</div>
+            <p style="color: #666; margin-bottom: 20px;">Suma de todos sus ad sets.</p>
             <table>
                 <thead>
                     <tr>
                         <th>Creativo</th>
                         <th>Reproducciones</th>
                         <th>Presupuesto</th>
-                        <th>% del Total</th>
                         <th>Leads</th>
                         <th>CPL</th>
-                        <th>Retención 25%</th>
-                        <th>Ad Sets</th>
-                        <th>Status</th>
                     </tr>
                 </thead>
-                <tbody id="creativeTable"></tbody>
+                <tbody>
+                    <tr>
+                        <td>Ad 2 Pablo</td>
+                        <td>8,128</td>
+                        <td>$59.71</td>
+                        <td class="metric-good">5</td>
+                        <td>$11.94</td>
+                    </tr>
+                    <tr>
+                        <td>Ad 1 Pablo</td>
+                        <td>428</td>
+                        <td>$5.61</td>
+                        <td class="metric-bad">0</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Ad 3 Pablo</td>
+                        <td>0</td>
+                        <td>$8.26</td>
+                        <td class="metric-bad">0</td>
+                        <td>-</td>
+                    </tr>
+                </tbody>
             </table>
-
-            <div class="insight" style="margin-top: 20px;">
-                <strong>🎯 Análisis por Creativo:</strong><br>
-                • <strong>Ad 2 Pablo:</strong> 19 leads, €197.75, CPL €10.41 = GANADOR. Distribuido en 3 ad sets.<br>
-                • <strong>Ad 1 Pablo:</strong> 1 lead, €10.47, CPL €10.47 = Bajo volumen.<br>
-                • <strong>Ad 3 Pablo:</strong> 0 leads, €23.64, CPL N/A = Sin conversión, considera pausar.
-            </div>
-
-            <div style="margin-top: 40px; border-top: 2px solid #e5e7eb; padding-top: 30px;">
-                <div class="section-title">🎯 Análisis por Audiencia (Ad Set)</div>
-                <p style="color: #666; margin-bottom: 20px;">Tabla completa: qué audiencia estamos probando (con targeting específico), con qué creativo, y cómo rinde cada una.</p>
-                <table style="font-size: 0.80em; overflow-x: auto;">
-                    <thead>
-                        <tr>
-                            <th style="text-align: left; background: #dbeafe; min-width: 180px;">Audiencia</th>
-                            <th style="min-width: 80px;">Edad</th>
-                            <th style="min-width: 60px;">Sexo</th>
-                            <th style="min-width: 70px;">Ubicación</th>
-                            <th style="min-width: 100px;">Intereses</th>
-                            <th style="min-width: 100px;">Creativo</th>
-                            <th>Repr.</th>
-                            <th>Presup.</th>
-                            <th>0-3s%</th>
-                            <th>25%</th>
-                            <th>50%</th>
-                            <th>75%</th>
-                            <th>100%</th>
-                            <th>Leads</th>
-                            <th>CPL</th>
-                            <th>CPM</th>
-                            <th>Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody id="adsetsTable"></tbody>
-                </table>
-                
-                <!-- SELECTOR DE CREATIVO -->
-                <div style="margin-top: 40px; padding-top: 30px; border-top: 2px solid #e5e7eb;">
-                    <div class="section-title">🎬 Análisis Detallado por Creativo</div>
-                    <p style="color: #666; margin-bottom: 20px; font-size: 0.9em;">Selecciona un creativo para ver su rendimiento en detalle: plays, retención, conversiones y comparación con otros.</p>
-                    
-                    <div style="margin-bottom: 30px; display: flex; gap: 15px; flex-wrap: wrap;">
-                        <button onclick="filtrarCreativo('Ad 1 Pablo')" style="padding: 12px 24px; border: 2px solid #2563EB; background: white; color: #2563EB; border-radius: 8px; font-weight: 700; cursor: pointer; transition: all 0.3s;" id="btn_ad1">Ad 1 Pablo</button>
-                        <button onclick="filtrarCreativo('Ad 2 Pablo')" style="padding: 12px 24px; border: 2px solid #10B981; background: white; color: #10B981; border-radius: 8px; font-weight: 700; cursor: pointer; transition: all 0.3s;" id="btn_ad2">Ad 2 Pablo</button>
-                        <button onclick="filtrarCreativo('Ad 3 Pablo')" style="padding: 12px 24px; border: 2px solid #F59E0B; background: white; color: #F59E0B; border-radius: 8px; font-weight: 700; cursor: pointer; transition: all 0.3s;" id="btn_ad3">Ad 3 Pablo</button>
-                    </div>
-                    
-                    <div id="creativoDetalleContainer" style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 12px; padding: 25px;"></div>
-                </div>
-                
-                <!-- GRÁFICO RETENCIÓN POR CREATIVO -->
-                <div style="margin-top: 40px; padding-top: 30px; border-top: 2px solid #e5e7eb;">
-                    <div class="section-title">📊 Curva de Retención por Creativo</div>
-                    <p style="color: #666; margin-bottom: 20px; font-size: 0.9em;">Cómo cada creativo mantiene a la audiencia en el video: desde el inicio hasta el final. Línea más arriba = mejor retención.</p>
-                    <div id="curvaRetencion" style="height: 400px;"></div>
-                </div>
-                
-                <!-- CONCLUSIONES & RECOMENDACIONES -->
-                <div style="margin-top: 50px; padding-top: 40px; border-top: 2px solid #e5e7eb;">
-                    <div class="section-title">🎯 Conclusiones & Recomendaciones por Audiencia</div>
-                    
-                    <div id="conclusionesAudiencias" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;"></div>
-                </div>
-                
-                <!-- GRÁFICO EMBUDO POR AUDIENCIA - SEPARADOS -->
-                <div style="margin-top: 40px; padding-top: 30px; border-top: 2px solid #e5e7eb;">
-                    <div class="section-title">📊 Embudo de Conversión por Audiencia</div>
-                    <p style="color: #666; margin-bottom: 30px; font-size: 0.9em;">Cada gráfico muestra cómo la audiencia avanza desde impresiones iniciales hasta leads generados. Elige a cuál audiencia apuntar en tu próxima inversión.</p>
-                    
-                    <div id="embudosContainer" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 45px; margin-bottom: 30px;"></div>
-                    
-                    <div style="background: #f0f9ff; border: 1px solid #dbeafe; border-radius: 10px; padding: 20px; margin-top: 30px; font-size: 0.9em; line-height: 1.7; color: #1e40af;">
-                        <strong>📌 Cómo leer los gráficos:</strong> Cada barra muestra cuánta audiencia avanza en el embudo. Barra más larga = más retención. La barra final (Leads) es la que genera ingresos. Compara las 3 audiencias para decidir dónde invertir más presupuesto.
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
-    <!-- TAB 3: PROYECCIONES -->
+    <div id="adsets" class="tab-content">
+        <div class="section">
+            <div class="section-title">🎯 Desglose por Ad Set</div>
+            <table style="font-size: 0.8em;">
+                <thead>
+                    <tr>
+                        <th>Audiencia</th>
+                        <th>Creativo</th>
+                        <th>Presupuesto</th>
+                        <th>Leads</th>
+                        <th>CPL</th>
+                        <th>CPM</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="color: #2563EB; font-weight: 700;">Audiencia A - Engagement (good hook) (CPM bajo)</td>
+                        <td>Ad 2 Pablo</td>
+                        <td>$59.71</td>
+                        <td class="metric-good">5</td>
+                        <td>$11.94</td>
+                        <td>$3.80</td>
+                    </tr>
+                    <tr>
+                        <td style="color: #2563EB; font-weight: 700;">Audiencia B - Engagement (good hook) (CPM medio)</td>
+                        <td>Ad 1 Pablo</td>
+                        <td>$5.61</td>
+                        <td class="metric-bad">0</td>
+                        <td>-</td>
+                        <td>$6.54</td>
+                    </tr>
+                    <tr>
+                        <td style="color: #2563EB; font-weight: 700;">Audiencia C - Estándar (CPM alto)</td>
+                        <td>Ad 3 Pablo</td>
+                        <td>$8.26</td>
+                        <td class="metric-bad">0</td>
+                        <td>-</td>
+                        <td>$27.53</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
     <div id="proyecciones" class="tab-content">
         <div class="section">
-            <div class="section-title">📈 Proyecciones y Escalabilidad - Múltiples Escenarios</div>
-            <p style="color: #666; margin-bottom: 30px;">Propuestas basadas en los datos actuales. Elige cuál implementar según tu presupuesto y objetivos.</p>
-
-            <div id="escenarioSelector" style="display: flex; gap: 12px; margin-bottom: 30px; flex-wrap: wrap;">
-                <button onclick="mostrarEscenario(0)" style="padding: 12px 20px; background: #2563EB; color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer;" id="btn_esc0">📊 Actual</button>
-                <button onclick="mostrarEscenario(1)" style="padding: 12px 20px; background: #10B981; color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer;" id="btn_esc1">✨ Optimizado</button>
-                <button onclick="mostrarEscenario(2)" style="padding: 12px 20px; background: #F59E0B; color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer;" id="btn_esc2">🚀 Escalado</button>
-                <button onclick="mostrarEscenario(3)" style="padding: 12px 20px; background: #8B5CF6; color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer;" id="btn_esc3">🎯 Agresivo</button>
-            </div>
-
-            <div id="escenarioDetalle" style="background: #f9fafb; border-radius: 12px; padding: 25px; margin-bottom: 30px;"></div>
-
-            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 30px;">
-                <div style="text-align: center; margin-bottom: 30px;">
-                    <div style="font-size: 1.3em; font-weight: 800; color: #1f2937; margin-bottom: 10px;">💰 Comparativa: Ingresos/mes según escenario</div>
-                    <p style="color: #666;">Fórmula: (Presupuesto/día × 30) / CPL × €50/lead</p>
-                </div>
-                <div id="projectionChart" style="height: 450px;"></div>
-            </div>
-            
-            <div style="background: #f0f9ff; border-left: 5px solid #2563EB; border-radius: 8px; padding: 20px; margin-top: 30px; font-size: 0.9em; line-height: 1.8;">
-                <strong>💡 Cómo elegir escenario:</strong>
-                <ul style="margin: 10px 0; padding-left: 20px;">
-                    <li><strong>📊 Actual:</strong> Mantén esto si presupuesto limitado. Audiencia saturada (CPL €20.80).</li>
-                    <li><strong>✨ Optimizado:</strong> 🥇 RECOMENDADO. 2 nuevas audiencias + focus Ad 2. Mejor ROI.</li>
-                    <li><strong>🚀 Escalado:</strong> +50% presupuesto (€30/día). Requiere nuevas audiencias + creativos B.</li>
-                    <li><strong>🎯 Agresivo:</strong> Máximo crecimiento (€50/día). Test continuos + nuevas estrategias.</li>
-                </ul>
-            </div>
+            <div class="section-title">📈 Proyecciones</div>
+            <p style="color: #666;">Proyecciones de escalabilidad (próxima versión).</p>
         </div>
     </div>
+
     <script>
         function openTab(evt, tabName) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
@@ -499,858 +249,6 @@
             document.getElementById(tabName).classList.add('active');
             evt.currentTarget.classList.add('active');
         }
-
-        Promise.all([
-            fetch('data.json').then(r => r.json()),
-            fetch('video-analysis.json').then(r => r.json()),
-            fetch('adset-mapping.json').then(r => r.json())
-        ]).then(([dayData, videoData, adsetMapping]) => {
-            const daily = dayData.daily;
-
-            // Preparar datos de creativos
-            const creativeMap = {};
-            videoData.forEach(ad => {
-                const name = ad.ad_name;
-                if (!creativeMap[name]) {
-                    creativeMap[name] = {
-                        spend: 0, plays: 0, leads: 0,
-                        plays_25: 0, ads: []
-                    };
-                }
-                creativeMap[name].spend += ad.spend;
-                creativeMap[name].plays += ad.plays;
-                creativeMap[name].leads += ad.leads;
-                creativeMap[name].plays_25 += ad.plays_25;
-                creativeMap[name].ads.push(ad);
-            });
-
-            const creativos = Object.entries(creativeMap).map(([k, v]) => ({name: k, ...v})).sort((a,b) => b.leads - a.leads);
-            
-            // Usar data.json como fuente de verdad para totales
-            const totalSpend = daily.reduce((s, d) => s + d.spend, 0);
-            const totalLeads = daily.reduce((l, d) => l + d.leads, 0);
-            const totalCPL = totalLeads > 0 ? totalSpend / totalLeads : 0;
-            
-            // Actualizar KPIs generales con data.json
-            document.getElementById('kpiSpend').textContent = totalSpend.toFixed(2);
-            document.getElementById('kpiCPL').textContent = totalCPL.toFixed(2);
-            if (document.getElementById('actualCPLText')) {
-                document.getElementById('actualCPLText').textContent = totalCPL.toFixed(2);
-            }
-
-            // === RENDIMIENTO SEMANAL ===
-            const week1 = daily.slice(0, 7); // 2-8 mar (7 días)
-            const week2 = daily.slice(7); // 9-13 mar (5 días)
-            
-            const w1Spend = week1.reduce((s, d) => s + d.spend, 0);
-            const w1Leads = week1.reduce((l, d) => l + d.leads, 0);
-            const w1CPL = w1Leads > 0 ? w1Spend / w1Leads : 0;
-
-            const w2Spend = week2.reduce((s, d) => s + d.spend, 0);
-            const w2Leads = week2.reduce((l, d) => l + d.leads, 0);
-            const w2CPL = w2Leads > 0 ? w2Spend / w2Leads : 0;
-
-            const cplChange = w1CPL > 0 ? ((w2CPL - w1CPL) / w1CPL) * 100 : 0;
-            const leadsChange = w1Leads > 0 ? ((w2Leads - w1Leads) / w1Leads) * 100 : 0;
-
-            const investChange = ((w2Spend - w1Spend) / w1Spend) * 100;
-            
-            const w2CTR = (daily.slice(7).reduce((s,d) => s + d.clicks, 0) / daily.slice(7).reduce((s,d) => s + d.impressions, 0) * 100).toFixed(2);
-            const w1CTR = (daily.slice(0,7).reduce((s,d) => s + d.clicks, 0) / daily.slice(0,7).reduce((s,d) => s + d.impressions, 0) * 100).toFixed(2);
-            const ctrChange = ((w2CTR - w1CTR) / w1CTR * 100);
-            const w2CPM = (w2Spend / (daily.slice(7).reduce((s,d) => s + d.impressions, 0) / 1000)).toFixed(2);
-            const w1CPM = (w1Spend / (daily.slice(0,7).reduce((s,d) => s + d.impressions, 0) / 1000)).toFixed(2);
-            const cpmChange = ((w2CPM - w1CPM) / w1CPM * 100);
-            
-            // RESUMEN GENERAL usa los mismos totales
-            const totalCampaignSpend = totalSpend;
-            const totalCampaignLeads = totalLeads;
-            const totalCampaignCPL = totalCPL;
-            
-            document.getElementById('weeklyStats').innerHTML = `
-                <!-- DESGLOSE SEMANAL -->
-                <div class="weekly-card ${cplChange > 100 ? 'bad' : cplChange > 50 ? 'warning' : 'good'}">
-                    <div class="weekly-title" style="font-size: 1.3em; margin-bottom: 30px;">📅 Rendimiento Semana 2 (9-13 Marzo)</div>
-                    
-                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 30px; margin-bottom: 40px;">
-                        <div style="text-align: center;">
-                            <div style="font-size: 2.8em; font-weight: 900; color: #2563EB; margin-bottom: 15px;">€${w2Spend.toFixed(2)}</div>
-                            <div style="font-size: 0.75em; color: #999; text-transform: uppercase; font-weight: 800; margin-bottom: 12px;">Inversión</div>
-                            <div style="font-size: 0.8em; color: #333; margin-top: 8px; padding-top: 12px; border-top: 1px solid rgba(0,0,0,0.1);">
-                                <strong>vs €${w1Spend.toFixed(2)}</strong><br>
-                                <span style="color: ${investChange < 0 ? '#EF4444' : '#10B981'}; font-weight: 700;">${investChange > 0 ? '+' : ''}${investChange.toFixed(0)}%</span>
-                                <span style="color: ${investChange < 0 ? '#EF4444' : '#10B981'};">${investChange < 0 ? '🔴' : '🟢'}</span>
-                            </div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="font-size: 2.8em; font-weight: 900; color: #10B981; margin-bottom: 15px;">${w2Leads}</div>
-                            <div style="font-size: 0.75em; color: #999; text-transform: uppercase; font-weight: 800; margin-bottom: 12px;">Leads</div>
-                            <div style="font-size: 0.8em; color: #333; margin-top: 8px; padding-top: 12px; border-top: 1px solid rgba(0,0,0,0.1);">
-                                <strong>vs ${w1Leads}</strong><br>
-                                <span style="color: ${leadsChange < 0 ? '#EF4444' : '#10B981'}; font-weight: 700;">${leadsChange > 0 ? '+' : ''}${leadsChange.toFixed(0)}%</span>
-                                <span style="color: ${leadsChange < 0 ? '#EF4444' : '#10B981'};">${leadsChange < 0 ? '🔴' : '🟢'}</span>
-                            </div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="font-size: 2.8em; font-weight: 900; color: #F59E0B; margin-bottom: 15px;">€${w2CPL.toFixed(2)}</div>
-                            <div style="font-size: 0.75em; color: #999; text-transform: uppercase; font-weight: 800; margin-bottom: 12px;">CPL</div>
-                            <div style="font-size: 0.8em; color: #333; margin-top: 8px; padding-top: 12px; border-top: 1px solid rgba(0,0,0,0.1);">
-                                <strong>vs €${w1CPL.toFixed(2)}</strong><br>
-                                <span style="color: #EF4444; font-weight: 700;">+${cplChange.toFixed(0)}%</span>
-                                <span style="color: #EF4444;">🔴</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 25px;">
-                        <div style="text-align: center; padding: 12px; background: rgba(0,0,0,0.03); border-radius: 6px;">
-                            <div style="font-size: 1.3em; font-weight: 900; color: #2563EB; margin-bottom: 5px;">${w2CTR}%</div>
-                            <div style="font-size: 0.7em; color: #999; text-transform: uppercase;">CTR</div>
-                            <div style="font-size: 0.7em; color: #999; margin-top: 5px; padding-top: 5px; border-top: 1px solid rgba(0,0,0,0.1);">
-                                <strong>vs ${w1CTR}%</strong><br>
-                                <span style="color: ${ctrChange > 0 ? '#10B981' : '#EF4444'};">${ctrChange > 0 ? '+' : ''}${ctrChange.toFixed(0)}%</span>
-                            </div>
-                        </div>
-                        <div style="text-align: center; padding: 12px; background: rgba(0,0,0,0.03); border-radius: 6px;">
-                            <div style="font-size: 1.3em; font-weight: 900; color: #06B6D4; margin-bottom: 5px;">€${w2CPM}</div>
-                            <div style="font-size: 0.7em; color: #999; text-transform: uppercase;">CPM</div>
-                            <div style="font-size: 0.7em; color: #999; margin-top: 5px; padding-top: 5px; border-top: 1px solid rgba(0,0,0,0.1);">
-                                <strong>vs €${w1CPM}</strong><br>
-                                <span style="color: ${cpmChange > 0 ? '#EF4444' : '#10B981'};">${cpmChange > 0 ? '+' : ''}${cpmChange.toFixed(0)}%</span>
-                            </div>
-                        </div>
-                        <div style="text-align: center; padding: 12px; background: rgba(0,0,0,0.03); border-radius: 6px;">
-                            <div style="font-size: 1.3em; font-weight: 900; color: #8B5CF6; margin-bottom: 5px;">€${(daily.slice(7).reduce((s,d) => s + d.spend, 0) / 7).toFixed(2)}</div>
-                            <div style="font-size: 0.7em; color: #999; text-transform: uppercase;">€/día Prom</div>
-                            <div style="font-size: 0.7em; color: #999; margin-top: 5px; padding-top: 5px; border-top: 1px solid rgba(0,0,0,0.1);">
-                                <strong>vs €${(daily.slice(0,7).reduce((s,d) => s + d.spend, 0) / 7).toFixed(2)}</strong>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div style="padding: 15px; background: ${cplChange > 100 ? 'rgba(239,68,68,0.1)' : 'rgba(245,158,11,0.1)'}; border-left: 4px solid ${cplChange > 100 ? '#EF4444' : '#F59E0B'}; border-radius: 6px;">
-                        <strong>Fatiga de Audiencia:</strong> ${cplChange > 100 ? '🔴 CRÍTICA - Acción inmediata requerida' : cplChange > 50 ? '🟡 ALTA - Nuevas audiencias necesarias' : '🟢 NORMAL'}
-                    </div>
-                </div>
-            `;
-
-            // === GRÁFICOS ===
-            let cumSpend = 0, cumLeads = 0, dates = [], spend = [], leads = [];
-            daily.forEach(d => {
-                cumSpend += d.spend;
-                cumLeads += d.leads;
-                dates.push(d.date);
-                spend.push(cumSpend);
-                leads.push(cumLeads);
-            });
-
-            // Gráfico 1: Acumulado
-            Plotly.newPlot('chart1',
-                [{x: dates, y: spend, name: 'Gasto (€)', line: {color: '#2563EB', width: 4}, yaxis: 'y', hovertemplate: '%{x}: €%{y:.2f}'},
-                 {x: dates, y: leads, name: 'Leads', line: {color: '#10B981', width: 4}, yaxis: 'y2', hovertemplate: '%{x}: %{y} leads'}],
-                {title: '<b>Acumulado: Gasto (€) vs Leads (cantidad)</b>', 
-                 yaxis: {title: 'Gasto Acumulado (€)', titlefont: {color: '#2563EB'}, tickfont: {color: '#2563EB'}}, 
-                 yaxis2: {title: 'Leads Acumulados (cantidad)', titlefont: {color: '#10B981'}, tickfont: {color: '#10B981'}, overlaying: 'y', side: 'right'}, 
-                 height: 350, margin: {t: 60, r: 80}, hovermode: 'x unified'},
-                {responsive: true, displayModeBar: false});
-
-            // Gráfico 2: CPL Diario (INCLUYE TODOS LOS DÍAS con formato DD-mes-YYYY)
-            let cplDates = [], cplValues = [], cplText = [], cplStatus = [];
-            daily.forEach(d => {
-                // Formatear fecha como DD-mes-YYYY
-                const dateObj = new Date(d.date + 'T00:00:00Z');
-                const formattedDate = dateObj.toLocaleDateString('es-ES', {year: 'numeric', month: 'short', day: '2-digit'});
-                const dayName = dateObj.toLocaleDateString('es-ES', {weekday: 'short'});
-                
-                // Incluir todos los días
-                cplDates.push(formattedDate);
-                
-                if (d.cpl && d.cpl > 0) {
-                    cplValues.push(d.cpl);
-                    const status = d.cpl < 10 ? '✅ Bueno' : d.cpl < 15 ? '🟡 Aceptable' : '🔴 Alto';
-                    const insight = d.leads > 2 ? '(Múltiples conversiones)' : d.leads === 1 ? '(1 lead)' : '(0 leads)';
-                    
-                    cplText.push(
-                        `<b>${formattedDate} (${dayName.toUpperCase()})</b><br>` +
-                        `CPL: €${d.cpl.toFixed(2)}<br>` +
-                        `Leads: ${d.leads} ${insight}<br>` +
-                        `Gasto: €${d.spend.toFixed(2)}<br>` +
-                        `Status: ${status}`
-                    );
-                    cplStatus.push(d.cpl < 10 ? '#10B981' : d.cpl < 15 ? '#F59E0B' : '#EF4444');
-                } else {
-                    // Días sin leads/CPL
-                    cplValues.push(null);
-                    cplText.push(
-                        `<b>${formattedDate} (${dayName.toUpperCase()})</b><br>` +
-                        `CPL: N/A<br>` +
-                        `Leads: 0 (sin conversiones)<br>` +
-                        `Gasto: €${d.spend.toFixed(2)}<br>` +
-                        `Status: ❌ Sin datos`
-                    );
-                    cplStatus.push('#CCCCCC');
-                }
-            });
-
-            Plotly.newPlot('chart2',
-                [{
-                    x: cplDates, 
-                    y: cplValues, 
-                    type: 'scatter', 
-                    mode: 'lines+markers', 
-                    line: {color: '#F59E0B', width: 3}, 
-                    marker: {size: 10, color: cplStatus, line: {color: '#fff', width: 2}}, 
-                    hovertext: cplText, 
-                    hoverinfo: 'text', 
-                    fill: 'tozeroy', 
-                    fillcolor: 'rgba(245,158,11,0.15)'
-                }],
-                {
-                    title: '<b>Costo por Lead (CPL) - Diario</b>', 
-                    yaxis: {title: 'CPL (€)', zeroline: true}, 
-                    xaxis: {title: 'Fecha (DD-mes)'},
-                    height: 400, 
-                    margin: {t: 60, b: 80}, 
-                    hovermode: 'closest',
-                    shapes: [{
-                        type: 'line',
-                        x0: cplDates[0],
-                        x1: cplDates[cplDates.length - 1],
-                        y0: 12,
-                        y1: 12,
-                        line: {color: '#999', width: 1, dash: 'dash'},
-                        opacity: 0.5
-                    }]
-                },
-                {responsive: true, displayModeBar: false});
-
-            // Gráfico 3: CPL Semanal
-            Plotly.newPlot('chart3',
-                [{x: ['Semana 1<br>(2-8 Mar)', 'Semana 2<br>(9-14 Mar)'], y: [w1CPL, w2CPL], type: 'bar', 
-                  marker: {color: [w1CPL < 12 ? '#10B981' : '#F59E0B', w2CPL > 20 ? '#EF4444' : '#F59E0B']},
-                  text: [`€${w1CPL.toFixed(2)}`, `€${w2CPL.toFixed(2)}`], textposition: 'outside'}],
-                {title: '<b>CPL Semanal (Comparativa)</b>', yaxis: {title: 'CPL (€)'}, height: 350, margin: {t: 50}},
-                {responsive: true, displayModeBar: false});
-
-            // Gráfico 4: Distribución Presupuesto
-            Plotly.newPlot('chart4',
-                [{labels: creativos.map(c => c.name), values: creativos.map(c => c.spend), type: 'pie', 
-                  textposition: 'inside', textinfo: 'label+percent',
-                  marker: {colors: ['#2563EB', '#F59E0B', '#EF4444']}}],
-                {title: '<b>Distribución de Presupuesto por Creativo</b>', height: 350, margin: {t: 50}},
-                {responsive: true, displayModeBar: false});
-
-            // === TABLA CREATIVOS ===
-            document.getElementById('creativeTable').innerHTML = creativos.map(c => {
-                const pct = (c.spend / totalSpend * 100).toFixed(0);
-                const status = c.leads > 10 ? '✅ Ganador' : c.leads > 0 ? '⚠️ Monitorear' : '❌ Pausar';
-                return `<tr>
-                    <td>${c.name}</td>
-                    <td>${c.plays.toLocaleString()}</td>
-                    <td>€${c.spend.toFixed(2)}</td>
-                    <td>${pct}%</td>
-                    <td class="${c.leads > 0 ? 'metric-good' : 'metric-bad'}">${c.leads}</td>
-                    <td>${c.leads > 0 ? '€' + (c.spend/c.leads).toFixed(2) : 'N/A'}</td>
-                    <td>${((c.plays_25/c.plays)*100).toFixed(1)}%</td>
-                    <td>${c.ads.length}</td>
-                    <td>${status}</td>
-                </tr>`;
-            }).join('');
-
-            // === TABLA AD SETS ===
-            document.getElementById('adsetsTable').innerHTML = videoData.sort((a,b) => b.leads - a.leads).map(ad => {
-                const hook = (ad.retention_25 * 1.2).toFixed(1);
-                const ret25 = ((ad.plays_25/ad.plays)*100).toFixed(1);
-                const ret50 = ((ad.plays_50/ad.plays)*100).toFixed(1);
-                const ret75 = ((ad.plays_75/ad.plays)*100).toFixed(1);
-                const ret100 = ((ad.plays_100/ad.plays)*100).toFixed(1);
-                const cpl = ad.leads > 0 ? (ad.spend/ad.leads).toFixed(2) : '-';
-                
-                // Obtener datos de audiencia usando adset_id
-                const adsetData = adsetMapping[ad.adset_id];
-                const audienceName = typeof adsetData === 'string' ? adsetData : adsetData?.name || ad.adset_name || 'Unknown';
-                const edad = typeof adsetData === 'string' ? 'N/A' : `${adsetData?.edad_min || 18}-${adsetData?.edad_max || 65}`;
-                const sexo = typeof adsetData === 'string' ? 'Todos' : adsetData?.sexo || 'Todos';
-                const ubicacion = typeof adsetData === 'string' ? 'N/A' : adsetData?.ubicacion || 'España';
-                const intereses = typeof adsetData === 'string' ? '' : (adsetData?.intereses?.join(', ') || 'General');
-                
-                const action = ad.leads > 3 ? '✅ Escalar' : ad.leads > 0 ? '⚠️ Monitor' : ad.spend > 10 ? '❌ Pausar' : '🟡 Test';
-                
-                return `<tr>
-                    <td style="color: #2563EB; font-weight: 700; text-align: left;">${audienceName}</td>
-                    <td>${edad}</td>
-                    <td>${sexo}</td>
-                    <td>${ubicacion}</td>
-                    <td style="font-size: 0.8em;">${intereses}</td>
-                    <td style="font-size: 0.85em; max-width: 100px; word-wrap: break-word;">${ad.ad_name}</td>
-                    <td>${ad.plays.toLocaleString()}</td>
-                    <td>€${ad.spend.toFixed(2)}</td>
-                    <td style="color: ${hook > 10 ? '#10B981' : hook > 5 ? '#F59E0B' : '#EF4444'}; font-weight: 700;">${hook}%</td>
-                    <td style="color: ${ret25 > 8 ? '#10B981' : '#F59E0B'};">${ret25}%</td>
-                    <td>${ret50}%</td>
-                    <td>${ret75}%</td>
-                    <td>${ret100}%</td>
-                    <td class="${ad.leads > 0 ? 'metric-good' : 'metric-bad'}">${ad.leads}</td>
-                    <td>${cpl}</td>
-                    <td>€${ad.cpm.toFixed(2)}</td>
-                    <td>${action}</td>
-                </tr>`;
-            }).join('');
-
-            // === CURVA DE RETENCIÓN POR CREATIVO ===
-            const creativosRetention = {};
-            
-            videoData.forEach(ad => {
-                if (!creativosRetention[ad.ad_name]) {
-                    creativosRetention[ad.ad_name] = {
-                        plays: 0,
-                        plays_25: 0,
-                        plays_50: 0,
-                        plays_75: 0,
-                        plays_100: 0
-                    };
-                }
-                
-                creativosRetention[ad.ad_name].plays += ad.plays;
-                creativosRetention[ad.ad_name].plays_25 += ad.plays_25;
-                creativosRetention[ad.ad_name].plays_50 += ad.plays_50;
-                creativosRetention[ad.ad_name].plays_75 += ad.plays_75;
-                creativosRetention[ad.ad_name].plays_100 += ad.plays_100;
-            });
-            
-            const retentionTraces = Object.entries(creativosRetention).map(([name, data]) => {
-                const baseValue = data.plays > 0 ? data.plays : 1;
-                const ret = [
-                    9.3,  // 0-3s (estimado)
-                    ((data.plays_25 / baseValue) * 100),
-                    ((data.plays_50 / baseValue) * 100),
-                    ((data.plays_75 / baseValue) * 100),
-                    ((data.plays_100 / baseValue) * 100),
-                    1.0   // Al final
-                ];
-                
-                const colors = ['#2563EB', '#10B981', '#F59E0B', '#8B5CF6'];
-                const colorIndex = Object.keys(creativosRetention).indexOf(name);
-                
-                return {
-                    x: ['20%', '40%', '60%', '80%', '100%', '100%+'],
-                    y: ret,
-                    mode: 'lines+markers',
-                    name: name,
-                    line: {color: colors[colorIndex % colors.length], width: 3},
-                    marker: {size: 10},
-                    hovertemplate: `${name}<br>Punto: %{x}<br>Retención: %{y:.1f}%<extra></extra>`
-                };
-            });
-            
-            Plotly.newPlot('curvaRetencion', retentionTraces,
-                {
-                    title: '<b>Curva de Retención (%)</b>',
-                    xaxis: {title: 'Progreso del Video'},
-                    yaxis: {title: 'Retención (%)', range: [0, 100]},
-                    height: 400,
-                    margin: {t: 60, b: 60, l: 60, r: 60},
-                    hovermode: 'x unified'
-                },
-                {responsive: true, displayModeBar: false});
-
-            // === CONCLUSIONES POR AUDIENCIA ===
-            const conclusionesHTML = {};
-            videoData.forEach(ad => {
-                const adsetData = adsetMapping[ad.adset_id];
-                const adsetName = typeof adsetData === 'string' ? adsetData : adsetData?.name || ad.adset_name;
-                
-                if (!conclusionesHTML[adsetName]) {
-                    conclusionesHTML[adsetName] = {
-                        totalSpend: 0,
-                        totalLeads: 0,
-                        totalPlays: 0,
-                        avgHook: 0,
-                        avgRet25: 0,
-                        ads: []
-                    };
-                }
-                
-                const hook = (ad.retention_25 * 1.2);
-                const ret25 = ((ad.plays_25/ad.plays)*100);
-                
-                conclusionesHTML[adsetName].totalSpend += ad.spend;
-                conclusionesHTML[adsetName].totalLeads += ad.leads;
-                conclusionesHTML[adsetName].totalPlays += ad.plays;
-                conclusionesHTML[adsetName].avgHook = (conclusionesHTML[adsetName].avgHook + hook) / 2;
-                conclusionesHTML[adsetName].avgRet25 = (conclusionesHTML[adsetName].avgRet25 + ret25) / 2;
-                conclusionesHTML[adsetName].ads.push({name: ad.ad_name, leads: ad.leads, cpl: ad.leads > 0 ? ad.spend / ad.leads : 0});
-            });
-            
-            document.getElementById('conclusionesAudiencias').innerHTML = Object.entries(conclusionesHTML).map(([name, data]) => {
-                const cpl = data.totalLeads > 0 ? (data.totalSpend / data.totalLeads).toFixed(2) : '∞';
-                const status = data.totalLeads > 5 ? '🟢 ALTO RENDIMIENTO' : data.totalLeads > 0 ? '🟡 POTENCIAL' : '🔴 SIN CONVERSIÓN';
-                const recomendacion = data.totalLeads > 5 ? 'Escala inversión en este público' : data.totalLeads > 0 ? 'Optimiza creativo y monitorea' : 'Pausa o realiza test diferentes';
-                
-                const topAd = data.ads.reduce((prev, current) => (prev.leads > current.leads) ? prev : current);
-                const insight = topAd.leads > 0 ? `Mejor creativo: "${topAd.name}" (${topAd.leads} leads)` : 'Ningún creativo genera conversiones aún';
-                
-                return `
-                    <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px;">
-                        <div style="font-weight: 700; font-size: 1.1em; margin-bottom: 12px; color: #1f2937;">${name}</div>
-                        <div style="font-size: 0.9em; line-height: 1.8;">
-                            <strong>Inversión:</strong> €${data.totalSpend.toFixed(2)} | <strong>Leads:</strong> ${data.totalLeads} | <strong>CPL:</strong> €${cpl}<br>
-                            <strong>Hook %:</strong> ${data.avgHook.toFixed(1)}% | <strong>Retención 25%:</strong> ${data.avgRet25.toFixed(1)}%<br><br>
-                            <strong>Status:</strong> ${status}<br>
-                            <strong>Recomendación:</strong> ${recomendacion}<br>
-                            <strong>Insight:</strong> ${insight}
-                        </div>
-                    </div>
-                `;
-            }).join('');
-            
-            // === EMBUDOS SEPARADOS POR AUDIENCIA ===
-            const embudoData = {};
-            
-            videoData.forEach(ad => {
-                const adsetData = adsetMapping[ad.adset_id];
-                const adsetName = typeof adsetData === 'string' ? adsetData : adsetData?.name || ad.adset_name;
-                
-                if (!embudoData[adsetName]) {
-                    embudoData[adsetName] = {
-                        plays: 0,
-                        plays_25: 0,
-                        plays_50: 0,
-                        plays_75: 0,
-                        plays_100: 0,
-                        leads: 0,
-                        intereses: typeof adsetData === 'string' ? 'General' : (adsetData?.intereses?.join(', ') || 'General')
-                    };
-                }
-                
-                embudoData[adsetName].plays += ad.plays;
-                embudoData[adsetName].plays_25 += ad.plays_25;
-                embudoData[adsetName].plays_50 += ad.plays_50;
-                embudoData[adsetName].plays_75 += ad.plays_75;
-                embudoData[adsetName].plays_100 += ad.plays_100;
-                embudoData[adsetName].leads += ad.leads;
-            });
-            
-            const embudosHTML = Object.entries(embudoData).map(([name, data], index) => {
-                const baseValue = data.plays > 0 ? data.plays : 1;
-                const divId = `embudo_${index}`;
-                
-                const ret25 = ((data.plays_25 / baseValue) * 100).toFixed(1);
-                const ret50 = ((data.plays_50 / baseValue) * 100).toFixed(1);
-                const ret75 = ((data.plays_75 / baseValue) * 100).toFixed(1);
-                const ret100 = ((data.plays_100 / baseValue) * 100).toFixed(1);
-                const leadRate = ((data.leads / data.plays) * 100).toFixed(2);
-                
-                const status = data.leads > 5 ? '🟢 EXCELENTE' : data.leads > 0 ? '🟡 BUENO' : '🔴 SIN LEADS';
-                
-                // Crear gráfico BARRAS HORIZONTALES con % retención
-                setTimeout(() => {
-                    const colors = [
-                        '#2563EB',  // 100% - azul fuerte
-                        '#3B82F6',  // 25% - azul
-                        '#60A5FA',  // 50% - azul claro
-                        '#93C5FD',  // 75% - azul muy claro
-                        '#DBEAFE',  // 100% - azul pálido
-                        data.leads > 0 ? '#10B981' : '#EF4444'  // Leads - verde o rojo
-                    ];
-                    
-                    Plotly.newPlot(divId,
-                        [{
-                            type: 'bar',
-                            orientation: 'h',
-                            y: ['Plays Iniciales', 'Vieron 25%', 'Vieron 50%', 'Vieron 75%', 'Completaron Video', 'Leads Generados'],
-                            x: [100, parseFloat(ret25), parseFloat(ret50), parseFloat(ret75), parseFloat(ret100), parseFloat(leadRate)],
-                            text: [
-                                `100%`,
-                                `${ret25}%`,
-                                `${ret50}%`,
-                                `${ret75}%`,
-                                `${ret100}%`,
-                                `${leadRate}%`
-                            ],
-                            textposition: 'outside',
-                            marker: {color: colors},
-                            hovertext: [
-                                `${data.plays} plays iniciales (100%)`,
-                                `${data.plays_25} vieron 25% (${ret25}% retención)`,
-                                `${data.plays_50} vieron 50% (${ret50}% retención)`,
-                                `${data.plays_75} vieron 75% (${ret75}% retención)`,
-                                `${data.plays_100} completaron video (${ret100}% retención)`,
-                                `${data.leads} leads generados (${leadRate}% conversión)`
-                            ],
-                            hoverinfo: 'text'
-                        }],
-                        {
-                            title: `<b>${name}</b>`, 
-                            xaxis: {title: 'Retención (%)', range: [0, 110]},
-                            margin: {t: 50, b: 30, l: 180, r: 50}, 
-                            height: 320,
-                            font: {size: 12}
-                        },
-                        {responsive: true, displayModeBar: false}
-                    );
-                }, 100 * index);
-                
-                const avgRetention = ((parseFloat(ret25) + parseFloat(ret50) + parseFloat(ret75) + parseFloat(ret100)) / 4).toFixed(1);
-                
-                return `
-                    <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px;">
-                        <div id="${divId}" style="height: 320px; margin-bottom: 20px;"></div>
-                        
-                        <div style="background: white; border-radius: 8px; padding: 15px; border-left: 4px solid ${data.leads > 5 ? '#10B981' : data.leads > 0 ? '#F59E0B' : '#EF4444'}; margin-bottom: 15px;">
-                            <div style="font-size: 0.9em; line-height: 1.8;">
-                                <div style="margin-bottom: 10px;">
-                                    <strong>📊 Intereses:</strong> ${data.intereses}<br>
-                                    <strong>👥 Plays Iniciales:</strong> ${data.plays}<br>
-                                    <strong>📹 Retención Promedio:</strong> ${avgRetention}%<br>
-                                    <strong>🎯 Leads Generados:</strong> ${data.leads} (${leadRate}% de conversión)<br>
-                                    <strong>Status:</strong> ${status}
-                                </div>
-                                <div style="padding-top: 10px; border-top: 1px solid #e5e7eb; color: #555; font-size: 0.85em;">
-                                    <strong>💡 Insight:</strong> 
-                                    ${data.leads > 5 ? '✅ <strong>Excelente rendimiento.</strong> Esta audiencia convierte bien. Escala presupuesto aquí.' : 
-                                      data.leads > 0 ? '🟡 <strong>Potencial detectado.</strong> Buen inicio, continúa testando y optimizando.' : 
-                                      '❌ <strong>Sin conversiones.</strong> Cambia creativo o pausa esta audiencia.'}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-            
-            document.getElementById('embudosContainer').innerHTML = embudosHTML;
-            
-            // === COMPARATIVA DE AUDIENCIAS ===
-            const audComparativa = Object.entries(embudoData).map(([name, data]) => {
-                const baseValue = data.plays > 0 ? data.plays : 1;
-                const ret25 = ((data.plays_25 / baseValue) * 100).toFixed(1);
-                const ret50 = ((data.plays_50 / baseValue) * 100).toFixed(1);
-                const ret75 = ((data.plays_75 / baseValue) * 100).toFixed(1);
-                const ret100 = ((data.plays_100 / baseValue) * 100).toFixed(1);
-                const leadRate = ((data.leads / data.plays) * 100).toFixed(2);
-                const avgRetention = ((parseFloat(ret25) + parseFloat(ret50) + parseFloat(ret75) + parseFloat(ret100)) / 4).toFixed(1);
-                
-                // Obtener impresiones de la audiencia
-                let impressions = 0;
-                videoData.forEach(ad => {
-                    const adsetData = adsetMapping[ad.adset_id];
-                    const adsetName = typeof adsetData === 'string' ? adsetData : adsetData?.name || ad.adset_name;
-                    if (adsetName === name) {
-                        impressions += ad.impressions;
-                    }
-                });
-                
-                return {
-                    name,
-                    impressions: impressions,
-                    plays: data.plays,
-                    leads: data.leads,
-                    leadRate: parseFloat(leadRate),
-                    avgRetention: parseFloat(avgRetention),
-                    ret100: parseFloat(ret100),
-                    playRate: ((data.plays / impressions) * 100).toFixed(2)
-                };
-            }).sort((a, b) => b.leads - a.leads);
-            
-            const comparativaHTML = `
-                <div style="background: linear-gradient(135deg, #f0f9ff 0%, #f9fafb 100%); border: 1px solid #dbeafe; border-radius: 12px; padding: 25px; margin-top: 40px;">
-                    <div class="section-title" style="margin-bottom: 20px; border-bottom: none;">🏆 Comparativa: Mejor Audiencia</div>
-                    
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; margin-top: 20px;">
-                        ${audComparativa.map((aud, idx) => {
-                            const medal = idx === 0 ? '🥇' : idx === 1 ? '🥈' : '🥉';
-                            const isWinner = idx === 0;
-                            const efficiencyScore = (aud.leadRate * aud.avgRetention / 100).toFixed(1);
-                            const recommendation = isWinner ? 
-                                `✅ <strong>ESTRATEGIA INMEDIATA:</strong> Esta es tu audiencia ganadora. Duplica presupuesto de €${(Math.random()*20+20).toFixed(0)} a €${(Math.random()*40+40).toFixed(0)}/día. Lead Rate ${aud.leadRate}% es superior al promedio.` :
-                                idx === 1 ?
-                                `🟡 <strong>ALTERNATIVA VIABLE:</strong> Retención solida (${aud.avgRetention}%). Continúa invirtiendo pero con presupuesto secundario. Monitorea progreso semanal.` :
-                                `🔴 <strong>PAUSAR O REOPTIMIZAR:</strong> Lead Rate bajo (${aud.leadRate}%). Cambia creativo o pausa esta audiencia. Reinventa con nuevos mensajes.`;
-                            
-                            return `
-                                <div style="background: white; border: 3px solid ${isWinner ? '#10B981' : '#e5e7eb'}; border-radius: 12px; padding: 22px; ${isWinner ? 'box-shadow: 0 8px 24px rgba(16,185,129,0.25); transform: scale(1.02);' : ''}">
-                                    <div style="font-size: 1.8em; margin-bottom: 15px; font-weight: 900;">${medal}</div>
-                                    <div style="font-size: 1.2em; font-weight: 800; margin-bottom: 18px; color: ${isWinner ? '#10B981' : '#1f2937'};">${aud.name}</div>
-                                    
-                                    <div style="background: ${isWinner ? '#f0fdf4' : '#f9fafb'}; padding: 15px; border-radius: 8px; margin-bottom: 16px; font-size: 0.95em; line-height: 1.9;">
-                                        <div style="margin-bottom: 8px;">👁️ <strong>Impresiones:</strong> <span style="font-weight: 700; color: #6366F1;">${aud.impressions.toLocaleString()}</span> <span style="font-size: 0.85em; color: #666;">(alcance inicial)</span></div>
-                                        <div style="margin-bottom: 8px;">▶️ <strong>Plays:</strong> <span style="font-weight: 700; color: #2563EB;">${aud.plays}</span> <span style="font-size: 0.85em; color: #666;">(${aud.playRate}% de impresiones)</span></div>
-                                        <div style="margin-bottom: 8px;">🎯 <strong>Leads Generados:</strong> <span style="font-weight: 700; color: ${aud.leads > 5 ? '#10B981' : aud.leads > 0 ? '#F59E0B' : '#EF4444'};">${aud.leads} conversiones</span></div>
-                                        <div style="margin-bottom: 8px;">💹 <strong>Lead Rate:</strong> <span style="font-weight: 700; color: ${aud.leadRate > 2 ? '#10B981' : aud.leadRate > 1 ? '#F59E0B' : '#EF4444'};">${aud.leadRate}%</span> <span style="font-size: 0.85em; color: #666;">(${aud.leads}/${aud.plays})</span></div>
-                                        <div style="margin-bottom: 8px;">📈 <strong>Retención Promedio:</strong> <span style="font-weight: 700;">${aud.avgRetention}%</span> <span style="font-size: 0.85em; color: #666;">(mantiene ${aud.avgRetention}% de audiencia)</span></div>
-                                        <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #e0e0e0;">
-                                            <div style="font-size: 0.85em; color: #666;"><strong>🔥 Eficiencia:</strong> Score ${efficiencyScore}/10 (retención × conversión)</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div style="background: ${isWinner ? '#ecfdf5' : '#fffbeb'}; padding: 15px; border-radius: 8px; border-left: 4px solid ${isWinner ? '#10B981' : '#F59E0B'}; font-size: 0.9em; line-height: 1.7; color: #1f2937;">
-                                        ${recommendation}
-                                    </div>
-                                </div>
-                            `;
-                        }).join('')}
-                    </div>
-                </div>
-            `;
-            
-            // Agregar comparativa después de los embudos
-            setTimeout(() => {
-                const embudosContainer = document.getElementById('embudosContainer');
-                embudosContainer.insertAdjacentHTML('afterend', comparativaHTML);
-            }, 500);
-
-            // === PROYECCIONES ===
-            const actualCPL = totalCPL.toFixed(2);
-            const optimizedIncome = Math.round((50 / 9) * 50 * 20); // CPL €9 optimizado
-            const actualIncome = Math.round((50 / actualCPL) * 50 * 20); // CPL actual
-            
-            Plotly.newPlot('projectionChart',
-                [{x: [20, 50], y: [3350, 8375], mode: 'lines+markers', name: 'CPL €9 (Optimizado)', line: {color: '#10B981', width: 4}, marker: {size: 12}},
-                 {x: [20, 50], y: [Math.round((50/actualCPL)*20*20), Math.round((50/actualCPL)*50*20)], mode: 'lines+markers', name: `CPL €${actualCPL} (Actual)`, line: {color: '#F59E0B', width: 4, dash: 'dash'}, marker: {size: 12}}],
-                {title: '<b>Ingresos Proyectados/mes (x €50/lead)</b>', xaxis: {title: 'Presupuesto diario (€)'}, yaxis: {title: 'Ingresos/mes (€)'}, height: 350, margin: {t: 60}, hovermode: 'x unified'},
-                {responsive: true, displayModeBar: false});
-            
-            // === FUNCIÓN: FILTRO DE CREATIVOS ===
-            window.filtrarCreativo = function(adName) {
-                const creativoData = {};
-                
-                videoData.forEach(ad => {
-                    const adsetData = adsetMapping[ad.adset_id];
-                    const adsetName = typeof adsetData === 'string' ? adsetData : adsetData?.name || ad.adset_name;
-                    
-                    if (!creativoData[adName]) {
-                        creativoData[adName] = {};
-                    }
-                    
-                    if (ad.ad_name === adName) {
-                        if (!creativoData[adName][adsetName]) {
-                            creativoData[adName][adsetName] = {
-                                plays: 0,
-                                plays_25: 0,
-                                plays_50: 0,
-                                plays_75: 0,
-                                plays_100: 0,
-                                leads: 0,
-                                spend: 0
-                            };
-                        }
-                        
-                        creativoData[adName][adsetName].plays += ad.plays;
-                        creativoData[adName][adsetName].plays_25 += ad.plays_25;
-                        creativoData[adName][adsetName].plays_50 += ad.plays_50;
-                        creativoData[adName][adsetName].plays_75 += ad.plays_75;
-                        creativoData[adName][adsetName].plays_100 += ad.plays_100;
-                        creativoData[adName][adsetName].leads += ad.leads;
-                        creativoData[adName][adsetName].spend += ad.spend;
-                    }
-                });
-                
-                // Calcular totales para comparación
-                const creativeStats = {
-                    'Ad 1 Pablo': {totalLeads: 0, totalSpend: 0, totalPlays: 0},
-                    'Ad 2 Pablo': {totalLeads: 0, totalSpend: 0, totalPlays: 0},
-                    'Ad 3 Pablo': {totalLeads: 0, totalSpend: 0, totalPlays: 0}
-                };
-                
-                videoData.forEach(ad => {
-                    if (creativeStats[ad.ad_name]) {
-                        creativeStats[ad.ad_name].totalLeads += ad.leads;
-                        creativeStats[ad.ad_name].totalSpend += ad.spend;
-                        creativeStats[ad.ad_name].totalPlays += ad.plays;
-                    }
-                });
-                
-                const seleccionado = creativeStats[adName];
-                const cplSeleccionado = seleccionado.totalLeads > 0 ? (seleccionado.totalSpend / seleccionado.totalLeads) : 'N/A';
-                
-                // Encontrar mejor y peor
-                let mejorAd = 'Ad 2 Pablo', peorAd = 'Ad 3 Pablo';
-                let mejorCPL = Infinity, peorCPL = 0;
-                Object.entries(creativeStats).forEach(([ad, stats]) => {
-                    const cpl = stats.totalLeads > 0 ? stats.totalSpend / stats.totalLeads : 999;
-                    if (cpl < mejorCPL && stats.totalLeads > 0) { mejorCPL = cpl; mejorAd = ad; }
-                    if (cpl > peorCPL && stats.totalLeads > 0) { peorCPL = cpl; peorAd = ad; }
-                });
-                
-                const comparacion = adName === mejorAd ? 
-                    `🥇 Este es el <strong>mejor creativo</strong> por CPL. Invierte aquí el 70% de presupuesto.` :
-                    adName === peorAd ?
-                    `🔴 Este creativo tiene <strong>mayor CPL</strong> (menos eficiente). Considera pausarlo o hacer A/B test.` :
-                    `🟡 Rendimiento medio. Alternativa viable entre el mejor y el peor.`;
-                
-                const detalleHTML = Object.entries(creativoData[adName] || {}).map(([audName, data]) => {
-                    const ret25 = ((data.plays_25 / data.plays) * 100).toFixed(1);
-                    const ret50 = ((data.plays_50 / data.plays) * 100).toFixed(1);
-                    const ret75 = ((data.plays_75 / data.plays) * 100).toFixed(1);
-                    const ret100 = ((data.plays_100 / data.plays) * 100).toFixed(1);
-                    const cpl = data.leads > 0 ? (data.spend / data.leads).toFixed(2) : '∞';
-                    const leadRate = ((data.leads / data.plays) * 100).toFixed(2);
-                    
-                    return `
-                        <div style="background: white; border: 2px solid #e5e7eb; border-radius: 10px; padding: 20px; margin-bottom: 18px;">
-                            <div style="font-weight: 800; font-size: 1.15em; margin-bottom: 14px; color: #1f2937; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px;">${audName}</div>
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px; font-size: 0.92em; line-height: 1.8;">
-                                <div>
-                                    <div style="margin-bottom: 10px;">📊 <strong>Plays Iniciales:</strong> <span style="color: #2563EB; font-weight: 700;">${data.plays}</span></div>
-                                    <div style="margin-bottom: 10px;">▶️ <strong>Vieron 25%:</strong> <span style="color: #3B82F6;">${data.plays_25} (${ret25}%)</span></div>
-                                    <div style="margin-bottom: 10px;">📹 <strong>Vieron 50%:</strong> <span style="color: #60A5FA;">${data.plays_50} (${ret50}%)</span></div>
-                                    <div>🎬 <strong>Vieron 75%:</strong> <span style="color: #93C5FD;">${data.plays_75} (${ret75}%)</span></div>
-                                </div>
-                                <div>
-                                    <div style="margin-bottom: 10px;">✅ <strong>Completaron Video:</strong> <span style="color: #06B6D4; font-weight: 700;">${data.plays_100} (${ret100}%)</span></div>
-                                    <div style="margin-bottom: 10px;">🎯 <strong>Leads Generados:</strong> <span style="color: ${data.leads > 3 ? '#10B981' : data.leads > 0 ? '#F59E0B' : '#EF4444'}; font-weight: 700;">${data.leads}</span></div>
-                                    <div style="margin-bottom: 10px;">💹 <strong>CPL:</strong> €${cpl} <span style="font-size: 0.85em; color: #666;">(€${data.spend.toFixed(2)} / ${data.leads} leads)</span></div>
-                                    <div>💰 <strong>Lead Rate:</strong> ${leadRate}% <span style="font-size: 0.85em; color: #666;">(conversión)</span></div>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-                
-                const resumenHTML = `
-                    <div style="background: linear-gradient(135deg, #f0fdf4 0%, #f9fafb 100%); border-left: 5px solid #10B981; border-radius: 10px; padding: 18px; margin-bottom: 20px; font-size: 0.95em; line-height: 1.8;">
-                        <strong style="font-size: 1.05em;">💡 Resumen de ${adName}:</strong><br>
-                        <strong>Total Leads:</strong> ${seleccionado.totalLeads} | 
-                        <strong>CPL Promedio:</strong> ${typeof cplSeleccionado === 'string' ? cplSeleccionado : '€' + cplSeleccionado.toFixed(2)} | 
-                        <strong>Gasto Total:</strong> €${seleccionado.totalSpend.toFixed(2)}<br><br>
-                        <strong style="font-size: 1em;">📊 Comparación:</strong> ${comparacion}
-                    </div>
-                `;
-                
-                document.getElementById('creativoDetalleContainer').innerHTML = resumenHTML + detalleHTML;
-                
-                // Actualizar botones
-                document.getElementById('btn_ad1').style.background = adName === 'Ad 1 Pablo' ? '#2563EB' : 'white';
-                document.getElementById('btn_ad1').style.color = adName === 'Ad 1 Pablo' ? 'white' : '#2563EB';
-                document.getElementById('btn_ad2').style.background = adName === 'Ad 2 Pablo' ? '#10B981' : 'white';
-                document.getElementById('btn_ad2').style.color = adName === 'Ad 2 Pablo' ? 'white' : '#10B981';
-                document.getElementById('btn_ad3').style.background = adName === 'Ad 3 Pablo' ? '#F59E0B' : 'white';
-                document.getElementById('btn_ad3').style.color = adName === 'Ad 3 Pablo' ? 'white' : '#F59E0B';
-            };
-            
-            // Cargar por defecto el primer creativo
-            window.filtrarCreativo('Ad 2 Pablo');
-            
-            // === FUNCIÓN: ESCENARIOS DE PROYECCIÓN ===
-            const escenarios = [
-                {
-                    name: 'Actual (Sin cambios)',
-                    presupuestoDia: 20,
-                    cpl: 11.59,
-                    descripcion: 'Mantén el status quo. Presupuesto: €20/día. Audience saturada (CPL €20.80 en Sem2).',
-                    riesgo: '🔴 Alto riesgo. CPL subirá más con el tiempo.',
-                    leadsMes: 52,
-                    clientesPotenciales: 0.52,
-                    ingresosMes: Math.round(52 * 0.01 * 300)
-                },
-                {
-                    name: 'Optimizado (Recomendado)',
-                    presupuestoDia: 20,
-                    cpl: 9.0,
-                    descripcion: 'Crea 2 nuevas audiencias (cold + retargeting). Pausa Ad 3, focus Ad 2. CPL bajará a €9.',
-                    riesgo: '🟢 Bajo riesgo. ROI mejora +29% vs Actual.',
-                    leadsMes: Math.round((20 * 30) / 9.0),
-                    clientesPotenciales: Math.round((20 * 30) / 9.0 * 0.01 * 100) / 100,
-                    ingresosMes: Math.round((20 * 30) / 9.0 * 0.01 * 300),
-                    acciones: ['✅ Crea 2 new ad sets (Small Business + Interest 2)', '✅ Pausa Ad 3 Pablo', '✅ Invierte 70% presupuesto en Ad 2', '✅ Monitorea CPL semanal']
-                },
-                {
-                    name: 'Escalado',
-                    presupuestoDia: 30,
-                    cpl: 9.5,
-                    descripcion: 'Aumenta presupuesto €20 → €30/día. Requiere 3-4 nuevas audiencias. Creativos adicionales.',
-                    riesgo: '🟡 Riesgo medio. Necesita capital + nuevas audiencias probadas.',
-                    leadsMes: Math.round((30 * 30) / 9.5),
-                    clientesPotenciales: Math.round((30 * 30) / 9.5 * 0.01 * 100) / 100,
-                    ingresosMes: Math.round((30 * 30) / 9.5 * 0.01 * 300),
-                    acciones: ['📈 Escala presupuesto a €30/día', '🎬 Crea 2-3 nuevos creativos de prueba', '👥 Lanza 3-4 nuevas audiencias en paralelo', '📊 A/B test: Ad 2 vs nuevos creativos']
-                },
-                {
-                    name: 'Agresivo (Máximo crecimiento)',
-                    presupuestoDia: 50,
-                    cpl: 10.0,
-                    descripcion: 'Duplica presupuesto (€50/día). Requiere infraestructura de test, creativos nuevos, nuevas audiencias.',
-                    riesgo: '🔴 Alto riesgo. Capital requerido €1,500/mes. Requiere optimización continua.',
-                    leadsMes: Math.round((50 * 30) / 10.0),
-                    clientesPotenciales: Math.round((50 * 30) / 10.0 * 0.01 * 100) / 100,
-                    ingresosMes: Math.round((50 * 30) / 10.0 * 0.01 * 300),
-                    acciones: ['🚀 Aumenta presupuesto a €50/día', '🎬 Desarrolla 5-6 nuevos creativos', '👥 Prueba 6-8 nuevas audiencias simultaneamente', '⚡ Automation + Pixel retargeting avanzado']
-                }
-            ];
-            
-            window.mostrarEscenario = function(idx) {
-                const esc = escenarios[idx];
-                const presupuestoMes = esc.presupuestoDia * 30;
-                
-                let html = `
-                    <div style="border-left: 5px solid ${idx === 0 ? '#2563EB' : idx === 1 ? '#10B981' : idx === 2 ? '#F59E0B' : '#8B5CF6'}; background: ${idx === 0 ? '#dbeafe' : idx === 1 ? '#f0fdf4' : idx === 2 ? '#fffbeb' : '#f3e8ff'}; padding: 20px; border-radius: 8px;">
-                        <div style="font-size: 1.2em; font-weight: 800; margin-bottom: 15px; color: #1f2937;">${esc.name}</div>
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 20px; font-size: 0.95em;">
-                            <div>
-                                <div style="color: #666; font-size: 0.85em; margin-bottom: 5px;">Presupuesto/día</div>
-                                <div style="font-size: 1.8em; font-weight: 900; color: #2563EB;">€${esc.presupuestoDia}</div>
-                                <div style="color: #999; font-size: 0.8em;">€${presupuestoMes}/mes</div>
-                            </div>
-                            <div>
-                                <div style="color: #666; font-size: 0.85em; margin-bottom: 5px;">CPL (promedio)</div>
-                                <div style="font-size: 1.8em; font-weight: 900; color: #10B981;">€${esc.cpl}</div>
-                                <div style="color: #999; font-size: 0.8em;">vs €<span id="actualCPLText">11.18</span> actual</div>
-                            </div>
-                            <div>
-                                <div style="color: #666; font-size: 0.85em; margin-bottom: 5px;">Leads/mes (estimado)</div>
-                                <div style="font-size: 1.8em; font-weight: 900; color: #F59E0B;">${esc.leadsMes}</div>
-                                <div style="color: #999; font-size: 0.8em;">${Math.round((esc.leadsMes - 52) / 52 * 100)}% vs actual</div>
-                            </div>
-                            <div>
-                                <div style="color: #666; font-size: 0.85em; margin-bottom: 5px;">Clientes Potenciales (1% × €300)</div>
-                                <div style="font-size: 1.8em; font-weight: 900; color: #06B6D4;">${esc.clientesPotenciales.toFixed(2)} clientes</div>
-                                <div style="color: #999; font-size: 0.8em;">↳ €${esc.ingresosMes.toLocaleString()}/mes potencial</div>
-                            </div>
-                        </div>
-                        
-                        <div style="background: white; padding: 15px; border-radius: 6px; margin-bottom: 15px; border-left: 3px solid ${idx === 0 ? '#2563EB' : idx === 1 ? '#10B981' : idx === 2 ? '#F59E0B' : '#8B5CF6'};">
-                            <div style="font-size: 0.9em; line-height: 1.7;">
-                                <strong>📝 Descripción:</strong> ${esc.descripcion}<br><br>
-                                <strong style="color: ${idx === 0 ? '#EF4444' : '#10B981'};">Risk Level:</strong> ${esc.riesgo}
-                            </div>
-                        </div>
-                        
-                        ${esc.acciones ? `<div style="background: white; padding: 15px; border-radius: 6px; border-left: 3px solid #8B5CF6;">
-                            <strong>✅ Pasos a implementar:</strong>
-                            <ul style="margin: 10px 0; padding-left: 20px;">
-                                ${esc.acciones.map(a => `<li>${a}</li>`).join('')}
-                            </ul>
-                        </div>` : ''}
-                    </div>
-                `;
-                
-                document.getElementById('escenarioDetalle').innerHTML = html;
-                
-                // Actualizar botones
-                for (let i = 0; i < 4; i++) {
-                    document.getElementById(`btn_esc${i}`).style.opacity = i === idx ? '1' : '0.6';
-                }
-            };
-            
-            // Mostrar escenario 1 (Optimizado) por defecto
-            window.mostrarEscenario(1);
-            
-            // Gráfico comparativo de escenarios
-            Plotly.newPlot('projectionChart',
-                [
-                    {x: escenarios.map(e => e.name), y: escenarios.map(e => e.ingresosMes), type: 'bar', marker: {color: ['#2563EB', '#10B981', '#F59E0B', '#8B5CF6']}, text: escenarios.map(e => '€' + e.ingresosMes.toLocaleString()), textposition: 'outside', hovertemplate: '<b>%{x}</b><br>Ingresos/mes: €%{y:,.0f}<extra></extra>'}
-                ],
-                {
-                    title: '<b>Ingresos Proyectados/mes por Escenario</b>',
-                    yaxis: {title: 'Ingresos (€)', zeroline: false},
-                    xaxis: {title: 'Escenario'},
-                    height: 450,
-                    margin: {t: 60, b: 100, l: 60, r: 60},
-                    hovermode: 'x'
-                },
-                {responsive: true, displayModeBar: false}
-            );
-        });
     </script>
 </body>
-</html><!-- Cache bust: 1773520116 -->
+</html>

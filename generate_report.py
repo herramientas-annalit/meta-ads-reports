@@ -354,15 +354,16 @@ def main():
     args = parser.parse_args()
     
     # Cargar datos
-    daily_data = load_json(args.daily_data)
-    all_ads = load_json(args.ads_data)
+    raw_daily = load_json(args.daily_data)
+    daily_data = raw_daily.get('daily', raw_daily) if isinstance(raw_daily, dict) else raw_daily
+    all_ads = load_json(args.ads_data) if args.ads_data else []
     
-    if not daily_data or not all_ads:
-        print("❌ Error: No se pudieron cargar los datos")
+    if not daily_data:
+        print("❌ Error: No se pudieron cargar los datos diarios")
         return
     
     # Filtrar campaña
-    ads = filter_campaign_data(all_ads, args.campaign_id)
+    ads = filter_campaign_data(all_ads, args.campaign_id) if all_ads else []
     print(f"✅ Campaña: {args.campaign_name}")
     print(f"   Ad Sets: {len(ads)}")
     

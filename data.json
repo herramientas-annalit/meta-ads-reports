@@ -1,16 +1,142 @@
 {
   "daily": [
-    {"date": "2026-03-02", "spend": 13.40, "impressions": 716, "clicks": 8, "leads": 1, "cpl": 13.40},
-    {"date": "2026-03-03", "spend": 24.16, "impressions": 1227, "clicks": 13, "leads": 6, "cpl": 4.03},
-    {"date": "2026-03-04", "spend": 17.33, "impressions": 3131, "clicks": 33, "leads": 2, "cpl": 8.66},
-    {"date": "2026-03-05", "spend": 16.37, "impressions": 3036, "clicks": 32, "leads": 2, "cpl": 8.19},
-    {"date": "2026-03-06", "spend": 16.93, "impressions": 8173, "clicks": 87, "leads": 0, "cpl": 0.00},
-    {"date": "2026-03-07", "spend": 16.01, "impressions": 5541, "clicks": 59, "leads": 2, "cpl": 8.01},
-    {"date": "2026-03-08", "spend": 23.66, "impressions": 3778, "clicks": 40, "leads": 2, "cpl": 11.83},
-    {"date": "2026-03-09", "spend": 20.74, "impressions": 3263, "clicks": 35, "leads": 2, "cpl": 10.37},
-    {"date": "2026-03-10", "spend": 18.25, "impressions": 2794, "clicks": 30, "leads": 0, "cpl": 0.00},
-    {"date": "2026-03-11", "spend": 21.57, "impressions": 3058, "clicks": 33, "leads": 1, "cpl": 21.57},
-    {"date": "2026-03-12", "spend": 17.28, "impressions": 1506, "clicks": 16, "leads": 2, "cpl": 8.64},
-    {"date": "2026-03-13", "spend": 18.00, "impressions": 4084, "clicks": 44, "leads": 0, "cpl": 0.00}
-  ]
+    {
+      "date": "2026-03-02",
+      "spend": 13.4,
+      "impressions": 716,
+      "clicks": 7,
+      "leads": 1,
+      "cpl": 13.4
+    },
+    {
+      "date": "2026-03-03",
+      "spend": 24.16,
+      "impressions": 1227,
+      "clicks": 31,
+      "leads": 6,
+      "cpl": 4.03
+    },
+    {
+      "date": "2026-03-04",
+      "spend": 17.33,
+      "impressions": 3131,
+      "clicks": 22,
+      "leads": 2,
+      "cpl": 8.66
+    },
+    {
+      "date": "2026-03-05",
+      "spend": 16.37,
+      "impressions": 3036,
+      "clicks": 31,
+      "leads": 2,
+      "cpl": 8.19
+    },
+    {
+      "date": "2026-03-06",
+      "spend": 16.93,
+      "impressions": 8173,
+      "clicks": 79,
+      "leads": 0,
+      "cpl": 0.0
+    },
+    {
+      "date": "2026-03-07",
+      "spend": 16.01,
+      "impressions": 5541,
+      "clicks": 38,
+      "leads": 2,
+      "cpl": 8.01
+    },
+    {
+      "date": "2026-03-08",
+      "spend": 23.66,
+      "impressions": 3778,
+      "clicks": 37,
+      "leads": 2,
+      "cpl": 11.83
+    },
+    {
+      "date": "2026-03-09",
+      "spend": 20.74,
+      "impressions": 3263,
+      "clicks": 32,
+      "leads": 2,
+      "cpl": 10.37
+    },
+    {
+      "date": "2026-03-10",
+      "spend": 18.25,
+      "impressions": 2794,
+      "clicks": 32,
+      "leads": 0,
+      "cpl": 0.0
+    },
+    {
+      "date": "2026-03-11",
+      "spend": 21.57,
+      "impressions": 3058,
+      "clicks": 27,
+      "leads": 1,
+      "cpl": 21.57
+    },
+    {
+      "date": "2026-03-12",
+      "spend": 17.28,
+      "impressions": 1506,
+      "clicks": 17,
+      "leads": 2,
+      "cpl": 8.64
+    },
+    {
+      "date": "2026-03-13",
+      "spend": 18.0,
+      "impressions": 4084,
+      "clicks": 71,
+      "leads": 0,
+      "cpl": 0.0
+    },
+    {
+      "date": "2026-03-14",
+      "spend": 20.13,
+      "impressions": 1435,
+      "clicks": 17,
+      "leads": 0,
+      "cpl": 0.0
+    },
+    {
+      "date": "2026-03-15",
+      "spend": 18.86,
+      "impressions": 1675,
+      "clicks": 78,
+      "leads": 0,
+      "cpl": 0.0
+    },
+    {
+      "date": "2026-03-16",
+      "spend": 5.31,
+      "impressions": 601,
+      "clicks": 35,
+      "leads": 0,
+      "cpl": 0.0
+    },
+    {
+      "date": "2026-03-18",
+      "spend": 27.9,
+      "impressions": 1742,
+      "clicks": 43,
+      "leads": 1,
+      "cpl": 27.9
+    },
+    {
+      "date": "2026-03-19",
+      "spend": 25.62,
+      "impressions": 2501,
+      "clicks": 73,
+      "leads": 6,
+      "cpl": 4.27
+    }
+  ],
+  "updated_at": "2026-03-20T21:12:58.579653",
+  "campaign_id": "120239305936170318"
 }
