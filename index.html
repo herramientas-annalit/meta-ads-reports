@@ -501,9 +501,9 @@
         }
 
         Promise.all([
-            fetch('data.json').then(r => r.json()),
-            fetch('video-analysis.json').then(r => r.json()),
-            fetch('adset-mapping.json').then(r => r.json())
+            fetch('data.json?v=' + Date.now()).then(r => r.json()),
+            fetch('video-analysis.json?v=' + Date.now()).then(r => r.json()),
+            fetch('adset-mapping.json?v=' + Date.now()).then(r => r.json())
         ]).then(([dayData, videoData, adsetMapping]) => {
             const daily = dayData.daily;
 
