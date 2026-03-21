@@ -538,10 +538,18 @@
                 document.getElementById('actualCPLText').textContent = totalCPL.toFixed(2);
             }
 
-            // === RENDIMIENTO SEMANAL ===
-            const week1 = daily.slice(0, 7); // 2-8 mar (7 días)
-            const week2 = daily.slice(7); // 9-13 mar (5 días)
-            
+            // === RENDIMIENTO SEMANAL (dinámico) ===
+            const week1 = daily.slice(0, 7);  // Semana 1: primeros 7 días
+            const week2 = daily.slice(7, 14); // Semana 2: días 8-14
+            const week3 = daily.length > 14 ? daily.slice(14) : []; // Semana 3: resto
+
+            const w1Start = week1[0]?.date || '';
+            const w1End = week1[week1.length-1]?.date || '';
+            const w2Start = week2[0]?.date || '';
+            const w2End = week2[week2.length-1]?.date || '';
+            const w3Start = week3[0]?.date || '';
+            const w3End = week3[week3.length-1]?.date || '';
+
             const w1Spend = week1.reduce((s, d) => s + d.spend, 0);
             const w1Leads = week1.reduce((l, d) => l + d.leads, 0);
             const w1CPL = w1Leads > 0 ? w1Spend / w1Leads : 0;
@@ -550,17 +558,24 @@
             const w2Leads = week2.reduce((l, d) => l + d.leads, 0);
             const w2CPL = w2Leads > 0 ? w2Spend / w2Leads : 0;
 
+            const w3Spend = week3.reduce((s, d) => s + d.spend, 0);
+            const w3Leads = week3.reduce((l, d) => l + d.leads, 0);
+            const w3CPL = w3Leads > 0 ? w3Spend / w3Leads : 0;
+
             const cplChange = w1CPL > 0 ? ((w2CPL - w1CPL) / w1CPL) * 100 : 0;
             const leadsChange = w1Leads > 0 ? ((w2Leads - w1Leads) / w1Leads) * 100 : 0;
+            const investChange = w1Spend > 0 ? ((w2Spend - w1Spend) / w1Spend) * 100 : 0;
 
-            const investChange = ((w2Spend - w1Spend) / w1Spend) * 100;
-            
-            const w2CTR = (daily.slice(7).reduce((s,d) => s + d.clicks, 0) / daily.slice(7).reduce((s,d) => s + d.impressions, 0) * 100).toFixed(2);
-            const w1CTR = (daily.slice(0,7).reduce((s,d) => s + d.clicks, 0) / daily.slice(0,7).reduce((s,d) => s + d.impressions, 0) * 100).toFixed(2);
-            const ctrChange = ((w2CTR - w1CTR) / w1CTR * 100);
-            const w2CPM = (w2Spend / (daily.slice(7).reduce((s,d) => s + d.impressions, 0) / 1000)).toFixed(2);
-            const w1CPM = (w1Spend / (daily.slice(0,7).reduce((s,d) => s + d.impressions, 0) / 1000)).toFixed(2);
-            const cpmChange = ((w2CPM - w1CPM) / w1CPM * 100);
+            const w1Clicks = week1.reduce((s,d) => s + d.clicks, 0);
+            const w2Clicks = week2.reduce((s,d) => s + d.clicks, 0);
+            const w1Imp = week1.reduce((s,d) => s + d.impressions, 0);
+            const w2Imp = week2.reduce((s,d) => s + d.impressions, 0);
+            const w1CTR = w1Imp > 0 ? (w1Clicks / w1Imp * 100).toFixed(2) : '0.00';
+            const w2CTR = w2Imp > 0 ? (w2Clicks / w2Imp * 100).toFixed(2) : '0.00';
+            const ctrChange = w1CTR > 0 ? ((w2CTR - w1CTR) / w1CTR * 100) : 0;
+            const w1CPM = w1Imp > 0 ? (w1Spend / (w1Imp / 1000)).toFixed(2) : '0.00';
+            const w2CPM = w2Imp > 0 ? (w2Spend / (w2Imp / 1000)).toFixed(2) : '0.00';
+            const cpmChange = w1CPM > 0 ? ((w2CPM - w1CPM) / w1CPM * 100) : 0;
             
             // RESUMEN GENERAL usa los mismos totales
             const totalCampaignSpend = totalSpend;
@@ -726,7 +741,7 @@
 
             // Gráfico 3: CPL Semanal
             Plotly.newPlot('chart3',
-                [{x: ['Semana 1<br>(2-8 Mar)', 'Semana 2<br>(9-14 Mar)'], y: [w1CPL, w2CPL], type: 'bar', 
+                [{x: [`Semana 1<br>(${w1Start} → ${w1End})`, `Semana 2<br>(${w2Start} → ${w2End})`].concat(week3.length > 0 ? [`Semana 3<br>(${w3Start} → ${w3End})`] : []), y: [w1CPL, w2CPL].concat(week3.length > 0 ? [w3CPL] : []), type: 'bar', 
                   marker: {color: [w1CPL < 12 ? '#10B981' : '#F59E0B', w2CPL > 20 ? '#EF4444' : '#F59E0B']},
                   text: [`€${w1CPL.toFixed(2)}`, `€${w2CPL.toFixed(2)}`], textposition: 'outside'}],
                 {title: '<b>CPL Semanal (Comparativa)</b>', yaxis: {title: 'CPL (€)'}, height: 350, margin: {t: 50}},
